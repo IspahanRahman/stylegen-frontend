@@ -1,4 +1,4 @@
 import React from 'react';
-export default function AdminCustomersPage(){
+export default function AdminCustomersPage() {
   return <div>Admin - Customers (placeholder)</div>;
 }

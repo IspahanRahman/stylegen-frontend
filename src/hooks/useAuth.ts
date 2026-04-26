@@ -1,1 +1,3 @@
-export default function useAuth(){return {user:null,login:()=>{},logout:()=>{}}}
+export default function useAuth() {
+  return { user: null, login: () => {}, logout: () => {} };
+}

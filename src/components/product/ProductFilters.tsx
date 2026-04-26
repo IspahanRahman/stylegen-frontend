@@ -1,2 +1,4 @@
 import React from 'react';
-export default function ProductFilters(){return <div>Filters</div>}
+export default function ProductFilters() {
+  return <div>Filters</div>;
+}

@@ -1,1 +1,3 @@
-export default function useCart(){return {items:[],add:()=>{}}}
+export default function useCart() {
+  return { items: [], add: () => {} };
+}

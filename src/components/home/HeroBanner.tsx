@@ -1,2 +1,4 @@
 import React from 'react';
-export default function HeroBanner(){return <section>Hero</section>}
+export default function HeroBanner() {
+  return <section>Hero</section>;
+}

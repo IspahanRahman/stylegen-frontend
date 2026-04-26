@@ -1,2 +1,4 @@
 import React from 'react';
-export default function RelatedProducts(){return <div>Related</div>}
+export default function RelatedProducts() {
+  return <div>Related</div>;
+}

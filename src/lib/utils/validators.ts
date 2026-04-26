@@ -1,1 +1,1 @@
-export const validators = { required:(v:any)=>!!v };
+export const validators = { required: (v: any) => !!v };
