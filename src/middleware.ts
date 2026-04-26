@@ -6,18 +6,15 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protected routes
-  const protectedPaths = ['/dashboard', '/checkout', '/profile'];
+  // Note: checkout is handled client-side (cart flow); avoid protecting it here
+  const protectedPaths = ['/dashboard', '/profile'];
   const authPaths = ['/login', '/register', '/forgot-password'];
 
   // Check if path requires authentication
-  const isProtectedPath = protectedPaths.some(path =>
-    pathname.startsWith(path)
-  );
+  const isProtectedPath = protectedPaths.some((path) => pathname.startsWith(path));
 
   // Check if path is auth page
-  const isAuthPath = authPaths.some(path =>
-    pathname.startsWith(path)
-  );
+  const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
 
   // Redirect to login if accessing protected route without auth
   if (isProtectedPath && !token) {
@@ -33,9 +30,7 @@ export function middleware(request: NextRequest) {
       const user = authData?.state?.user;
 
       if (user) {
-        const dashboardUrl = user.role === 'admin'
-          ? '/dashboard/admin'
-          : '/dashboard/user';
+        const dashboardUrl = user.role === 'admin' ? '/dashboard/admin' : '/dashboard/user';
         return NextResponse.redirect(new URL(dashboardUrl, request.url));
       }
     } catch (error) {
@@ -47,12 +42,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/checkout/:path*',
-    '/profile/:path*',
-    '/login',
-    '/register',
-    '/forgot-password',
-  ],
+  matcher: ['/dashboard/:path*', '/profile/:path*', '/login', '/register', '/forgot-password'],
 };
