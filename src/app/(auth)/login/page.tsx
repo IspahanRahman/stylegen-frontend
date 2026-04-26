@@ -36,10 +36,11 @@ export default function LoginPage() {
 
       // Redirect based on role
       const user = useAuthStore.getState().user;
+      console.log('Logged in user:', user);
       if (user?.role === 'admin') {
-        router.push('/dashboard/admin');
+        router.push('/admin');
       } else {
-        router.push('/dashboard/user');
+        router.push('/user');
       }
 
       router.refresh();
@@ -59,9 +60,9 @@ export default function LoginPage() {
       toast.success(`Logged in as ${role}`);
 
       if (role === 'admin') {
-        router.push('/dashboard/admin');
+        router.push('/admin');
       } else {
-        router.push('/dashboard/user');
+        router.push('/user');
       }
 
       router.refresh();
