@@ -12,7 +12,6 @@ export function useAdminAnalytics() {
   const handleExport = useCallback(async () => {
     try {
       const downloadUrl = await store.exportReport();
-      // Trigger download
       window.open(downloadUrl, '_blank');
       return true;
     } catch (error: any) {
@@ -28,16 +27,22 @@ export function useAdminAnalytics() {
   const getChartData = useCallback(() => {
     if (!store.data) return null;
 
-    const maxRevenue = Math.max(...store.data.revenue.monthly);
+    const monthlyData = store.data.revenue.monthly;
+    const maxRevenue = Math.max(...monthlyData);
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     return {
       labels: months,
-      datasets: [{
-        data: store.data.revenue.monthly,
-        maxValue: maxRevenue,
-        getBarHeight: (value: number) => `${(value / maxRevenue) * 100}%`,
-      }],
+      datasets: [
+        {
+          data: monthlyData,
+          maxValue: maxRevenue,
+          getBarHeight: (value: number) => {
+            if (maxRevenue === 0) return '0%';
+            return `${(value / maxRevenue) * 100}%`;
+          },
+        },
+      ],
     };
   }, [store.data]);
 

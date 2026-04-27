@@ -13,6 +13,7 @@ import {
   Download,
   Calendar,
   RefreshCcw,
+  BarChart3,
 } from 'lucide-react';
 import Skeleton from '@/components/ui/Skeleton';
 
@@ -67,6 +68,8 @@ export default function AdminAnalytics() {
   if (error && !data) {
     return (
       <div className="text-center py-12">
+        <BarChart3 className="h-16 w-16 text-red-400 mx-auto mb-4" />
+        <h2 className="text-xl font-bold text-gray-900 mb-2">Failed to Load Analytics</h2>
         <p className="text-red-600 mb-4">{error}</p>
         <button
           onClick={clearError}
@@ -165,47 +168,84 @@ export default function AdminAnalytics() {
         })}
       </div>
 
-      {/* Revenue Chart */}
+      {/* Revenue Chart - FIXED SECTION */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Revenue Overview</h2>
-          <div className="flex items-center gap-2 text-xs text-gray-500">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">Revenue Overview</h2>
+            <p className="text-sm text-gray-500 mt-1">
+              {timeRange === 'monthly' && 'Monthly revenue breakdown'}
+              {timeRange === 'weekly' && 'Weekly revenue breakdown'}
+              {timeRange === 'yearly' && 'Yearly revenue breakdown'}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg">
             <Calendar className="h-4 w-4" />
-            {timeRange === 'monthly' && 'Monthly Revenue'}
-            {timeRange === 'weekly' && 'Weekly Revenue'}
-            {timeRange === 'yearly' && 'Yearly Revenue'}
+            {timeRange === 'monthly' && 'Monthly'}
+            {timeRange === 'weekly' && 'Weekly'}
+            {timeRange === 'yearly' && 'Yearly'}
           </div>
         </div>
 
-        {chartData && data ? (
-          <div className="h-64 flex items-end gap-2">
-            {data.revenue.monthly.map((value, index) => (
-              <div key={index} className="flex-1 flex flex-col items-center gap-2 group">
-                <div className="relative w-full">
+        {chartData && data && data.revenue.monthly.length > 0 ? (
+          <div className="space-y-4">
+            {/* Bar Chart */}
+            <div className="h-64 flex items-end gap-2 px-2">
+              {data.revenue.monthly.map((value, index) => {
+                const heightPercent = chartData.datasets[0].getBarHeight(value);
+                return (
                   <div
-                    className="w-full bg-orange-500 rounded-t-lg hover:bg-orange-600 transition-all cursor-pointer group-hover:opacity-80"
-                    style={{ height: chartData.datasets[0].getBarHeight(value) }}
+                    key={index}
+                    className="flex-1 flex flex-col items-center gap-2 group h-full"
                   >
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      {formatCurrency(value)}
+                    <div className="relative w-full flex-1 flex items-end">
+                      <div
+                        className="w-full bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg hover:from-orange-600 hover:to-orange-500 transition-all cursor-pointer group-hover:opacity-90 min-h-[4px]"
+                        style={{ height: heightPercent }}
+                      >
+                        {/* Tooltip */}
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-3 py-1.5 rounded-lg text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg z-10">
+                          {formatCurrency(value)}
+                          <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45" />
+                        </div>
+                      </div>
                     </div>
+                    <span className="text-xs text-gray-500 font-medium">
+                      {chartData.labels[index]}
+                    </span>
                   </div>
+                );
+              })}
+            </div>
+
+            {/* Chart Legend */}
+            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded bg-orange-500" />
+                  <span className="text-xs text-gray-600">Revenue</span>
                 </div>
-                <span className="text-xs text-gray-500">
-                  {chartData.labels[index]}
-                </span>
+                <div className="text-xs text-gray-400">
+                  Highest: {formatCurrency(Math.max(...data.revenue.monthly))}
+                </div>
               </div>
-            ))}
+              <div className="text-xs text-gray-400">
+                Total: {formatCurrency(data.revenue.monthly.reduce((a, b) => a + b, 0))}
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="h-64 flex items-center justify-center text-gray-400">
-            No data available
+          <div className="h-64 flex flex-col items-center justify-center text-gray-400">
+            <BarChart3 className="h-12 w-12 mb-3" />
+            <p className="text-sm font-medium">No revenue data available</p>
+            <p className="text-xs mt-1">Try selecting a different time range</p>
           </div>
         )}
       </div>
 
       {/* Top Products & Categories */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Top Products */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Products</h2>
           {topProducts.length > 0 ? (
@@ -216,10 +256,15 @@ export default function AdminAnalytics() {
                   className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={cn(
-                      'text-sm font-bold w-6',
-                      index < 3 ? 'text-orange-500' : 'text-gray-400'
-                    )}>
+                    <span
+                      className={cn(
+                        'text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center',
+                        index === 0 && 'bg-yellow-100 text-yellow-700',
+                        index === 1 && 'bg-gray-100 text-gray-700',
+                        index === 2 && 'bg-orange-100 text-orange-700',
+                        index > 2 && 'text-gray-400'
+                      )}
+                    >
                       #{index + 1}
                     </span>
                     <div>
@@ -234,10 +279,14 @@ export default function AdminAnalytics() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-400 text-center py-8">No product data available</p>
+            <div className="text-center py-8">
+              <Package className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-400">No product data available</p>
+            </div>
           )}
         </div>
 
+        {/* Top Categories */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Categories</h2>
           {topCategories.length > 0 ? (
@@ -248,10 +297,15 @@ export default function AdminAnalytics() {
                   className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
                 >
                   <div className="flex items-center gap-3">
-                    <span className={cn(
-                      'text-sm font-bold w-6',
-                      index < 3 ? 'text-orange-500' : 'text-gray-400'
-                    )}>
+                    <span
+                      className={cn(
+                        'text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center',
+                        index === 0 && 'bg-yellow-100 text-yellow-700',
+                        index === 1 && 'bg-gray-100 text-gray-700',
+                        index === 2 && 'bg-orange-100 text-orange-700',
+                        index > 2 && 'text-gray-400'
+                      )}
+                    >
                       #{index + 1}
                     </span>
                     <div>
@@ -266,17 +320,20 @@ export default function AdminAnalytics() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-400 text-center py-8">No category data available</p>
+            <div className="text-center py-8">
+              <Package className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-400">No category data available</p>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Refresh Button */}
+      {/* Error Toast */}
       {error && (
-        <div className="fixed bottom-4 right-4">
+        <div className="fixed bottom-4 right-4 z-50">
           <button
             onClick={clearError}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 flex items-center gap-2"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 flex items-center gap-2 transition-all"
           >
             <RefreshCcw className="h-4 w-4" />
             Retry
