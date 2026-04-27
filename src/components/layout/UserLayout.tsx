@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
@@ -13,8 +13,6 @@ import {
   User,
   Settings,
   LogOut,
-  Menu,
-  X,
   ChevronRight,
   Home,
   ShoppingCart,
@@ -23,50 +21,29 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import toast from 'react-hot-toast';
+import Sidebar from './Sidebar';
+import MobileNav from './MobileNav';
 
 const navItems = [
-  {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/user',
-  },
-  {
-    label: 'My Orders',
-    icon: ShoppingBag,
-    href: '/user/orders',
-  },
-  {
-    label: 'Track Order',
-    icon: Package,
-    href: '/user/track-order',
-  },
-  {
-    label: 'Wishlist',
-    icon: Heart,
-    href: '/user/wishlist',
-  },
-  {
-    label: 'Profile',
-    icon: User,
-    href: '/user/profile',
-  },
-  {
-    label: 'Settings',
-    icon: Settings,
-    href: '/user/settings',
-  },
+  { label: 'Dashboard', icon: LayoutDashboard, href: '/user' },
+  { label: 'My Orders', icon: ShoppingBag, href: '/user/orders' },
+  { label: 'Track Order', icon: Package, href: '/user/track-order' },
+  { label: 'Wishlist', icon: Heart, href: '/user/wishlist' },
+  { label: 'Profile', icon: User, href: '/user/profile' },
+  { label: 'Settings', icon: Settings, href: '/user/settings' },
 ];
 
-export default function UserLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function UserLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const { getItemCount } = useCartStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -82,12 +59,7 @@ export default function UserLayout({
           <div className="flex items-center justify-between h-16">
             {/* Left section */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
-              >
-                <Menu className="h-5 w-5 text-gray-600" />
-              </button>
+              <MobileNav isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
 
               <Link href="/" className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
@@ -111,12 +83,9 @@ export default function UserLayout({
               </button>
 
               {/* Cart */}
-              <Link
-                href="/cart"
-                className="p-2 rounded-lg hover:bg-gray-100 relative"
-              >
+              <Link href="/cart" className="p-2 rounded-lg hover:bg-gray-100 relative">
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
-                {getItemCount() > 0 && (
+                {mounted && getItemCount() > 0 && (
                   <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {getItemCount()}
                   </span>
@@ -139,61 +108,7 @@ export default function UserLayout({
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside
-          className={cn(
-            'fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:fixed lg:top-16 lg:bottom-0 lg:inset-auto',
-            'pt-16 lg:pt-0',
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          )}
-        >
-          <nav className="h-screen px-4 py-6 space-y-1">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                    isActive
-                      ? 'bg-orange-50 text-orange-600'
-                      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                  )}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.label}
-                  {isActive && (
-                    <ChevronRight className="h-4 w-4 ml-auto" />
-                  )}
-                </Link>
-              );
-            })}
-
-            <hr className="my-4" />
-
-            {/* Quick Links */}
-            <div className="px-3 py-2">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                Quick Links
-              </p>
-              <Link
-                href="/"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
-              >
-                <Home className="h-4 w-4" />
-                Back to Store
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 w-full"
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </button>
-            </div>
-          </nav>
-        </aside>
+        <Sidebar sections={[{ section: '', items: navItems }]} isOpen={isSidebarOpen} />
 
         {/* Overlay for mobile */}
         {isSidebarOpen && (
@@ -204,9 +119,7 @@ export default function UserLayout({
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">
-          {children}
-        </main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">{children}</main>
       </div>
     </div>
   );

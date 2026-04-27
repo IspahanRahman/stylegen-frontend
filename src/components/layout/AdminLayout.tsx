@@ -12,79 +12,39 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Menu,
-  X,
   Bell,
-  Search,
   Store,
   Tags,
   ClipboardList,
-  TrendingUp,
-  AlertCircle,
   ChevronDown,
-  User,
 } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import toast from 'react-hot-toast';
+
+import Sidebar from './Sidebar';
+import MobileNav from './MobileNav';
 
 const adminNavItems = [
   {
     section: 'Main',
     items: [
-      {
-        label: 'Dashboard',
-        icon: LayoutDashboard,
-        href: '/admin',
-      },
-      {
-        label: 'Analytics',
-        icon: BarChart3,
-        href: '/admin/analytics',
-      },
+      { label: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
+      { label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
     ],
   },
   {
     section: 'Management',
     items: [
-      {
-        label: 'Products',
-        icon: ShoppingBag,
-        href: '/admin/products',
-      },
-      {
-        label: 'Categories',
-        icon: Tags,
-        href: '/admin/categories',
-      },
-      {
-        label: 'Orders',
-        icon: ClipboardList,
-        href: '/admin/orders',
-      },
-      {
-        label: 'Customers',
-        icon: Users,
-        href: '/admin/customers',
-      },
+      { label: 'Products', icon: ShoppingBag, href: '/admin/products' },
+      { label: 'Categories', icon: Tags, href: '/admin/categories' },
+      { label: 'Orders', icon: ClipboardList, href: '/admin/orders' },
+      { label: 'Customers', icon: Users, href: '/admin/customers' },
     ],
   },
-  {
-    section: 'Settings',
-    items: [
-      {
-        label: 'Settings',
-        icon: Settings,
-        href: '/admin/settings',
-      },
-    ],
-  },
+  { section: 'Settings', items: [{ label: 'Settings', icon: Settings, href: '/admin/settings' }] },
 ];
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -99,17 +59,11 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
       <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
-              >
-                <Menu className="h-5 w-5 text-gray-600" />
-              </button>
+              <MobileNav isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
 
               <Link href="/admin" className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
@@ -128,11 +82,7 @@ export default function AdminLayout({
                 <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full"></span>
               </button>
 
-              <Link
-                href="/"
-                className="p-2 rounded-lg hover:bg-gray-100"
-                title="View Store"
-              >
+              <Link href="/" className="p-2 rounded-lg hover:bg-gray-100" title="View Store">
                 <Store className="h-5 w-5 text-gray-600" />
               </Link>
 
@@ -183,68 +133,8 @@ export default function AdminLayout({
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside
-          className={cn(
-            'fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:fixed lg:top-16 lg:bottom-0 lg:inset-auto',
-            'pt-16 lg:pt-0',
-            'overflow-y-auto',
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          )}
-        >
-          <nav className="h-screen px-3 py-6 space-y-6">
-            {adminNavItems.map((section) => (
-              <div key={section.section}>
-                <h3 className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                  {section.section}
-                </h3>
-                <div className="space-y-1">
-                  {section.items.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={cn(
-                          'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                          isActive
-                            ? 'bg-orange-50 text-orange-600'
-                            : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
-                        )}
-                      >
-                        <item.icon className="h-5 w-5" />
-                        {item.label}
-                        {isActive && (
-                          <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500" />
-                        )}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+        <Sidebar sections={adminNavItems} isOpen={isSidebarOpen} />
 
-            <div className="px-3 pt-4 border-t border-gray-200">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-1">
-                  <AlertCircle className="h-4 w-4 text-orange-500" />
-                  Need Help?
-                </div>
-                <p className="text-xs text-gray-500 mb-3">
-                  Check the documentation or contact support
-                </p>
-                <a
-                  href="#"
-                  className="text-xs font-medium text-orange-500 hover:text-orange-600"
-                >
-                  View Documentation →
-                </a>
-              </div>
-            </div>
-          </nav>
-        </aside>
-
-        {/* Overlay */}
         {isSidebarOpen && (
           <div
             className="fixed inset-0 bg-black/50 z-20 lg:hidden"
@@ -252,10 +142,7 @@ export default function AdminLayout({
           />
         )}
 
-        {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">
-          {children}
-        </main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">{children}</main>
       </div>
     </div>
   );
