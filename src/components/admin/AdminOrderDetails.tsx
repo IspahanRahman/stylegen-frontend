@@ -203,7 +203,7 @@ export default function AdminOrderDetails() {
                   </div>
                   <div className="flex-1">
                     <Link
-                      href={`/dashboard/admin/products/${item.id}`}
+                      href={`/admin/products/${item.id}`}
                       className="font-medium text-gray-900 hover:text-orange-500"
                     >
                       {item.name}
@@ -273,7 +273,7 @@ export default function AdminOrderDetails() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900">Customer</h2>
               <Link
-                href={`/dashboard/admin/customers`}
+                href={`/admin/customers`}
                 className="text-sm text-orange-500 hover:text-orange-600"
               >
                 View Profile

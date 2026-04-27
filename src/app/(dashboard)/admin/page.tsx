@@ -161,7 +161,7 @@ export default function AdminDashboard() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Recent Orders</h2>
               <Link
-                href="/dashboard/admin/orders"
+                href="/admin/orders"
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium"
               >
                 View All
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4 text-sm text-gray-500">{order.date}</td>
                     <td className="px-6 py-4">
                       <Link
-                        href={`/dashboard/admin/orders?id=${order.id}`}
+                        href={`/admin/orders?id=${order.id}`}
                         className="text-orange-500 hover:text-orange-600 text-sm font-medium"
                       >
                         View
@@ -234,7 +234,7 @@ export default function AdminDashboard() {
                     </p>
                   </div>
                   <Link
-                    href={`/dashboard/admin/products?id=${product.id}`}
+                    href={`/admin/products?id=${product.id}`}
                     className="text-xs font-medium text-orange-500 hover:text-orange-600"
                   >
                     Restock

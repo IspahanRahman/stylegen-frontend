@@ -183,7 +183,7 @@ export default function AdminCustomerDetails() {
                 {selectedCustomer.recentOrders.map((order) => (
                   <Link
                     key={order.id}
-                    href={`/dashboard/admin/orders/${order.id}`}
+                    href={`/admin/orders/${order.id}`}
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div>

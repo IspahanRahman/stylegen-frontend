@@ -45,10 +45,7 @@ export default function Header() {
             </button>
 
             {/* Cart */}
-            <button
-              onClick={toggleCart}
-              className="p-2 text-gray-600 hover:text-gray-900 relative"
-            >
+            <button onClick={toggleCart} className="p-2 text-gray-600 hover:text-gray-900 relative">
               <ShoppingCart className="h-5 w-5" />
               {getItemCount() > 0 && (
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -81,7 +78,7 @@ export default function Header() {
                   </Link>
                   {user?.role === 'admin' && (
                     <Link
-                      href="/dashboard/admin"
+                      href="/admin"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Admin Panel

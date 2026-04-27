@@ -30,7 +30,7 @@ export function proxy(request: NextRequest) {
       const user = authData?.state?.user;
 
       if (user) {
-        const dashboardUrl = user.role === 'admin' ? '/dashboard/admin' : '/dashboard/user';
+        const dashboardUrl = user.role === 'admin' ? '/admin' : '/user';
         return NextResponse.redirect(new URL(dashboardUrl, request.url));
       }
     } catch (error) {
@@ -42,5 +42,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/profile/:path*', '/login', '/register', '/forgot-password'],
+  matcher: ['/:path*', '/profile/:path*', '/login', '/register', '/forgot-password'],
 };
