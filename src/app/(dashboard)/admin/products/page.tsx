@@ -154,7 +154,7 @@ export default function AdminProductsPage() {
           </p>
         </div>
         <Link
-          href="/dashboard/admin/products/new"
+          href="/admin/products/new"
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
@@ -322,7 +322,7 @@ export default function AdminProductsPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <Link
-                        href={`/dashboard/admin/products/${product.id}/edit`}
+                        href={`/admin/products/${product.id}/edit`}
                         className="p-1.5 hover:bg-gray-100 rounded-lg"
                         title="Edit"
                       >
@@ -336,7 +336,7 @@ export default function AdminProductsPage() {
                         <Trash2 className="h-4 w-4 text-red-500" />
                       </button>
                       <Link
-                        href={`/dashboard/admin/products/${product.id}`}
+                        href={`/admin/products/${product.id}`}
                         className="p-1.5 hover:bg-gray-100 rounded-lg"
                         title="View"
                       >

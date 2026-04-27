@@ -34,12 +34,12 @@ const adminNavItems = [
       {
         label: 'Dashboard',
         icon: LayoutDashboard,
-        href: '/dashboard/admin',
+        href: '/admin',
       },
       {
         label: 'Analytics',
         icon: BarChart3,
-        href: '/dashboard/admin/analytics',
+        href: '/admin/analytics',
       },
     ],
   },
@@ -49,22 +49,22 @@ const adminNavItems = [
       {
         label: 'Products',
         icon: ShoppingBag,
-        href: '/dashboard/admin/products',
+        href: '/admin/products',
       },
       {
         label: 'Categories',
         icon: Tags,
-        href: '/dashboard/admin/categories',
+        href: '/admin/categories',
       },
       {
         label: 'Orders',
         icon: ClipboardList,
-        href: '/dashboard/admin/orders',
+        href: '/admin/orders',
       },
       {
         label: 'Customers',
         icon: Users,
-        href: '/dashboard/admin/customers',
+        href: '/admin/customers',
       },
     ],
   },
@@ -74,7 +74,7 @@ const adminNavItems = [
       {
         label: 'Settings',
         icon: Settings,
-        href: '/dashboard/admin/settings',
+        href: '/admin/settings',
       },
     ],
   },
@@ -106,12 +106,12 @@ export default function AdminLayout({
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100"
+                className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
               >
                 <Menu className="h-5 w-5 text-gray-600" />
               </button>
 
-              <Link href="/dashboard/admin" className="flex items-center gap-2">
+              <Link href="/admin" className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
                   <span className="text-gray-900">Style</span>
                   <span className="text-orange-500">Gen</span>
@@ -153,7 +153,7 @@ export default function AdminLayout({
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                     <Link
-                      href="/dashboard/admin/settings"
+                      href="/admin/settings"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
                     >
                       <Settings className="h-4 w-4" />
@@ -186,13 +186,13 @@ export default function AdminLayout({
         {/* Sidebar */}
         <aside
           className={cn(
-            'fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-auto',
+            'fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:fixed lg:top-16 lg:bottom-0 lg:inset-auto',
             'pt-16 lg:pt-0',
             'overflow-y-auto',
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           )}
         >
-          <nav className="px-3 py-6 space-y-6">
+          <nav className="h-screen px-3 py-6 space-y-6">
             {adminNavItems.map((section) => (
               <div key={section.section}>
                 <h3 className="px-3 mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
@@ -253,7 +253,7 @@ export default function AdminLayout({
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 min-h-screen">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">
           {children}
         </main>
       </div>

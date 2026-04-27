@@ -1,8 +1,9 @@
 import React from 'react';
-export default function UserLayout({ children }: { children: React.ReactNode }) {
+import UserLayout from '@/components/layout/UserLayout';
+export default function UserRootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <div>{children}</div>
-    </div>
+    <UserLayout>
+      {children}
+    </UserLayout>
   );
 }
