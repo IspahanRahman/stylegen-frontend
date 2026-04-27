@@ -1,208 +1,78 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus, Search, ImageIcon, Upload, X, Package, AlertCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useAdminCategories } from '@/hooks/useAdminCategories';
+import {
+  Plus,
+  Search,
+  ImageIcon,
+  Upload,
+  X,
+  Package,
+  AlertCircle,
+  Loader2,
+  Edit,
+  Trash2,
+} from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
-import Image from 'next/image';
-
-interface Category {
-  id: string;
-  name: string;
-  description: string;
-  image: string;
-  productCount: number;
-  status: 'active' | 'inactive';
-  createdAt: string;
-}
-
-const mockCategories: Category[] = [
-  {
-    id: '1',
-    name: 'Shoes',
-    description: 'Handcrafted leather footwear for every occasion',
-    image: '/images/categories/shoes.jpg',
-    productCount: 45,
-    status: 'active',
-    createdAt: '2024-01-01',
-  },
-  {
-    id: '2',
-    name: 'Wallet',
-    description: 'Slim and classic leather wallets with RFID protection',
-    image: '/images/categories/wallet.jpg',
-    productCount: 30,
-    status: 'active',
-    createdAt: '2024-01-05',
-  },
-  {
-    id: '3',
-    name: 'Belt',
-    description: 'Premium full-grain leather belts with brass buckles',
-    image: '/images/categories/belt.jpg',
-    productCount: 25,
-    status: 'active',
-    createdAt: '2024-01-10',
-  },
-  {
-    id: '4',
-    name: 'Bags',
-    description: 'Luxury leather bags for travel and daily use',
-    image: '/images/categories/bags.jpg',
-    productCount: 35,
-    status: 'active',
-    createdAt: '2024-01-15',
-  },
-  {
-    id: '5',
-    name: 'T-Shirts',
-    description: 'Premium leather apparel with modern designs',
-    image: '/images/categories/tshirts.jpg',
-    productCount: 20,
-    status: 'active',
-    createdAt: '2024-01-20',
-  },
-  {
-    id: '6',
-    name: 'Accessories',
-    description: 'Leather accessories and small goods',
-    image: '/images/categories/accessories.jpg',
-    productCount: 0,
-    status: 'inactive',
-    createdAt: '2024-02-01',
-  },
-];
 
 export default function AdminCategories() {
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    image: '',
-    status: 'active' as 'active' | 'inactive',
-  });
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const {
+    filteredCategories,
+    isLoading,
+    isSubmitting,
+    isUploading,
+    error,
+    searchTerm,
+    formData,
+    selectedImage,
+    showAddModal,
+    showEditModal,
+    showDeleteModal,
+    selectedCategory,
+    setSearchTerm,
+    openAddModal,
+    openEditModal,
+    openDeleteModal,
+    closeModals,
+    setFormData,
+    handleImageUpload,
+    removeImage,
+    handleCreateCategory,
+    handleUpdateCategory,
+    handleDeleteCategory,
+    clearError,
+  } = useAdminCategories();
 
-  const filteredCategories = categories.filter(
-    (cat) =>
-      cat.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      cat.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setSelectedImage(reader.result as string);
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleAddCategory = () => {
-    if (!formData.name || !formData.description) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    const newCategory: Category = {
-      id: `cat-${Date.now()}`,
-      name: formData.name,
-      description: formData.description,
-      image: selectedImage || '/images/categories/default.jpg',
-      productCount: 0,
-      status: formData.status,
-      createdAt: new Date().toISOString().split('T')[0],
-    };
-
-    setCategories([...categories, newCategory]);
-    toast.success('Category created successfully!');
-    setShowAddModal(false);
-    resetForm();
-  };
-
-  const handleEditCategory = () => {
-    if (!selectedCategory || !formData.name || !formData.description) {
-      toast.error('Please fill in all required fields');
-      return;
-    }
-
-    setCategories(
-      categories.map((cat) =>
-        cat.id === selectedCategory.id
-          ? {
-              ...cat,
-              name: formData.name,
-              description: formData.description,
-              image: selectedImage || cat.image,
-              status: formData.status,
-            }
-          : cat
-      )
+  // Loading State
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between">
+          <div className="h-8 w-48 bg-gray-200 rounded animate-pulse" />
+          <div className="h-10 w-40 bg-gray-200 rounded animate-pulse" />
+        </div>
+        <div className="h-12 bg-gray-200 rounded animate-pulse" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-80 bg-gray-200 rounded-xl animate-pulse" />
+          ))}
+        </div>
+      </div>
     );
-
-    toast.success('Category updated successfully!');
-    setShowEditModal(false);
-    resetForm();
-  };
-
-  const handleDeleteCategory = () => {
-    if (!selectedCategory) return;
-    if (selectedCategory.productCount > 0) {
-      toast.error(
-        `Cannot delete category with ${selectedCategory.productCount} products. Remove products first.`
-      );
-      setShowDeleteModal(false);
-      return;
-    }
-
-    setCategories(categories.filter((cat) => cat.id !== selectedCategory.id));
-    toast.success('Category deleted successfully!');
-    setShowDeleteModal(false);
-    setSelectedCategory(null);
-  };
-
-  const openEditModal = (category: Category) => {
-    setSelectedCategory(category);
-    setFormData({
-      name: category.name,
-      description: category.description,
-      image: category.image,
-      status: category.status,
-    });
-    setSelectedImage(category.image);
-    setShowEditModal(true);
-  };
-
-  const openDeleteModal = (category: Category) => {
-    setSelectedCategory(category);
-    setShowDeleteModal(true);
-  };
-
-  const resetForm = () => {
-    setFormData({ name: '', description: '', image: '', status: 'active' });
-    setSelectedImage(null);
-    setSelectedCategory(null);
-  };
+  }
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Manage product categories ({categories.length} total)
+            Manage product categories ({filteredCategories.length} total)
           </p>
         </div>
         <button
-          onClick={() => {
-            resetForm();
-            setShowAddModal(true);
-          }}
+          onClick={openAddModal}
           className="inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
         >
           <Plus className="h-4 w-4" />
@@ -210,6 +80,20 @@ export default function AdminCategories() {
         </button>
       </div>
 
+      {/* Error Banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-red-700">
+            <AlertCircle className="h-5 w-5" />
+            <p className="text-sm">{error}</p>
+          </div>
+          <button onClick={clearError} className="text-red-500 hover:text-red-700">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* Search */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -223,85 +107,103 @@ export default function AdminCategories() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCategories.map((category) => (
-          <div
-            key={category.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all group"
-          >
-            <div className="relative h-48 bg-gray-100 overflow-hidden">
-              {category.image ? (
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full">
-                  <ImageIcon className="h-12 w-12 text-gray-400" />
+      {/* Categories Grid */}
+      {filteredCategories.length === 0 ? (
+        <div className="text-center py-12">
+          <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">No categories found</h3>
+          <p className="text-gray-600">
+            {searchTerm ? 'Try adjusting your search' : 'Create your first category'}
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCategories.map((category) => (
+            <div
+              key={category.id}
+              className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all group"
+            >
+              {/* Image Section */}
+              <div className="relative h-48 bg-gray-100 overflow-hidden">
+                {category.image ? (
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="flex items-center justify-center h-full">
+                    <ImageIcon className="h-12 w-12 text-gray-400" />
+                  </div>
+                )}
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute bottom-3 left-3 right-3 flex gap-2">
+                    <button
+                      onClick={() => openEditModal(category)}
+                      className="flex-1 px-3 py-2 bg-white text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
+                    >
+                      <Edit className="h-4 w-4 inline mr-1" />
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => openDeleteModal(category)}
+                      className="flex-1 px-3 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4 inline mr-1" />
+                      Delete
+                    </button>
+                  </div>
                 </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="absolute bottom-3 left-3 right-3 flex gap-2">
-                  <button
-                    onClick={() => openEditModal(category)}
-                    className="flex-1 bg-white/90 text-sm rounded-md py-2"
+              </div>
+
+              {/* Content */}
+              <div className="p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-semibold text-gray-900 truncate">{category.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{category.description}</p>
+                  </div>
+                  <span
+                    className={cn(
+                      'px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0',
+                      category.status === 'active'
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-gray-100 text-gray-700'
+                    )}
                   >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => openDeleteModal(category)}
-                    className="flex-1 bg-red-600 text-white text-sm rounded-md py-2"
-                  >
-                    Delete
-                  </button>
+                    {category.status}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Package className="h-4 w-4" />
+                    <span>{category.productCount} products</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => openEditModal(category)}
+                      className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => openDeleteModal(category)}
+                      className="px-3 py-1.5 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+      )}
 
-            <div className="p-4">
-              <div className="flex items-start justify-between mb-2">
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">{category.name}</h3>
-                  <p className="text-xs text-gray-500 mt-1">{category.description}</p>
-                </div>
-                <span
-                  className={cn(
-                    'px-2 py-1 rounded-full text-xs font-medium',
-                    category.status === 'active'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-gray-100 text-gray-700'
-                  )}
-                >
-                  {category.status}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Package className="h-4 w-4" />
-                  <span>{category.productCount} products</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => openEditModal(category)}
-                    className="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => openDeleteModal(category)}
-                    className="px-3 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
+      {/* Add/Edit Modal */}
       {(showAddModal || showEditModal) && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
@@ -310,14 +212,7 @@ export default function AdminCategories() {
                 <h2 className="text-xl font-bold text-gray-900">
                   {showAddModal ? 'Add New Category' : 'Edit Category'}
                 </h2>
-                <button
-                  onClick={() => {
-                    setShowAddModal(false);
-                    setShowEditModal(false);
-                    resetForm();
-                  }}
-                  className="p-2 hover:bg-gray-100 rounded-lg"
-                >
+                <button onClick={closeModals} className="p-2 hover:bg-gray-100 rounded-lg">
                   <X className="h-5 w-5 text-gray-500" />
                 </button>
               </div>
@@ -331,7 +226,7 @@ export default function AdminCategories() {
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => setFormData({ name: e.target.value })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="Enter category name"
                 />
@@ -343,7 +238,7 @@ export default function AdminCategories() {
                 </label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) => setFormData({ description: e.target.value })}
                   rows={3}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="Enter category description"
@@ -355,27 +250,41 @@ export default function AdminCategories() {
                   Category Image
                 </label>
                 <div className="flex items-center gap-4">
-                  <div className="h-20 w-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                  <div className="h-20 w-20 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                     {selectedImage ? (
                       <img
                         src={selectedImage}
-                        alt="preview"
+                        alt="Preview"
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <ImageIcon className="h-8 w-8 text-gray-400" />
                     )}
                   </div>
-                  <label className="flex-1 px-4 py-2.5 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-orange-500 transition-colors">
-                    <Upload className="h-5 w-5 text-gray-400 mx-auto mb-1" />
-                    <div className="text-sm text-gray-500">Click to upload or drag and drop</div>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </label>
+                  <div className="flex-1">
+                    {selectedImage ? (
+                      <button
+                        onClick={removeImage}
+                        className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg w-full"
+                      >
+                        Remove Image
+                      </button>
+                    ) : (
+                      <label className="flex flex-col items-center px-4 py-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-orange-500 transition-colors">
+                        <Upload className="h-5 w-5 text-gray-400 mb-1" />
+                        <span className="text-sm text-gray-500">
+                          {isUploading ? 'Uploading...' : 'Click to upload'}
+                        </span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={isUploading}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -383,9 +292,7 @@ export default function AdminCategories() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                 <select
                   value={formData.status}
-                  onChange={(e) =>
-                    setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' })
-                  }
+                  onChange={(e) => setFormData({ status: e.target.value as 'active' | 'inactive' })}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="active">Active</option>
@@ -396,19 +303,17 @@ export default function AdminCategories() {
 
             <div className="p-6 border-t border-gray-200 flex justify-end gap-3">
               <button
-                onClick={() => {
-                  setShowAddModal(false);
-                  setShowEditModal(false);
-                  resetForm();
-                }}
+                onClick={closeModals}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
-                onClick={showAddModal ? handleAddCategory : handleEditCategory}
-                className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600"
+                onClick={showAddModal ? handleCreateCategory : handleUpdateCategory}
+                disabled={isSubmitting}
+                className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 disabled:opacity-50 flex items-center gap-2"
               >
+                {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
                 {showAddModal ? 'Create Category' : 'Save Changes'}
               </button>
             </div>
@@ -416,6 +321,7 @@ export default function AdminCategories() {
         </div>
       )}
 
+      {/* Delete Modal */}
       {showDeleteModal && selectedCategory && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
@@ -427,25 +333,22 @@ export default function AdminCategories() {
               </p>
               {selectedCategory.productCount > 0 && (
                 <p className="text-sm text-red-600 mb-4">
-                  This category has {selectedCategory.productCount} products. Remove or reassign
-                  them first.
+                  This category has {selectedCategory.productCount} products. Remove or reassign them first.
                 </p>
               )}
               <div className="flex gap-3 justify-center mt-6">
                 <button
-                  onClick={() => {
-                    setShowDeleteModal(false);
-                    setSelectedCategory(null);
-                  }}
+                  onClick={closeModals}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDeleteCategory}
-                  disabled={selectedCategory.productCount > 0}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={selectedCategory.productCount > 0 || isSubmitting}
+                  className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50 flex items-center gap-2"
                 >
+                  {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
                   Delete
                 </button>
               </div>
