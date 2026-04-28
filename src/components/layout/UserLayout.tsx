@@ -101,6 +101,13 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
                 <div className="h-9 w-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
                   {user?.name?.charAt(0)?.toUpperCase()}
                 </div>
+                <button
+                  onClick={handleLogout}
+                  className="ml-3 p-2 rounded-lg hover:bg-gray-100"
+                  title="Sign out"
+                >
+                  <LogOut className="h-5 w-5 text-gray-600" />
+                </button>
               </div>
             </div>
           </div>

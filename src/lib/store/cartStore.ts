@@ -53,11 +53,9 @@ export const useCartStore = create<CartState>()(
             const newQuantity = existingItem.quantity + item.quantity;
             // Check stock limit
             if (newQuantity > item.stock) {
-              toast.error(`Only ${item.stock} items available in stock`);
               return state; // Don't add if exceeds stock
             }
 
-            toast.success('Cart updated!');
             return {
               items: state.items.map((i) =>
                 i.productId === item.productId &&
@@ -70,11 +68,9 @@ export const useCartStore = create<CartState>()(
 
           // Validate quantity against stock
           if (item.quantity > item.stock) {
-            toast.error(`Only ${item.stock} items available in stock`);
             return state;
           }
 
-          toast.success('Added to cart!');
           return {
             items: [...state.items, item],
           };
@@ -87,7 +83,6 @@ export const useCartStore = create<CartState>()(
             (i) => !(i.productId === productId && (!size || i.size === size))
           ),
         }));
-        toast.success('Removed from cart!');
       },
 
       updateQuantity: (productId, quantity, size) => {
