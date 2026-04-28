@@ -5,15 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCartStore } from '@/lib/store/cartStore';
+import { useUserOrderStore } from '@/lib/store/userOrderStore';
+import { useAuthStore } from '@/lib/store/authStore';
 import { shippingSchema, type ShippingFormData } from '@/lib/utils/validators';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
-import {
-  ChevronLeft,
-  CreditCard,
-  Truck,
-  Shield,
-  CheckCircle,
-} from 'lucide-react';
+import { ChevronLeft, CreditCard, Truck, Shield, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
@@ -33,13 +29,51 @@ export default function CheckoutPage() {
   const onSubmit = async (data: ShippingFormData) => {
     setIsProcessing(true);
 
-    // Simulate payment processing
-    setTimeout(() => {
+    try {
+      // Simulate payment processing delay
+      await new Promise((res) => setTimeout(res, 1200));
+
+      const user = useAuthStore.getState().user;
+      if (!user) {
+        toast.error('Please login to place an order');
+        router.push('/login?redirect=/checkout');
+        return;
+      }
+
+      const orderStore = useUserOrderStore.getState();
+
+      const orderData = {
+        userId: user.id,
+        items: items.map((i) => ({
+          productId: i.productId,
+          name: i.name,
+          quantity: i.quantity,
+          price: i.price,
+          size: i.size || undefined,
+          image: i.image || '/images/placeholder.png',
+        })),
+        totalPrice: getTotal(),
+        status: 'pending' as const,
+        shippingAddress: {
+          street: data.street,
+          city: data.city,
+          state: data.state,
+          zipCode: data.zipCode,
+          country: data.country,
+        },
+      };
+
+      // Create order via store (persists to mock storage and updates store state)
+      await orderStore.createOrder(orderData);
+
       setIsProcessing(false);
       setOrderComplete(true);
       clearCart();
       toast.success('Order placed successfully!');
-    }, 2000);
+    } catch (err: any) {
+      setIsProcessing(false);
+      toast.error(err?.message || 'Failed to place order');
+    }
   };
 
   if (orderComplete) {
@@ -52,7 +86,7 @@ export default function CheckoutPage() {
             Thank you for your purchase. You'll receive a confirmation email shortly.
           </p>
           <button
-            onClick={() => router.push('/dashboard/user/orders')}
+            onClick={() => router.push('/user/orders')}
             className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
           >
             View Orders
@@ -83,9 +117,7 @@ export default function CheckoutPage() {
           {/* Shipping Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">
-                Shipping Information
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">Shipping Information</h2>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -104,9 +136,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      City
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
                     <input
                       {...register('city')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
@@ -118,9 +148,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      State
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
                     <input
                       {...register('state')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
@@ -132,9 +160,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ZIP Code
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
                     <input
                       {...register('zipCode')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
@@ -146,9 +172,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Country
-                    </label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
                     <input
                       {...register('country')}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
@@ -162,9 +186,7 @@ export default function CheckoutPage() {
 
                 {/* Payment Section */}
                 <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Payment Method
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
 
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-orange-500">
@@ -192,8 +214,20 @@ export default function CheckoutPage() {
                   {isProcessing ? (
                     <span className="flex items-center justify-center gap-2">
                       <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
                       </svg>
                       Processing...
                     </span>
@@ -208,9 +242,7 @@ export default function CheckoutPage() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Order Summary
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
 
               <div className="space-y-3">
                 {items.map((item) => (
@@ -219,9 +251,7 @@ export default function CheckoutPage() {
                       Img
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
-                        {item.name}
-                      </p>
+                      <p className="text-sm font-medium text-gray-900 truncate">{item.name}</p>
                       <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                     </div>
                     <p className="text-sm font-medium">

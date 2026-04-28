@@ -2,7 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Star } from 'lucide-react';
+import { Star, Heart } from 'lucide-react';
+import { useWishlistStore } from '@/lib/store/wishlistStore';
 import { formatCurrency } from '@/lib/utils/formatCurrency';
 import AddToCartButton from './AddToCartButton';
 
@@ -21,6 +22,24 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const wishlist = useWishlistStore();
+  const isInWishlist = wishlist.items.some((i) => i.productId === product.id);
+
+  const toggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isInWishlist) {
+      wishlist.remove(product.id);
+    } else {
+      wishlist.add({
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images?.[0] ?? '/images/placeholder.png',
+      });
+    }
+  };
   return (
     <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-orange-200 transition-all duration-300">
       <Link href={`/products/${product.id}`} className="block">
@@ -53,9 +72,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Product Info */}
         <div className="p-4">
-          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
-            {product.category}
-          </p>
+          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{product.category}</p>
           <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
             {product.name}
           </h3>
@@ -90,12 +107,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Add to Cart - Outside Link to prevent navigation */}
-      <div className="px-4 pb-4">
-        <AddToCartButton
-          product={product}
-          className="w-full"
-          variant="outline"
-        />
+      <div className="px-4 pb-4 flex items-center gap-3">
+        <div className="flex-1">
+          <AddToCartButton product={product} className="w-full" variant="outline" />
+        </div>
+
+        <button
+          onClick={toggleWishlist}
+          aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+        >
+          <Heart className={`h-5 w-5 ${isInWishlist ? 'text-red-500' : 'text-gray-600'}`} />
+        </button>
       </div>
     </div>
   );

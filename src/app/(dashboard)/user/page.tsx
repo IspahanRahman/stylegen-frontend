@@ -167,7 +167,7 @@ export default function UserDashboard() {
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-gray-900">Recent Orders</h2>
               <Link
-                href="/dashboard/user/orders"
+                href="/user/orders"
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium"
               >
                 View all
@@ -239,7 +239,7 @@ export default function UserDashboard() {
             </Link>
 
             <Link
-              href="/dashboard/user/orders"
+              href="/user/orders"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
             >
               <div className="p-2 bg-blue-50 rounded-lg">
@@ -251,7 +251,7 @@ export default function UserDashboard() {
             </Link>
 
             <Link
-              href="/dashboard/user/profile"
+              href="/user/profile"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
             >
               <div className="p-2 bg-purple-50 rounded-lg">
@@ -263,7 +263,7 @@ export default function UserDashboard() {
             </Link>
 
             <Link
-              href="/dashboard/user/wishlist"
+              href="/user/wishlist"
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group"
             >
               <div className="p-2 bg-pink-50 rounded-lg">
