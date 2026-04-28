@@ -343,8 +343,9 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
         throw new Error('Please upload only images under 5MB');
       }
 
-      // Create preview URLs
-      const newImages = fileArray.map((file) => URL.createObjectURL(file));
+      // Simulate upload and get persistent mock URLs
+      const uploadResponse = await adminProductCRUDAPI.uploadImages(fileArray);
+      const newImages = uploadResponse.urls;
 
       set((state) => ({
         images: [...state.images, ...newImages],

@@ -280,7 +280,10 @@ export const adminProductCRUDAPI = {
     const newProduct: ProductDetails = {
       id: `PROD-${Date.now()}`,
       ...data,
-      images,
+      // Convert any temporary blob URLs to mock persistent paths
+      images: images.map((img, i) =>
+        img.startsWith('blob:') ? `/images/products/uploaded-${Date.now()}-${i}.jpg` : img
+      ),
       status: 'active',
       featured: false,
       seoTitle: '',
@@ -323,10 +326,17 @@ export const adminProductCRUDAPI = {
     const existing = mockProducts[id];
     if (!existing) throw new Error('Product not found');
 
+    const savedImages =
+      images.length > 0
+        ? images.map((img, i) =>
+            img.startsWith('blob:') ? `/images/products/uploaded-${Date.now()}-${i}.jpg` : img
+          )
+        : existing.images;
+
     const updated: ProductDetails = {
       ...existing,
       ...data,
-      images: images.length > 0 ? images : existing.images,
+      images: savedImages,
       updatedAt: new Date().toISOString().split('T')[0],
     };
 
@@ -366,8 +376,24 @@ export const adminProductCRUDAPI = {
     urls: string[];
   }> => {
     await delay(1000);
-    const urls = files.map((_, i) => `/images/products/img-${Date.now()}-${i}.jpg`);
-    return { success: true, urls };
+
+    // If running in the browser, convert files to data URLs so previews render immediately.
+    try {
+      const readFileAsDataUrl = (file: File) =>
+        new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result));
+          reader.onerror = () => reject(new Error('Failed to read file'));
+          reader.readAsDataURL(file);
+        });
+
+      const urls = await Promise.all(files.map((f) => readFileAsDataUrl(f)));
+      return { success: true, urls };
+    } catch (err) {
+      // Fallback to mock paths if FileReader isn't available
+      const urls = files.map((_, i) => `/images/products/img-${Date.now()}-${i}.jpg`);
+      return { success: true, urls };
+    }
   },
 
   validateData: async (
