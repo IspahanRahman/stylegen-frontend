@@ -2,9 +2,10 @@ import { create } from 'zustand';
 import {
   adminProductListAPI,
   adminProductCRUDAPI,
+  adminProductDetailsAPI,
   type ProductFormData,
   type ProductDetails,
-  type ProductListItem
+  type ProductListItem,
 } from '@/lib/mock/adminProductApi';
 
 // ============ PRODUCT LIST STORE ============
@@ -79,9 +80,9 @@ export const useAdminProductListStore = create<ProductListState>((set, get) => (
   deleteProduct: async (id: string) => {
     try {
       await adminProductListAPI.delete(id);
-      set(state => ({
-        products: state.products.filter(p => p.id !== id),
-        selectedProducts: state.selectedProducts.filter(sid => sid !== id),
+      set((state) => ({
+        products: state.products.filter((p) => p.id !== id),
+        selectedProducts: state.selectedProducts.filter((sid) => sid !== id),
       }));
     } catch (error: any) {
       set({ error: error.message });
@@ -95,8 +96,8 @@ export const useAdminProductListStore = create<ProductListState>((set, get) => (
 
     try {
       await adminProductListAPI.bulkDelete(ids);
-      set(state => ({
-        products: state.products.filter(p => !ids.includes(p.id)),
+      set((state) => ({
+        products: state.products.filter((p) => !ids.includes(p.id)),
         selectedProducts: [],
       }));
     } catch (error: any) {
@@ -111,8 +112,8 @@ export const useAdminProductListStore = create<ProductListState>((set, get) => (
 
     try {
       await adminProductListAPI.bulkUpdateStatus(ids, status);
-      set(state => ({
-        products: state.products.map(p =>
+      set((state) => ({
+        products: state.products.map((p) =>
           ids.includes(p.id) ? { ...p, status: status as ProductListItem['status'] } : p
         ),
         selectedProducts: [],
@@ -139,16 +140,16 @@ export const useAdminProductListStore = create<ProductListState>((set, get) => (
   },
 
   toggleSelectProduct: (id) => {
-    set(state => ({
+    set((state) => ({
       selectedProducts: state.selectedProducts.includes(id)
-        ? state.selectedProducts.filter(sid => sid !== id)
+        ? state.selectedProducts.filter((sid) => sid !== id)
         : [...state.selectedProducts, id],
     }));
   },
 
   selectAll: () => {
-    set(state => ({
-      selectedProducts: state.products.map(p => p.id),
+    set((state) => ({
+      selectedProducts: state.products.map((p) => p.id),
     }));
   },
 
@@ -234,7 +235,7 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
   setMode: (mode, productId) => {
     const prevImages = get().images;
     // Clean up previous object URLs
-    prevImages.forEach(url => {
+    prevImages.forEach((url) => {
       if (url.startsWith('blob:')) URL.revokeObjectURL(url);
     });
 
@@ -256,7 +257,7 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
 
   resetForm: () => {
     const images = get().images;
-    images.forEach(url => {
+    images.forEach((url) => {
       if (url.startsWith('blob:')) URL.revokeObjectURL(url);
     });
 
@@ -335,7 +336,7 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
 
       // Validate
       const invalidFiles = fileArray.filter(
-        file => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024
+        (file) => !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024
       );
 
       if (invalidFiles.length > 0) {
@@ -343,9 +344,9 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
       }
 
       // Create preview URLs
-      const newImages = fileArray.map(file => URL.createObjectURL(file));
+      const newImages = fileArray.map((file) => URL.createObjectURL(file));
 
-      set(state => ({
+      set((state) => ({
         images: [...state.images, ...newImages],
         isUploading: false,
       }));
@@ -355,7 +356,7 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
   },
 
   removeImage: (index: number) => {
-    set(state => {
+    set((state) => {
       const imageToRemove = state.images[index];
       if (imageToRemove?.startsWith('blob:')) {
         URL.revokeObjectURL(imageToRemove);
@@ -394,7 +395,6 @@ export const useAdminProductFormStore = create<ProductFormState>((set, get) => (
   },
 }));
 
-
 interface ProductDetailsExtended extends ProductDetails {
   views: number;
   features: string[];
@@ -408,7 +408,6 @@ interface ProductDetailsExtended extends ProductDetails {
     total: number;
   }>;
 }
-
 
 interface ProductDetailsState {
   // Data
@@ -428,7 +427,6 @@ interface ProductDetailsState {
   closeDeleteModal: () => void;
   clearError: () => void;
 }
-
 
 export const useAdminProductDetailsStore = create<ProductDetailsState>((set, get) => ({
   product: null,

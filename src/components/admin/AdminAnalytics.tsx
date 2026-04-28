@@ -100,7 +100,7 @@ export default function AdminAnalytics() {
           <select
             value={timeRange}
             onChange={(e) => handleTimeRangeChange(e.target.value as any)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500"
+            className="px-8 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500"
           >
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>

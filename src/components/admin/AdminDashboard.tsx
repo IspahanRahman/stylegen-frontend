@@ -130,7 +130,7 @@ export default function AdminDashboard() {
           <select
             value={timeRange}
             onChange={(e) => handleTimeRangeChange(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 transition-colors"
+            className="px-8 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 transition-colors"
           >
             <option value="7days">Last 7 days</option>
             <option value="30days">Last 30 days</option>

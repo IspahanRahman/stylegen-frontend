@@ -20,22 +20,57 @@ export function useAdminAnalytics() {
     }
   }, [store]);
 
-  const handleTimeRangeChange = useCallback((range: 'weekly' | 'monthly' | 'yearly') => {
-    store.setTimeRange(range);
-  }, [store]);
+  const handleTimeRangeChange = useCallback(
+    (range: 'weekly' | 'monthly' | 'yearly') => {
+      store.setTimeRange(range);
+    },
+    [store]
+  );
 
   const getChartData = useCallback(() => {
     if (!store.data) return null;
 
-    const monthlyData = store.data.revenue.monthly;
-    const maxRevenue = Math.max(...monthlyData);
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    // Use the store's timeRange to generate appropriate labels
+    const seriesData = store.data.revenue.monthly;
+    const maxRevenue = Math.max(...seriesData);
+
+    const monthlyLabels = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const weeklyLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    let labels = monthlyLabels;
+    if (store.timeRange === 'weekly') {
+      labels = weeklyLabels;
+    } else if (store.timeRange === 'monthly' || store.timeRange === 'yearly') {
+      labels = monthlyLabels;
+    }
+
+    // Ensure labels length matches data length
+    if (labels.length !== seriesData.length) {
+      labels = labels.slice(0, seriesData.length);
+      // If data is longer than labels, pad numeric month indices
+      if (labels.length < seriesData.length) {
+        labels = Array.from({ length: seriesData.length }, (_, i) => labels[i] ?? `#${i + 1}`);
+      }
+    }
 
     return {
-      labels: months,
+      labels,
       datasets: [
         {
-          data: monthlyData,
+          data: seriesData,
           maxValue: maxRevenue,
           getBarHeight: (value: number) => {
             if (maxRevenue === 0) return '0%';
@@ -44,7 +79,7 @@ export function useAdminAnalytics() {
         },
       ],
     };
-  }, [store.data]);
+  }, [store.data, store.timeRange]);
 
   return {
     // State

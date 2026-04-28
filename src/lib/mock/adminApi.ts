@@ -104,10 +104,23 @@ export const adminAnalyticsAPI = {
       data.revenue.total = 125000;
       data.orders.total = 312;
       data.customers.total = 220;
+
+      // Weekly arrays (7 values)
+      data.revenue.monthly = [18000, 22000, 20000, 24000, 26000, 23000, 21000];
+      data.orders.monthly = [20, 40, 35, 50, 55, 45, 30];
+      data.customers.monthly = [15, 22, 18, 25, 28, 20, 12];
     } else if (timeRange === 'yearly') {
       data.revenue.total = 1250000;
       data.orders.total = 15000;
       data.customers.total = 5000;
+
+      // Yearly arrays - keep 12 months but scaled to yearly view
+      data.revenue.monthly = [
+        95000, 102000, 98000, 105000, 112000, 108000, 115000, 110000, 109000, 113000, 118000,
+        125000,
+      ];
+      data.orders.monthly = [800, 900, 850, 920, 980, 940, 1000, 970, 960, 990, 1020, 1080];
+      data.customers.monthly = [600, 650, 620, 680, 720, 700, 740, 730, 710, 760, 780, 820];
     }
 
     return {
