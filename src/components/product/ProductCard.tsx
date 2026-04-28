@@ -1,82 +1,101 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ShoppingCart, Heart } from 'lucide-react';
-import Button from '@/components/ui/Button';
-import { useCartStore } from '@/lib/store/cartStore';
-import { useWishlistStore } from '@/lib/store/wishlistStore';
-import { formatCurrency, calculateDiscount } from '@/lib/utils/formatCurrency';
+import { Star } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils/formatCurrency';
+import AddToCartButton from './AddToCartButton';
 
-export default function ProductCard({ product }: { product: any }) {
-  const addToCart = useCartStore((s) => s.addItem);
-  const addWishlist = useWishlistStore((s) => s.add);
+interface ProductCardProps {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    discount: number;
+    category: string;
+    stock: number;
+    images: string[];
+    rating: number;
+    sales: number;
+  };
+}
 
-  const price = product.price ?? 0;
-  const hasDiscount = product.discount && product.discount > 0;
-  const discounted = hasDiscount ? calculateDiscount(price, product.discount) : price;
-
+export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex flex-col">
-      <Link
-        href={`/products/${product.id}`}
-        className="block mb-4 overflow-hidden rounded-lg bg-gray-100 aspect-square"
-      >
-        <img
-          src={product.images?.[0] ?? '/images/placeholder.png'}
-          alt={product.name}
-          className="w-full h-full object-cover"
-        />
-      </Link>
+    <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-orange-200 transition-all duration-300">
+      <Link href={`/products/${product.id}`} className="block">
+        {/* Product Image */}
+        <div className="aspect-square rounded-t-xl overflow-hidden bg-gray-100 relative">
+          <Image
+            src={product.images?.[0] ?? '/images/placeholder.png'}
+            alt={product.name}
+            width={400}
+            height={400}
+            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+          />
 
-      <div className="flex-1">
-        <Link href={`/products/${product.id}`} className="block">
-          <h3 className="text-sm font-medium text-gray-900 mb-1">{product.name}</h3>
-        </Link>
+          {/* Discount Badge */}
+          {product.discount > 0 && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+              -{product.discount}%
+            </span>
+          )}
 
-        <div className="flex items-center gap-3">
-          <div className="text-lg font-semibold text-gray-900">{formatCurrency(discounted)}</div>
-          {hasDiscount && (
-            <div className="text-xs text-gray-400 line-through">{formatCurrency(price)}</div>
+          {/* Out of Stock Overlay */}
+          {product.stock === 0 && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <span className="text-white font-semibold text-sm bg-black/70 px-3 py-1 rounded-full">
+                Out of Stock
+              </span>
+            </div>
           )}
         </div>
-      </div>
 
-      <div className="mt-4 flex items-center gap-2">
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={() =>
-            addToCart({
-              productId: product.id,
-              name: product.name,
-              price: discounted,
-              originalPrice: price,
-              discount: product.discount,
-              quantity: 1,
-              image: product.images?.[0] ?? '',
-              stock: product.stock ?? 10,
-            })
-          }
-        >
-          <ShoppingCart className="h-4 w-4" />
-          Add
-        </Button>
+        {/* Product Info */}
+        <div className="p-4">
+          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+            {product.category}
+          </p>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
+            {product.name}
+          </h3>
 
-        <button
-          onClick={() =>
-            addWishlist({
-              productId: product.id,
-              name: product.name,
-              price: discounted,
-              image: product.images?.[0] ?? '',
-            })
-          }
-          className="inline-flex items-center justify-center p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50"
-          aria-label="Add to wishlist"
-        >
-          <Heart className="h-4 w-4" />
-        </button>
+          {/* Rating */}
+          <div className="flex items-center gap-1 mb-3">
+            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+            <span className="text-sm text-gray-600">{product.rating}</span>
+            <span className="text-xs text-gray-400">({product.sales} sold)</span>
+          </div>
+
+          {/* Price */}
+          <div className="flex items-center justify-between">
+            <div>
+              {product.discount > 0 ? (
+                <div>
+                  <span className="text-lg font-bold text-gray-900">
+                    {formatCurrency(product.price - (product.price * product.discount) / 100)}
+                  </span>
+                  <span className="text-xs text-gray-400 line-through ml-2">
+                    {formatCurrency(product.price)}
+                  </span>
+                </div>
+              ) : (
+                <span className="text-lg font-bold text-gray-900">
+                  {formatCurrency(product.price)}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+      </Link>
+
+      {/* Add to Cart - Outside Link to prevent navigation */}
+      <div className="px-4 pb-4">
+        <AddToCartButton
+          product={product}
+          className="w-full"
+          variant="outline"
+        />
       </div>
     </div>
   );

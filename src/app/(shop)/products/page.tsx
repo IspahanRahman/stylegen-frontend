@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/product/ProductCard';
 import { useAdminProductListStore } from '@/lib/store/adminProductStore';
 import { Search, SlidersHorizontal, X, Package } from 'lucide-react';
+import CartDrawer from '@/components/cart/CartDrawer';
+
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
@@ -333,6 +335,7 @@ export default function ProductsPage() {
           </div>
         )}
       </div>
+      <CartDrawer />
     </div>
   );
 }

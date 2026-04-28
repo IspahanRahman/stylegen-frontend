@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { toast } from 'react-hot-toast';
 
-interface CartItem {
+export interface CartItem {
   productId: string;
   name: string;
   price: number;
@@ -12,21 +12,28 @@ interface CartItem {
   size?: string;
   image: string;
   stock: number;
+  category: string;
 }
 
 interface CartState {
   items: CartItem[];
   isOpen: boolean;
-  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
+
+  // Actions
+  addItem: (item: CartItem) => void;
   removeItem: (productId: string, size?: string) => void;
   updateQuantity: (productId: string, quantity: number, size?: string) => void;
   toggleCart: () => void;
+  openCart: () => void;
   closeCart: () => void;
   clearCart: () => void;
+
+  // Computed
   getItemCount: () => number;
   getSubtotal: () => number;
   getDiscount: () => number;
   getTotal: () => number;
+  getItemById: (productId: string, size?: string) => CartItem | undefined;
 }
 
 export const useCartStore = create<CartState>()(
@@ -39,35 +46,37 @@ export const useCartStore = create<CartState>()(
         set((state) => {
           const existingItem = state.items.find(
             (i) => i.productId === item.productId &&
-                   (item.size ? i.size === item.size : true)
+                (item.size ? i.size === item.size : !i.size)
           );
 
           if (existingItem) {
-            const newQuantity = existingItem.quantity + (item.quantity || 1);
+            const newQuantity = existingItem.quantity + item.quantity;
+            // Check stock limit
             if (newQuantity > item.stock) {
               toast.error(`Only ${item.stock} items available in stock`);
-              return state;
+              return state; // Don't add if exceeds stock
             }
 
             toast.success('Cart updated!');
             return {
               items: state.items.map((i) =>
                 i.productId === item.productId &&
-                (item.size ? i.size === item.size : true)
+                (item.size ? i.size === item.size : !i.size)
                   ? { ...i, quantity: newQuantity }
                   : i
               ),
             };
           }
 
-          if ((item.quantity || 1) > item.stock) {
+          // Validate quantity against stock
+          if (item.quantity > item.stock) {
             toast.error(`Only ${item.stock} items available in stock`);
             return state;
           }
 
           toast.success('Added to cart!');
           return {
-            items: [...state.items, { ...item, quantity: item.quantity || 1 }],
+            items: [...state.items, item],
           };
         });
       },
@@ -78,30 +87,26 @@ export const useCartStore = create<CartState>()(
             (i) => !(i.productId === productId && (!size || i.size === size))
           ),
         }));
-        toast.success('Item removed from cart');
+        toast.success('Removed from cart!');
       },
 
       updateQuantity: (productId, quantity, size) => {
-        set((state) => {
-          if (quantity <= 0) {
-            return {
-              items: state.items.filter(
-                (i) => !(i.productId === productId && (!size || i.size === size))
-              ),
-            };
-          }
+        if (quantity <= 0) {
+          get().removeItem(productId, size);
+          return;
+        }
 
-          return {
-            items: state.items.map((i) =>
-              i.productId === productId && (!size || i.size === size)
-                ? { ...i, quantity }
-                : i
-            ),
-          };
-        });
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.productId === productId && (!size || i.size === size)
+              ? { ...i, quantity }
+              : i
+          ),
+        }));
       },
 
       toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
+      openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
       clearCart: () => set({ items: [] }),
 
@@ -117,9 +122,7 @@ export const useCartStore = create<CartState>()(
       },
 
       getDiscount: () => {
-        const subtotal = get().getSubtotal();
-        const total = get().getTotal();
-        return subtotal - total;
+        return get().getSubtotal() - get().getTotal();
       },
 
       getTotal: () => {
@@ -128,9 +131,17 @@ export const useCartStore = create<CartState>()(
           0
         );
       },
+
+      getItemById: (productId, size) => {
+        return get().items.find(
+          (i) => i.productId === productId && (!size || i.size === size)
+        );
+      },
     }),
     {
-      name: 'cart-storage',
+      name: 'stylegen-cart',
+      // Only persist items, not the open state
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );
