@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useAuthStore } from "@/lib/store/authStore";
 import {
   User,
   Mail,
@@ -16,37 +16,41 @@ import {
   CheckCircle2,
   Shield,
   Key,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
 const profileSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
-  bio: z.string().max(500, 'Bio must be less than 500 characters').optional(),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  bio: z.string().max(500, "Bio must be less than 500 characters").optional(),
 });
 
-const passwordSchema = z.object({
-  currentPassword: z.string().min(1, 'Current password is required'),
-  newPassword: z
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Must contain uppercase letter')
-    .regex(/[a-z]/, 'Must contain lowercase letter')
-    .regex(/[0-9]/, 'Must contain number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'],
-});
+const passwordSchema = z
+  .object({
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Must contain uppercase letter")
+      .regex(/[a-z]/, "Must contain lowercase letter")
+      .regex(/[0-9]/, "Must contain number"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
 type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export default function UserProfile() {
   const { user } = useAuthStore();
-  const [activeTab, setActiveTab] = useState<'profile' | 'password' | 'addresses'>('profile');
+  const [activeTab, setActiveTab] = useState<
+    "profile" | "password" | "addresses"
+  >("profile");
   const [isSaving, setIsSaving] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
@@ -57,10 +61,10 @@ export default function UserProfile() {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      name: user?.name || '',
-      email: user?.email || '',
-      phone: '+1 (555) 123-4567',
-      bio: 'Leather goods enthusiast and StyleGen customer.',
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: "+1 (555) 123-4567",
+      bio: "Leather goods enthusiast and StyleGen customer.",
     },
   });
 
@@ -77,7 +81,7 @@ export default function UserProfile() {
     // Simulate API call
     setTimeout(() => {
       setIsSaving(false);
-      toast.success('Profile updated successfully!');
+      toast.success("Profile updated successfully!");
     }, 1000);
   };
 
@@ -86,7 +90,7 @@ export default function UserProfile() {
     // Simulate API call
     setTimeout(() => {
       setIsSaving(false);
-      toast.success('Password changed successfully!');
+      toast.success("Password changed successfully!");
     }, 1000);
   };
 
@@ -116,18 +120,18 @@ export default function UserProfile() {
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px">
             {[
-              { id: 'profile', label: 'Profile', icon: User },
-              { id: 'password', label: 'Password', icon: Key },
-              { id: 'addresses', label: 'Addresses', icon: MapPin },
+              { id: "profile", label: "Profile", icon: User },
+              { id: "password", label: "Password", icon: Key },
+              { id: "addresses", label: "Addresses", icon: MapPin },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={cn(
-                  'flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors',
+                  "flex items-center gap-2 px-6 py-3 text-sm font-medium border-b-2 transition-colors",
                   activeTab === tab.id
-                    ? 'border-orange-500 text-orange-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-orange-500 text-orange-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
                 )}
               >
                 <tab.icon className="h-4 w-4" />
@@ -139,8 +143,11 @@ export default function UserProfile() {
 
         <div className="p-6">
           {/* Profile Tab */}
-          {activeTab === 'profile' && (
-            <form onSubmit={handleSubmit(onProfileSubmit)} className="space-y-6">
+          {activeTab === "profile" && (
+            <form
+              onSubmit={handleSubmit(onProfileSubmit)}
+              className="space-y-6"
+            >
               {/* Avatar Section */}
               <div className="flex items-center gap-6 pb-6 border-b border-gray-200">
                 <div className="relative">
@@ -171,9 +178,7 @@ export default function UserProfile() {
                   <h3 className="text-lg font-semibold text-gray-900">
                     {user?.name}
                   </h3>
-                  <p className="text-sm text-gray-500">
-                    {user?.email}
-                  </p>
+                  <p className="text-sm text-gray-500">{user?.email}</p>
                   <p className="text-xs text-gray-400 mt-1">
                     JPG, GIF or PNG. Max size 2MB.
                   </p>
@@ -189,12 +194,14 @@ export default function UserProfile() {
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
-                      {...register('name')}
+                      {...register("name")}
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   {errors.name && (
-                    <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.name.message}
+                    </p>
                   )}
                 </div>
 
@@ -205,13 +212,15 @@ export default function UserProfile() {
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
-                      {...register('email')}
+                      {...register("email")}
                       type="email"
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   {errors.email && (
-                    <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.email.message}
+                    </p>
                   )}
                 </div>
 
@@ -222,13 +231,15 @@ export default function UserProfile() {
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <input
-                      {...register('phone')}
+                      {...register("phone")}
                       type="tel"
                       className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   {errors.phone && (
-                    <p className="mt-1 text-sm text-red-600">{errors.phone.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.phone.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -238,13 +249,15 @@ export default function UserProfile() {
                   Bio
                 </label>
                 <textarea
-                  {...register('bio')}
+                  {...register("bio")}
                   rows={4}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="Tell us about yourself..."
                 />
                 {errors.bio && (
-                  <p className="mt-1 text-sm text-red-600">{errors.bio.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.bio.message}
+                  </p>
                 )}
               </div>
 
@@ -270,8 +283,20 @@ export default function UserProfile() {
                   {isSaving ? (
                     <>
                       <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
                       </svg>
                       Saving...
                     </>
@@ -287,8 +312,11 @@ export default function UserProfile() {
           )}
 
           {/* Password Tab */}
-          {activeTab === 'password' && (
-            <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-6 max-w-md">
+          {activeTab === "password" && (
+            <form
+              onSubmit={handlePasswordSubmit(onPasswordSubmit)}
+              className="space-y-6 max-w-md"
+            >
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Current Password
@@ -296,7 +324,7 @@ export default function UserProfile() {
                 <div className="relative">
                   <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
-                    {...registerPassword('currentPassword')}
+                    {...registerPassword("currentPassword")}
                     type="password"
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   />
@@ -315,7 +343,7 @@ export default function UserProfile() {
                 <div className="relative">
                   <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
-                    {...registerPassword('newPassword')}
+                    {...registerPassword("newPassword")}
                     type="password"
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   />
@@ -334,7 +362,7 @@ export default function UserProfile() {
                 <div className="relative">
                   <Key className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <input
-                    {...registerPassword('confirmPassword')}
+                    {...registerPassword("confirmPassword")}
                     type="password"
                     className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   />
@@ -376,13 +404,13 @@ export default function UserProfile() {
                 disabled={isSaving}
                 className="w-full px-6 py-2.5 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 disabled:opacity-50 transition-colors"
               >
-                {isSaving ? 'Updating...' : 'Update Password'}
+                {isSaving ? "Updating..." : "Update Password"}
               </button>
             </form>
           )}
 
           {/* Addresses Tab */}
-          {activeTab === 'addresses' && (
+          {activeTab === "addresses" && (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900">

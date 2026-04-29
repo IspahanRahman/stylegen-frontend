@@ -1,8 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Dashboard - StyleGen',
-  description: 'Your StyleGen dashboard',
+  title: "Dashboard - StyleGen",
+  description: "Your StyleGen dashboard",
 };
 
 export default function DashboardRootLayout({

@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAdminCustomerStore } from '@/lib/store/adminCustomerStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useAdminCustomerStore } from "@/lib/store/adminCustomerStore";
+import toast from "react-hot-toast";
 
 export function useAdminCustomers() {
   const store = useAdminCustomerStore();
@@ -18,31 +18,31 @@ export function useAdminCustomers() {
         await store.updateStatus(customerId, newStatus);
         toast.success(`Customer status updated to ${newStatus}`);
       } catch (error: any) {
-        toast.error(error.message || 'Failed to update status');
+        toast.error(error.message || "Failed to update status");
       }
     },
-    [store]
+    [store],
   );
 
   const handleViewDetails = useCallback(
     (customerId: string) => {
       router.push(`/admin/customers/${customerId}`);
     },
-    [router]
+    [router],
   );
 
   const handleAddNote = useCallback(async () => {
     const note = store.newNote;
     if (!note.trim()) {
-      toast.error('Please enter a note');
+      toast.error("Please enter a note");
       return;
     }
 
     try {
       await store.addNote(note);
-      toast.success('Note added successfully');
+      toast.success("Note added successfully");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to add note');
+      toast.error(error.message || "Failed to add note");
     }
   }, [store]);
 
@@ -56,10 +56,10 @@ export function useAdminCustomers() {
       try {
         await store.fetchCustomerDetails(id);
       } catch (error: any) {
-        toast.error(error.message || 'Failed to fetch customer details');
+        toast.error(error.message || "Failed to fetch customer details");
       }
     },
-    [store]
+    [store],
   );
 
   return {

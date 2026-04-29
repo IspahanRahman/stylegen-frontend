@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useAdminProduct } from '@/hooks/useAdminProduct';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useEffect } from "react";
+import { useAdminProduct } from "@/hooks/useAdminProduct";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   ArrowLeft,
   Save,
@@ -14,24 +14,30 @@ import {
   Eye,
   Loader2,
   AlertCircle,
-} from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { cn } from '@/lib/utils/cn';
-import type { ProductFormData } from '@/lib/mock/adminProductApi';
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils/cn";
+import type { ProductFormData } from "@/lib/mock/adminProductApi";
 
 const productSchema = z.object({
-  name: z.string().min(2, 'Product name must be at least 2 characters'),
-  price: z.string().min(1, 'Price is required').refine(
-    (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
-    'Price must be greater than 0'
-  ),
+  name: z.string().min(2, "Product name must be at least 2 characters"),
+  price: z
+    .string()
+    .min(1, "Price is required")
+    .refine(
+      (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
+      "Price must be greater than 0",
+    ),
   discount: z.string().optional(),
-  category: z.string().min(1, 'Please select a category'),
-  stock: z.string().min(1, 'Stock is required').refine(
-    (val) => !isNaN(parseInt(val)) && parseInt(val) >= 0,
-    'Stock must be 0 or more'
-  ),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
+  category: z.string().min(1, "Please select a category"),
+  stock: z
+    .string()
+    .min(1, "Stock is required")
+    .refine(
+      (val) => !isNaN(parseInt(val)) && parseInt(val) >= 0,
+      "Stock must be 0 or more",
+    ),
+  description: z.string().min(10, "Description must be at least 10 characters"),
   sizes: z.string().optional(),
 });
 
@@ -52,7 +58,7 @@ export default function AdminAddProduct() {
     handleImageUpload,
     handleRemoveImage,
     clearError,
-  } = useAdminProduct({ mode: 'create' });
+  } = useAdminProduct({ mode: "create" });
 
   const {
     register,
@@ -63,13 +69,13 @@ export default function AdminAddProduct() {
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
-      name: '',
-      price: '',
-      discount: '0',
-      category: '',
-      stock: '10',
-      description: '',
-      sizes: '',
+      name: "",
+      price: "",
+      discount: "0",
+      category: "",
+      stock: "10",
+      description: "",
+      sizes: "",
     },
   });
 
@@ -110,26 +116,30 @@ export default function AdminAddProduct() {
             <ArrowLeft className="h-5 w-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Add New Product</h1>
-            <p className="text-sm text-gray-500">Create a new product listing</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Add New Product
+            </h1>
+            <p className="text-sm text-gray-500">
+              Create a new product listing
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleTogglePreview}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            aria-label={previewMode ? 'Switch to edit mode' : 'Preview product'}
+            aria-label={previewMode ? "Switch to edit mode" : "Preview product"}
           >
             <Eye className="h-4 w-4 inline mr-2" />
-            {previewMode ? 'Edit' : 'Preview'}
+            {previewMode ? "Edit" : "Preview"}
           </button>
           <button
             onClick={formHandleSubmit(onSubmit)}
             disabled={isSubmitting || isUploading}
             className={cn(
-              'inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium',
-              'hover:bg-orange-600 transition-colors',
-              'disabled:opacity-50 disabled:cursor-not-allowed'
+              "inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium",
+              "hover:bg-orange-600 transition-colors",
+              "disabled:opacity-50 disabled:cursor-not-allowed",
             )}
             aria-label="Save product"
           >
@@ -172,82 +182,109 @@ export default function AdminAddProduct() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Basic Information
-              <span className="text-sm text-gray-500 ml-2 font-normal">All fields marked with * are required</span>
+              <span className="text-sm text-gray-500 ml-2 font-normal">
+                All fields marked with * are required
+              </span>
             </h2>
 
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Product Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="name"
-                  {...register('name')}
+                  {...register("name")}
                   className={cn(
-                    'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                    'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                    errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                    "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                    errors.name
+                      ? "border-red-300 bg-red-50"
+                      : "border-gray-300",
                   )}
                   placeholder="Enter product name"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Description <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="description"
-                  {...register('description')}
+                  {...register("description")}
                   rows={6}
                   className={cn(
-                    'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                    'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                    errors.description ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                    "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                    errors.description
+                      ? "border-red-300 bg-red-50"
+                      : "border-gray-300",
                   )}
                   placeholder="Enter product description"
                 />
                 {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.description.message}
+                  </p>
                 )}
                 <p className="mt-1 text-xs text-gray-400">
-                  {(productData.description || '').length} / 10 characters minimum
+                  {(productData.description || "").length} / 10 characters
+                  minimum
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Price ($) <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="price"
-                    {...register('price')}
+                    {...register("price")}
                     type="number"
                     step="0.01"
                     min="0"
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.price ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.price
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                     placeholder="0.00"
                   />
                   {errors.price && (
-                    <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.price.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="discount" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="discount"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Discount (%)
                   </label>
                   <input
                     id="discount"
-                    {...register('discount')}
+                    {...register("discount")}
                     type="number"
                     min="0"
                     max="100"
@@ -258,58 +295,77 @@ export default function AdminAddProduct() {
                 </div>
 
                 <div>
-                  <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="stock"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Stock <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="stock"
-                    {...register('stock')}
+                    {...register("stock")}
                     type="number"
                     min="0"
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.stock ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.stock
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                     placeholder="0"
                   />
                   {errors.stock && (
-                    <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.stock.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Category <span className="text-red-500">*</span>
                   </label>
                   <select
                     id="category"
-                    {...register('category')}
+                    {...register("category")}
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.category ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.category
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                   >
                     <option value="">Select a category</option>
                     {categories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                   {errors.category && (
-                    <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.category.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="sizes" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="sizes"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Sizes (comma separated)
                   </label>
                   <input
                     id="sizes"
-                    {...register('sizes')}
+                    {...register("sizes")}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 transition-colors"
                     placeholder="S, M, L, XL"
                   />
@@ -374,9 +430,11 @@ export default function AdminAddProduct() {
 
               <label
                 className={cn(
-                  'aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors',
-                  'hover:border-orange-500 hover:bg-orange-50',
-                  isUploading ? 'border-orange-300 bg-orange-50 pointer-events-none' : 'border-gray-300'
+                  "aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors",
+                  "hover:border-orange-500 hover:bg-orange-50",
+                  isUploading
+                    ? "border-orange-300 bg-orange-50 pointer-events-none"
+                    : "border-gray-300",
                 )}
               >
                 {isUploading ? (
@@ -384,7 +442,9 @@ export default function AdminAddProduct() {
                 ) : (
                   <>
                     <Upload className="h-8 w-8 text-gray-400" />
-                    <span className="text-xs text-gray-500 mt-2">Upload Image</span>
+                    <span className="text-xs text-gray-500 mt-2">
+                      Upload Image
+                    </span>
                     <span className="text-xs text-gray-400 mt-1">Max 5MB</span>
                   </>
                 )}
@@ -400,7 +460,8 @@ export default function AdminAddProduct() {
             </div>
 
             <p className="text-xs text-gray-500 mt-2">
-              Supported formats: JPG, PNG, GIF • Max size: 5MB per image • First image will be the main image
+              Supported formats: JPG, PNG, GIF • Max size: 5MB per image • First
+              image will be the main image
             </p>
           </div>
         </div>
@@ -409,7 +470,9 @@ export default function AdminAddProduct() {
         <div className="space-y-6">
           {/* Product Status */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Status</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Product Status
+            </h3>
             <div className="space-y-3">
               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <input
@@ -421,7 +484,9 @@ export default function AdminAddProduct() {
                 />
                 <div>
                   <p className="text-sm font-medium text-gray-900">Active</p>
-                  <p className="text-xs text-gray-500">Product will be visible to customers immediately</p>
+                  <p className="text-xs text-gray-500">
+                    Product will be visible to customers immediately
+                  </p>
                 </div>
               </label>
               <label className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
@@ -433,7 +498,9 @@ export default function AdminAddProduct() {
                 />
                 <div>
                   <p className="text-sm font-medium text-gray-900">Draft</p>
-                  <p className="text-xs text-gray-500">Save as draft, not visible to customers</p>
+                  <p className="text-xs text-gray-500">
+                    Save as draft, not visible to customers
+                  </p>
                 </div>
               </label>
             </div>
@@ -442,7 +509,9 @@ export default function AdminAddProduct() {
           {/* Quick Preview */}
           {previewMode && (
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-fade-in">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Preview</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Preview
+              </h3>
               <div className="space-y-3">
                 <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
                   {images[0] ? (
@@ -456,24 +525,26 @@ export default function AdminAddProduct() {
                   )}
                 </div>
                 <h4 className="font-semibold text-gray-900">
-                  {productData.name || 'Product Name'}
+                  {productData.name || "Product Name"}
                 </h4>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-bold text-gray-900">
-                    ${productData.price || '0.00'}
+                    ${productData.price || "0.00"}
                   </p>
-                  {productData.discount && parseInt(productData.discount) > 0 && (
-                    <span className="text-sm text-green-600 font-medium">
-                      {productData.discount}% OFF
-                    </span>
-                  )}
+                  {productData.discount &&
+                    parseInt(productData.discount) > 0 && (
+                      <span className="text-sm text-green-600 font-medium">
+                        {productData.discount}% OFF
+                      </span>
+                    )}
                 </div>
                 <p className="text-sm text-gray-600 line-clamp-3">
-                  {productData.description || 'Product description will appear here...'}
+                  {productData.description ||
+                    "Product description will appear here..."}
                 </p>
                 {productData.sizes && (
                   <div className="flex flex-wrap gap-1">
-                    {productData.sizes.split(',').map((size) => (
+                    {productData.sizes.split(",").map((size) => (
                       <span
                         key={size.trim()}
                         className="px-2 py-1 bg-gray-100 rounded text-xs text-gray-700"
@@ -489,7 +560,9 @@ export default function AdminAddProduct() {
 
           {/* Help Card */}
           <div className="bg-blue-50 rounded-xl p-4">
-            <h4 className="text-sm font-semibold text-blue-900 mb-2">💡 Tips for creating products</h4>
+            <h4 className="text-sm font-semibold text-blue-900 mb-2">
+              💡 Tips for creating products
+            </h4>
             <ul className="text-xs text-blue-700 space-y-1.5">
               <li>• Use clear, descriptive product names</li>
               <li>• Upload at least 3 high-quality images</li>

@@ -1,33 +1,40 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useCartStore } from '@/lib/store/cartStore';
-import { useAuthStore } from '@/lib/store/authStore';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCartStore } from "@/lib/store/cartStore";
+import { useAuthStore } from "@/lib/store/authStore";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import toast from "react-hot-toast";
 
-import CartItem from '@/components/cart/CartItem';
-import CartSummary from '@/components/cart/CartSummary';
+import CartItem from "@/components/cart/CartItem";
+import CartSummary from "@/components/cart/CartSummary";
 
 export default function CartPage() {
   const router = useRouter();
-  const { items, removeItem, updateQuantity, getSubtotal, getTotal, clearCart } = useCartStore();
+  const {
+    items,
+    removeItem,
+    updateQuantity,
+    getSubtotal,
+    getTotal,
+    clearCart,
+  } = useCartStore();
   const { isAuthenticated } = useAuthStore();
-  const [promoCode, setPromoCode] = useState('');
+  const [promoCode, setPromoCode] = useState("");
 
   const handleCheckout = () => {
     if (!isAuthenticated) {
-      toast.error('Please login to checkout');
-      router.push('/login?redirect=/checkout');
+      toast.error("Please login to checkout");
+      router.push("/login?redirect=/checkout");
       return;
     }
-    router.push('/checkout');
+    router.push("/checkout");
   };
 
   const handleApplyPromo = () => {
-    toast.success('Promo applied (demo)');
+    toast.success("Promo applied (demo)");
   };
 
   if (items.length === 0) {
@@ -37,7 +44,9 @@ export default function CartPage() {
           <div className="h-16 w-16 text-gray-400 mx-auto mb-4 flex items-center justify-center rounded-full bg-gray-100">
             🛒
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Your cart is empty
+          </h2>
           <p className="text-gray-600 mb-6">Add some items to get started</p>
           <Link
             href="/products"
@@ -57,12 +66,14 @@ export default function CartPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
-            <p className="text-gray-600 mt-1">{items.length} item(s) in your cart</p>
+            <p className="text-gray-600 mt-1">
+              {items.length} item(s) in your cart
+            </p>
           </div>
           <button
             onClick={() => {
               clearCart();
-              toast.success('Cart cleared');
+              toast.success("Cart cleared");
             }}
             className="text-sm text-red-600 hover:text-red-700 font-medium"
           >

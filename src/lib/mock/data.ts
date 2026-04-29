@@ -13,7 +13,8 @@ export const products = [
       "/images/products/bag-3.jpg",
     ],
     sizes: ["One Size"],
-    description: "Handcrafted Italian leather weekend bag. Perfect for short trips with ample storage space and durable construction.",
+    description:
+      "Handcrafted Italian leather weekend bag. Perfect for short trips with ample storage space and durable construction.",
     featured: true,
     rating: 4.8,
     reviews: 124,
@@ -26,12 +27,10 @@ export const products = [
     discount: 0,
     category: "Shoes",
     stock: 50,
-    images: [
-      "/images/products/shoes-1.jpg",
-      "/images/products/shoes-2.jpg",
-    ],
+    images: ["/images/products/shoes-1.jpg", "/images/products/shoes-2.jpg"],
     sizes: ["7", "8", "9", "10", "11", "12"],
-    description: "Premium leather Oxford shoes, hand-stitched with Blake construction for durability and elegance.",
+    description:
+      "Premium leather Oxford shoes, hand-stitched with Blake construction for durability and elegance.",
     featured: true,
     rating: 4.6,
     reviews: 89,
@@ -44,12 +43,10 @@ export const products = [
     discount: 10,
     category: "Wallet",
     stock: 100,
-    images: [
-      "/images/products/wallet-1.jpg",
-      "/images/products/wallet-2.jpg",
-    ],
+    images: ["/images/products/wallet-1.jpg", "/images/products/wallet-2.jpg"],
     sizes: ["One Size"],
-    description: "Minimalist slim wallet made from full-grain leather. Features RFID blocking and quick card access.",
+    description:
+      "Minimalist slim wallet made from full-grain leather. Features RFID blocking and quick card access.",
     featured: true,
     rating: 4.9,
     reviews: 256,
@@ -62,12 +59,10 @@ export const products = [
     discount: 0,
     category: "Belt",
     stock: 75,
-    images: [
-      "/images/products/belt-1.jpg",
-      "/images/products/belt-2.jpg",
-    ],
+    images: ["/images/products/belt-1.jpg", "/images/products/belt-2.jpg"],
     sizes: ["30", "32", "34", "36", "38", "40"],
-    description: "Full-grain leather belt with brass buckle. Each belt is hand-finished for a unique patina.",
+    description:
+      "Full-grain leather belt with brass buckle. Each belt is hand-finished for a unique patina.",
     featured: false,
     rating: 4.7,
     reviews: 178,
@@ -80,12 +75,10 @@ export const products = [
     discount: 20,
     category: "T-Shirts",
     stock: 30,
-    images: [
-      "/images/products/tshirt-1.jpg",
-      "/images/products/tshirt-2.jpg",
-    ],
+    images: ["/images/products/tshirt-1.jpg", "/images/products/tshirt-2.jpg"],
     sizes: ["S", "M", "L", "XL", "XXL"],
-    description: "Luxurious lambskin leather t-shirt. Soft and comfortable with a modern slim fit design.",
+    description:
+      "Luxurious lambskin leather t-shirt. Soft and comfortable with a modern slim fit design.",
     featured: true,
     rating: 4.5,
     reviews: 67,
@@ -103,7 +96,8 @@ export const products = [
       "/images/products/messenger-2.jpg",
     ],
     sizes: ["One Size"],
-    description: "Professional leather messenger bag with padded laptop compartment and multiple organizer pockets.",
+    description:
+      "Professional leather messenger bag with padded laptop compartment and multiple organizer pockets.",
     featured: false,
     rating: 4.7,
     reviews: 92,
@@ -257,7 +251,8 @@ export const testimonials = [
     id: 1,
     name: "Michael Brown",
     role: "Verified Buyer",
-    content: "The quality of the leather is outstanding. Best purchase I've made this year!",
+    content:
+      "The quality of the leather is outstanding. Best purchase I've made this year!",
     rating: 5,
     avatar: "/images/avatars/avatar-1.jpg",
   },
@@ -265,7 +260,8 @@ export const testimonials = [
     id: 2,
     name: "Sarah Johnson",
     role: "Fashion Blogger",
-    content: "StyleGen's attention to detail is remarkable. These pieces are true craftsmanship.",
+    content:
+      "StyleGen's attention to detail is remarkable. These pieces are true craftsmanship.",
     rating: 5,
     avatar: "/images/avatars/avatar-2.jpg",
   },

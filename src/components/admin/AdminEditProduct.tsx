@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useAdminProduct } from '@/hooks/useAdminProduct';
-import type { ProductFormData } from '@/lib/mock/adminProductApi';
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useAdminProduct } from "@/hooks/useAdminProduct";
+import type { ProductFormData } from "@/lib/mock/adminProductApi";
 import {
   ArrowLeft,
   Save,
@@ -18,22 +18,28 @@ import {
   Loader2,
   AlertCircle,
   Package,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
 
 const productSchema = z.object({
-  name: z.string().min(2, 'Product name must be at least 2 characters'),
-  price: z.string().min(1, 'Price is required').refine(
-    (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
-    'Price must be greater than 0'
-  ),
+  name: z.string().min(2, "Product name must be at least 2 characters"),
+  price: z
+    .string()
+    .min(1, "Price is required")
+    .refine(
+      (val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0,
+      "Price must be greater than 0",
+    ),
   discount: z.string().optional(),
-  category: z.string().min(1, 'Please select a category'),
-  stock: z.string().min(1, 'Stock is required').refine(
-    (val) => !isNaN(parseInt(val)) && parseInt(val) >= 0,
-    'Stock must be 0 or more'
-  ),
-  description: z.string().min(10, 'Description must be at least 10 characters'),
+  category: z.string().min(1, "Please select a category"),
+  stock: z
+    .string()
+    .min(1, "Stock is required")
+    .refine(
+      (val) => !isNaN(parseInt(val)) && parseInt(val) >= 0,
+      "Stock must be 0 or more",
+    ),
+  description: z.string().min(10, "Description must be at least 10 characters"),
   sizes: z.string().optional(),
 });
 
@@ -68,7 +74,7 @@ export default function AdminEditProduct() {
     setMetaDescription,
     setTags,
     clearError,
-  } = useAdminProduct({ mode: 'edit', productId });
+  } = useAdminProduct({ mode: "edit", productId });
 
   const {
     register,
@@ -120,12 +126,14 @@ export default function AdminEditProduct() {
     return (
       <div className="text-center py-12">
         <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Product Not Found</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Product Not Found
+        </h2>
         <p className="text-gray-600 mb-6">
           The product you're trying to edit doesn't exist or has been removed.
         </p>
         <button
-          onClick={() => router.push('/admin/products')}
+          onClick={() => router.push("/admin/products")}
           className="px-6 py-2.5 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
         >
           Back to Products
@@ -166,9 +174,9 @@ export default function AdminEditProduct() {
             onClick={formHandleSubmit(onSubmit)}
             disabled={isSubmitting || isUploading}
             className={cn(
-              'inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium',
-              'hover:bg-orange-600 transition-colors',
-              'disabled:opacity-50 disabled:cursor-not-allowed'
+              "inline-flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white rounded-lg text-sm font-medium",
+              "hover:bg-orange-600 transition-colors",
+              "disabled:opacity-50 disabled:cursor-not-allowed",
             )}
             aria-label="Save changes"
           >
@@ -209,21 +217,23 @@ export default function AdminEditProduct() {
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px" aria-label="Tabs">
             {[
-              { id: 'basic', label: 'Basic Information' },
-              { id: 'images', label: `Images & Media (${images.length})` },
-              { id: 'advanced', label: 'Advanced Settings' },
+              { id: "basic", label: "Basic Information" },
+              { id: "images", label: `Images & Media (${images.length})` },
+              { id: "advanced", label: "Advanced Settings" },
             ].map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as 'basic' | 'images' | 'advanced')}
+                onClick={() =>
+                  setActiveTab?.(tab.id as "basic" | "images" | "advanced")
+                }
                 className={cn(
-                  'px-6 py-3 text-sm font-medium border-b-2 transition-colors',
-                  'focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500',
+                  "px-6 py-3 text-sm font-medium border-b-2 transition-colors",
+                  "focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500",
                   activeTab === tab.id
-                    ? 'border-orange-500 text-orange-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-orange-500 text-orange-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
                 )}
-                aria-current={activeTab === tab.id ? 'page' : undefined}
+                aria-current={activeTab === tab.id ? "page" : undefined}
               >
                 {tab.label}
               </button>
@@ -233,76 +243,100 @@ export default function AdminEditProduct() {
 
         <div className="p-6">
           {/* Basic Information Tab */}
-          {activeTab === 'basic' && (
+          {activeTab === "basic" && (
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Product Name *
                 </label>
                 <input
                   id="name"
-                  {...register('name')}
+                  {...register("name")}
                   className={cn(
-                    'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                    'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                    errors.name ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                    "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                    errors.name
+                      ? "border-red-300 bg-red-50"
+                      : "border-gray-300",
                   )}
                   placeholder="Enter product name"
                 />
                 {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.name.message}
+                  </p>
                 )}
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Description *
                 </label>
                 <textarea
                   id="description"
-                  {...register('description')}
+                  {...register("description")}
                   rows={6}
                   className={cn(
-                    'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                    'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                    errors.description ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                    "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                    "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                    errors.description
+                      ? "border-red-300 bg-red-50"
+                      : "border-gray-300",
                   )}
                   placeholder="Enter product description"
                 />
                 {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.description.message}
+                  </p>
                 )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Price ($) *
                   </label>
                   <input
                     id="price"
-                    {...register('price')}
+                    {...register("price")}
                     type="number"
                     step="0.01"
                     min="0"
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.price ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.price
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                   />
                   {errors.price && (
-                    <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.price.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="discount" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="discount"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Discount (%)
                   </label>
                   <input
                     id="discount"
-                    {...register('discount')}
+                    {...register("discount")}
                     type="number"
                     min="0"
                     max="100"
@@ -311,57 +345,76 @@ export default function AdminEditProduct() {
                 </div>
 
                 <div>
-                  <label htmlFor="stock" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="stock"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Stock *
                   </label>
                   <input
                     id="stock"
-                    {...register('stock')}
+                    {...register("stock")}
                     type="number"
                     min="0"
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.stock ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.stock
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                   />
                   {errors.stock && (
-                    <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.stock.message}
+                    </p>
                   )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Category *
                   </label>
                   <select
                     id="category"
-                    {...register('category')}
+                    {...register("category")}
                     className={cn(
-                      'w-full px-4 py-2.5 border rounded-lg transition-colors',
-                      'focus:ring-2 focus:ring-orange-500 focus:border-orange-500',
-                      errors.category ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      "w-full px-4 py-2.5 border rounded-lg transition-colors",
+                      "focus:ring-2 focus:ring-orange-500 focus:border-orange-500",
+                      errors.category
+                        ? "border-red-300 bg-red-50"
+                        : "border-gray-300",
                     )}
                   >
                     <option value="">Select a category</option>
                     {categories.map((cat) => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
                     ))}
                   </select>
                   {errors.category && (
-                    <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.category.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="sizes" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="sizes"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Sizes (comma separated)
                   </label>
                   <input
                     id="sizes"
-                    {...register('sizes')}
+                    {...register("sizes")}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 transition-colors"
                     placeholder="S, M, L, XL"
                   />
@@ -371,7 +424,7 @@ export default function AdminEditProduct() {
           )}
 
           {/* Images Tab */}
-          {activeTab === 'images' && (
+          {activeTab === "images" && (
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">
@@ -382,10 +435,10 @@ export default function AdminEditProduct() {
                 </h3>
                 <label
                   className={cn(
-                    'px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium',
-                    'hover:bg-orange-600 cursor-pointer transition-colors',
-                    'inline-flex items-center gap-2',
-                    isUploading && 'opacity-50 cursor-not-allowed'
+                    "px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium",
+                    "hover:bg-orange-600 cursor-pointer transition-colors",
+                    "inline-flex items-center gap-2",
+                    isUploading && "opacity-50 cursor-not-allowed",
                   )}
                 >
                   {isUploading ? (
@@ -393,7 +446,7 @@ export default function AdminEditProduct() {
                   ) : (
                     <Upload className="h-4 w-4" />
                   )}
-                  {isUploading ? 'Uploading...' : 'Upload Images'}
+                  {isUploading ? "Uploading..." : "Upload Images"}
                   <input
                     type="file"
                     accept="image/*"
@@ -443,9 +496,11 @@ export default function AdminEditProduct() {
 
                 <label
                   className={cn(
-                    'aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors',
-                    'hover:border-orange-500 hover:bg-orange-50',
-                    isUploading ? 'border-orange-300 bg-orange-50 pointer-events-none' : 'border-gray-300'
+                    "aspect-square border-2 border-dashed rounded-lg flex flex-col items-center justify-center cursor-pointer transition-colors",
+                    "hover:border-orange-500 hover:bg-orange-50",
+                    isUploading
+                      ? "border-orange-300 bg-orange-50 pointer-events-none"
+                      : "border-gray-300",
                   )}
                 >
                   {isUploading ? (
@@ -453,7 +508,9 @@ export default function AdminEditProduct() {
                   ) : (
                     <>
                       <Plus className="h-8 w-8 text-gray-400" />
-                      <span className="text-xs text-gray-500 mt-2">Add Image</span>
+                      <span className="text-xs text-gray-500 mt-2">
+                        Add Image
+                      </span>
                     </>
                   )}
                   <input
@@ -468,22 +525,30 @@ export default function AdminEditProduct() {
               </div>
 
               <p className="text-xs text-gray-500 mt-4">
-                Supported formats: JPG, PNG, GIF • Max size: 5MB per image • First image is the main product image
+                Supported formats: JPG, PNG, GIF • Max size: 5MB per image •
+                First image is the main product image
               </p>
             </div>
           )}
 
           {/* Advanced Settings Tab */}
-          {activeTab === 'advanced' && (
+          {activeTab === "advanced" && (
             <div className="space-y-4">
               <div>
-                <label htmlFor="product-status" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="product-status"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Product Status
                 </label>
                 <select
                   id="product-status"
                   value={productStatus}
-                  onChange={(e) => setProductStatus(e.target.value as 'active' | 'draft' | 'inactive')}
+                  onChange={(e) =>
+                    setProductStatus?.(
+                      e.target.value as "active" | "draft" | "inactive",
+                    )
+                  }
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="active">Active - Visible to customers</option>
@@ -497,11 +562,13 @@ export default function AdminEditProduct() {
                   <input
                     type="checkbox"
                     checked={featured}
-                    onChange={(e) => setFeatured(e.target.checked)}
+                    onChange={(e) => setFeatured?.(e.target.checked)}
                     className="rounded border-gray-300 text-orange-500 focus:ring-orange-500"
                   />
                   <div>
-                    <span className="text-sm font-medium text-gray-900">Featured Product</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      Featured Product
+                    </span>
                     <p className="text-xs text-gray-500 mt-0.5">
                       Show this product in the featured section on the homepage
                     </p>
@@ -510,14 +577,17 @@ export default function AdminEditProduct() {
               </div>
 
               <div>
-                <label htmlFor="seo-title" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="seo-title"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   SEO Title
                 </label>
                 <input
                   id="seo-title"
                   type="text"
                   value={seoTitle}
-                  onChange={(e) => setSeoTitle(e.target.value)}
+                  onChange={(e) => setSeoTitle?.(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="SEO optimized title (optional)"
                 />
@@ -527,14 +597,17 @@ export default function AdminEditProduct() {
               </div>
 
               <div>
-                <label htmlFor="meta-desc" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="meta-desc"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Meta Description
                 </label>
                 <textarea
                   id="meta-desc"
                   rows={3}
                   value={metaDescription}
-                  onChange={(e) => setMetaDescription(e.target.value)}
+                  onChange={(e) => setMetaDescription?.(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="Meta description for search engines (optional)"
                 />
@@ -544,14 +617,17 @@ export default function AdminEditProduct() {
               </div>
 
               <div>
-                <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="tags"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Tags
                 </label>
                 <input
                   id="tags"
                   type="text"
                   value={tags}
-                  onChange={(e) => setTags(e.target.value)}
+                  onChange={(e) => setTags?.(e.target.value)}
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   placeholder="leather, handcrafted, premium (comma separated)"
                 />
@@ -569,20 +645,29 @@ export default function AdminEditProduct() {
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-6 text-sm">
             <div>
-              <span className="text-gray-500">Created:</span>{' '}
-              <span className="font-medium text-gray-900">{product?.createdAt || 'N/A'}</span>
+              <span className="text-gray-500">Created:</span>{" "}
+              <span className="font-medium text-gray-900">
+                {product?.createdAt || "N/A"}
+              </span>
             </div>
             <div>
-              <span className="text-gray-500">Last Updated:</span>{' '}
-              <span className="font-medium text-gray-900">{product?.updatedAt || 'N/A'}</span>
+              <span className="text-gray-500">Last Updated:</span>{" "}
+              <span className="font-medium text-gray-900">
+                {product?.updatedAt || "N/A"}
+              </span>
             </div>
             <div>
-              <span className="text-gray-500">Status:</span>{' '}
-              <span className={cn(
-                'font-medium capitalize',
-                productStatus === 'active' ? 'text-green-600' :
-                productStatus === 'draft' ? 'text-yellow-600' : 'text-red-600'
-              )}>
+              <span className="text-gray-500">Status:</span>{" "}
+              <span
+                className={cn(
+                  "font-medium capitalize",
+                  productStatus === "active"
+                    ? "text-green-600"
+                    : productStatus === "draft"
+                      ? "text-yellow-600"
+                      : "text-red-600",
+                )}
+              >
                 {productStatus}
               </span>
             </div>
@@ -598,10 +683,10 @@ export default function AdminEditProduct() {
               onClick={formHandleSubmit(onSubmit)}
               disabled={isSubmitting || isUploading}
               className={cn(
-                'px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg',
-                'hover:bg-orange-600 transition-colors',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
-                'inline-flex items-center gap-2'
+                "px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg",
+                "hover:bg-orange-600 transition-colors",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
+                "inline-flex items-center gap-2",
               )}
             >
               {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}

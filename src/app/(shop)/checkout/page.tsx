@@ -1,16 +1,22 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useCartStore } from '@/lib/store/cartStore';
-import { useUserOrderStore } from '@/lib/store/userOrderStore';
-import { useAuthStore } from '@/lib/store/authStore';
-import { shippingSchema, type ShippingFormData } from '@/lib/utils/validators';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import { ChevronLeft, CreditCard, Truck, Shield, CheckCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCartStore } from "@/lib/store/cartStore";
+import { useUserOrderStore } from "@/lib/store/userOrderStore";
+import { useAuthStore } from "@/lib/store/authStore";
+import { shippingSchema, type ShippingFormData } from "@/lib/utils/validators";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import {
+  ChevronLeft,
+  CreditCard,
+  Truck,
+  Shield,
+  CheckCircle,
+} from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -35,8 +41,8 @@ export default function CheckoutPage() {
 
       const user = useAuthStore.getState().user;
       if (!user) {
-        toast.error('Please login to place an order');
-        router.push('/login?redirect=/checkout');
+        toast.error("Please login to place an order");
+        router.push("/login?redirect=/checkout");
         return;
       }
 
@@ -50,10 +56,10 @@ export default function CheckoutPage() {
           quantity: i.quantity,
           price: i.price,
           size: i.size || undefined,
-          image: i.image || '/images/placeholder.png',
+          image: i.image || "/images/placeholder.png",
         })),
         totalPrice: getTotal(),
-        status: 'pending' as const,
+        status: "pending" as const,
         shippingAddress: {
           street: data.street,
           city: data.city,
@@ -69,10 +75,10 @@ export default function CheckoutPage() {
       setIsProcessing(false);
       setOrderComplete(true);
       clearCart();
-      toast.success('Order placed successfully!');
+      toast.success("Order placed successfully!");
     } catch (err: any) {
       setIsProcessing(false);
-      toast.error(err?.message || 'Failed to place order');
+      toast.error(err?.message || "Failed to place order");
     }
   };
 
@@ -81,12 +87,15 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Order Confirmed!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Order Confirmed!
+          </h2>
           <p className="text-gray-600 mb-6">
-            Thank you for your purchase. You'll receive a confirmation email shortly.
+            Thank you for your purchase. You'll receive a confirmation email
+            shortly.
           </p>
           <button
-            onClick={() => router.push('/user/orders')}
+            onClick={() => router.push("/user/orders")}
             className="px-6 py-3 bg-orange-500 text-white rounded-lg font-medium hover:bg-orange-600 transition-colors"
           >
             View Orders
@@ -97,7 +106,7 @@ export default function CheckoutPage() {
   }
 
   if (items.length === 0) {
-    router.push('/cart');
+    router.push("/cart");
     return null;
   }
 
@@ -117,7 +126,9 @@ export default function CheckoutPage() {
           {/* Shipping Form */}
           <div className="lg:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Shipping Information</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
+                Shipping Information
+              </h2>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -126,67 +137,87 @@ export default function CheckoutPage() {
                       Street Address
                     </label>
                     <input
-                      {...register('street')}
+                      {...register("street")}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                       placeholder="123 Main St"
                     />
                     {errors.street && (
-                      <p className="text-red-600 text-sm mt-1">{errors.street.message}</p>
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.street.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      City
+                    </label>
                     <input
-                      {...register('city')}
+                      {...register("city")}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                       placeholder="New York"
                     />
                     {errors.city && (
-                      <p className="text-red-600 text-sm mt-1">{errors.city.message}</p>
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.city.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      State
+                    </label>
                     <input
-                      {...register('state')}
+                      {...register("state")}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                       placeholder="NY"
                     />
                     {errors.state && (
-                      <p className="text-red-600 text-sm mt-1">{errors.state.message}</p>
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.state.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">ZIP Code</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      ZIP Code
+                    </label>
                     <input
-                      {...register('zipCode')}
+                      {...register("zipCode")}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                       placeholder="10001"
                     />
                     {errors.zipCode && (
-                      <p className="text-red-600 text-sm mt-1">{errors.zipCode.message}</p>
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.zipCode.message}
+                      </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Country
+                    </label>
                     <input
-                      {...register('country')}
+                      {...register("country")}
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                       placeholder="USA"
                     />
                     {errors.country && (
-                      <p className="text-red-600 text-sm mt-1">{errors.country.message}</p>
+                      <p className="text-red-600 text-sm mt-1">
+                        {errors.country.message}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 {/* Payment Section */}
                 <div className="mt-8 pt-6 border-t border-gray-200">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment Method</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Payment Method
+                  </h3>
 
                   <div className="space-y-3">
                     <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:border-orange-500">
@@ -199,7 +230,9 @@ export default function CheckoutPage() {
                       <CreditCard className="h-5 w-5 text-gray-400" />
                       <div>
                         <p className="font-medium text-gray-900">Credit Card</p>
-                        <p className="text-sm text-gray-500">Visa, Mastercard, Amex</p>
+                        <p className="text-sm text-gray-500">
+                          Visa, Mastercard, Amex
+                        </p>
                       </div>
                     </label>
                   </div>
@@ -242,7 +275,9 @@ export default function CheckoutPage() {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Order Summary
+              </h3>
 
               <div className="space-y-3">
                 {items.map((item) => (
@@ -251,8 +286,12 @@ export default function CheckoutPage() {
                       Img
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{item.name}</p>
-                      <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {item.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Qty: {item.quantity}
+                      </p>
                     </div>
                     <p className="text-sm font-medium">
                       {formatCurrency(item.price * item.quantity)}

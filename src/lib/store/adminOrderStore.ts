@@ -1,5 +1,9 @@
-import { create } from 'zustand';
-import { adminOrderAPI, type Order, type OrderDetails } from '@/lib/mock/adminOrderApi';
+import { create } from "zustand";
+import {
+  adminOrderAPI,
+  type Order,
+  type OrderDetails,
+} from "@/lib/mock/adminOrderApi";
 
 interface OrderState {
   // Data
@@ -57,10 +61,10 @@ export const useAdminOrderStore = create<OrderState>((set, get) => ({
   isLoading: false,
   isSubmitting: false,
   error: null,
-  searchTerm: '',
-  statusFilter: 'all',
+  searchTerm: "",
+  statusFilter: "all",
   showStatusModal: false,
-  newStatus: '',
+  newStatus: "",
   showOrderModal: false,
   showExportConfirm: false,
 
@@ -93,12 +97,12 @@ export const useAdminOrderStore = create<OrderState>((set, get) => ({
     try {
       await adminOrderAPI.updateStatus(orderId, newStatus);
 
-      set(state => ({
-        orders: state.orders.map(o =>
-          o.id === orderId ? { ...o, status: newStatus as Order['status'] } : o
+      set((state) => ({
+        orders: state.orders.map((o) =>
+          o.id === orderId ? { ...o, status: newStatus as Order["status"] } : o,
         ),
         selectedOrder: state.selectedOrder
-          ? { ...state.selectedOrder, status: newStatus as Order['status'] }
+          ? { ...state.selectedOrder, status: newStatus as Order["status"] }
           : null,
         isSubmitting: false,
         showStatusModal: false,
@@ -135,7 +139,7 @@ export const useAdminOrderStore = create<OrderState>((set, get) => ({
     const { selectedOrder } = get();
     set({
       showStatusModal: true,
-      newStatus: selectedOrder?.status || 'pending',
+      newStatus: selectedOrder?.status || "pending",
     });
   },
 
@@ -156,13 +160,14 @@ export const useAdminOrderStore = create<OrderState>((set, get) => ({
   getFilteredOrders: () => {
     const { orders, searchTerm, statusFilter } = get();
 
-    return orders.filter(order => {
+    return orders.filter((order) => {
       const matchesSearch =
         !searchTerm ||
         order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         order.customer.name.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || order.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
@@ -173,11 +178,11 @@ export const useAdminOrderStore = create<OrderState>((set, get) => ({
 
     return {
       total: orders.length,
-      pending: orders.filter(o => o.status === 'pending').length,
-      processing: orders.filter(o => o.status === 'processing').length,
-      shipped: orders.filter(o => o.status === 'shipped').length,
-      delivered: orders.filter(o => o.status === 'delivered').length,
-      cancelled: orders.filter(o => o.status === 'cancelled').length,
+      pending: orders.filter((o) => o.status === "pending").length,
+      processing: orders.filter((o) => o.status === "processing").length,
+      shipped: orders.filter((o) => o.status === "shipped").length,
+      delivered: orders.filter((o) => o.status === "delivered").length,
+      cancelled: orders.filter((o) => o.status === "cancelled").length,
     };
   },
 }));

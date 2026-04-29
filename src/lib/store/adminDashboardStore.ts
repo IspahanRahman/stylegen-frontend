@@ -1,5 +1,12 @@
-import { create } from 'zustand';
-import { adminDashboardAPI, type DashboardData, type DashboardStats, type RecentOrder, type LowStockProduct, type Activity } from '@/lib/mock/adminDashboardApi';
+import { create } from "zustand";
+import {
+  adminDashboardAPI,
+  type DashboardData,
+  type DashboardStats,
+  type RecentOrder,
+  type LowStockProduct,
+  type Activity,
+} from "@/lib/mock/adminDashboardApi";
 
 interface DashboardState {
   // Data
@@ -39,7 +46,7 @@ export const useAdminDashboardStore = create<DashboardState>((set, get) => ({
   isLoading: false,
   isExporting: false,
   error: null,
-  timeRange: '7days',
+  timeRange: "7days",
   lastUpdated: null,
 
   // Actions
@@ -47,7 +54,9 @@ export const useAdminDashboardStore = create<DashboardState>((set, get) => ({
     set({ isLoading: true, error: null });
 
     try {
-      const response = await adminDashboardAPI.getDashboardData(get().timeRange);
+      const response = await adminDashboardAPI.getDashboardData(
+        get().timeRange,
+      );
 
       set({
         data: response.data,
@@ -56,7 +65,7 @@ export const useAdminDashboardStore = create<DashboardState>((set, get) => ({
       });
     } catch (error: any) {
       set({
-        error: error.message || 'Failed to load dashboard data',
+        error: error.message || "Failed to load dashboard data",
         isLoading: false,
       });
     }
@@ -77,7 +86,7 @@ export const useAdminDashboardStore = create<DashboardState>((set, get) => ({
       return response.downloadUrl;
     } catch (error: any) {
       set({
-        error: error.message || 'Failed to export report',
+        error: error.message || "Failed to export report",
         isExporting: false,
       });
       throw error;
@@ -97,32 +106,32 @@ export const useAdminDashboardStore = create<DashboardState>((set, get) => ({
 
     return [
       {
-        label: 'Total Revenue',
+        label: "Total Revenue",
         value: `$${data.stats.totalRevenue.toLocaleString()}`,
         growth: data.stats.revenueGrowth,
-        icon: 'DollarSign',
-        color: 'blue',
+        icon: "DollarSign",
+        color: "blue",
       },
       {
-        label: 'Total Orders',
+        label: "Total Orders",
         value: data.stats.totalOrders.toLocaleString(),
         growth: data.stats.ordersGrowth,
-        icon: 'ShoppingBag',
-        color: 'green',
+        icon: "ShoppingBag",
+        color: "green",
       },
       {
-        label: 'Total Customers',
+        label: "Total Customers",
         value: data.stats.totalCustomers.toLocaleString(),
         growth: data.stats.customersGrowth,
-        icon: 'Users',
-        color: 'purple',
+        icon: "Users",
+        color: "purple",
       },
       {
-        label: 'Active Products',
+        label: "Active Products",
         value: data.stats.activeInventory.toLocaleString(),
         growth: -data.stats.lowStock, // Negative to show as warning
-        icon: 'Package',
-        color: 'orange',
+        icon: "Package",
+        color: "orange",
       },
     ];
   },

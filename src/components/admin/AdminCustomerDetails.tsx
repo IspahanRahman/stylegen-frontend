@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { useAdminCustomers } from '@/hooks/useAdminCustomers';
+import { useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useAdminCustomers } from "@/hooks/useAdminCustomers";
 import {
   ArrowLeft,
   Mail,
@@ -17,15 +17,15 @@ import {
   AlertCircle,
   Loader2,
   Package,
-} from 'lucide-react';
-import { formatCurrency, formatDate } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
-import Link from 'next/link';
+} from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
+import Link from "next/link";
 
 const statusConfig = {
-  active: { color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
-  inactive: { color: 'bg-gray-100 text-gray-700', icon: AlertCircle },
-  banned: { color: 'bg-red-100 text-red-700', icon: Ban },
+  active: { color: "bg-green-100 text-green-700", icon: CheckCircle2 },
+  inactive: { color: "bg-gray-100 text-gray-700", icon: AlertCircle },
+  banned: { color: "bg-red-100 text-red-700", icon: Ban },
 };
 
 export default function AdminCustomerDetails() {
@@ -69,7 +69,8 @@ export default function AdminCustomerDetails() {
     );
   }
 
-  const status = statusConfig[selectedCustomer.status as keyof typeof statusConfig];
+  const status =
+    statusConfig[selectedCustomer.status as keyof typeof statusConfig];
   const StatusIcon = status.icon;
 
   return (
@@ -77,12 +78,19 @@ export default function AdminCustomerDetails() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button onClick={() => router.back()} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button
+            onClick={() => router.back()}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
             <ArrowLeft className="h-5 w-5 text-gray-600" />
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{selectedCustomer.name}</h1>
-            <p className="text-sm text-gray-500">Customer ID: {selectedCustomer.id}</p>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {selectedCustomer.name}
+            </h1>
+            <p className="text-sm text-gray-500">
+              Customer ID: {selectedCustomer.id}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -109,7 +117,10 @@ export default function AdminCustomerDetails() {
             <AlertCircle className="h-5 w-5" />
             <p className="text-sm">{error}</p>
           </div>
-          <button onClick={clearError} className="text-red-500 hover:text-red-700">
+          <button
+            onClick={clearError}
+            className="text-red-500 hover:text-red-700"
+          >
             ×
           </button>
         </div>
@@ -128,9 +139,16 @@ export default function AdminCustomerDetails() {
                   </span>
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">{selectedCustomer.name}</h2>
+                  <h2 className="text-xl font-bold text-gray-900">
+                    {selectedCustomer.name}
+                  </h2>
                   <div className="flex items-center gap-3 mt-1">
-                    <span className={cn('inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium', status.color)}>
+                    <span
+                      className={cn(
+                        "inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium",
+                        status.color,
+                      )}
+                    >
                       <StatusIcon className="h-3 w-3" />
                       {selectedCustomer.status}
                     </span>
@@ -146,7 +164,9 @@ export default function AdminCustomerDetails() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="p-4 bg-blue-50 rounded-lg">
                 <ShoppingBag className="h-5 w-5 text-blue-600 mb-2" />
-                <p className="text-xl font-bold text-blue-900">{selectedCustomer.stats.totalOrders}</p>
+                <p className="text-xl font-bold text-blue-900">
+                  {selectedCustomer.stats.totalOrders}
+                </p>
                 <p className="text-xs text-blue-600">Total Orders</p>
               </div>
               <div className="p-4 bg-green-50 rounded-lg">
@@ -175,7 +195,9 @@ export default function AdminCustomerDetails() {
 
           {/* Recent Orders */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Orders</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Recent Orders
+            </h2>
             {selectedCustomer.recentOrders.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No orders yet</p>
             ) : (
@@ -187,18 +209,27 @@ export default function AdminCustomerDetails() {
                     className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
                     <div>
-                      <p className="font-medium text-gray-900 hover:text-orange-500">{order.id}</p>
+                      <p className="font-medium text-gray-900 hover:text-orange-500">
+                        {order.id}
+                      </p>
                       <p className="text-sm text-gray-500">
                         {formatDate(order.date)} • {order.items} item(s)
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="font-medium">{formatCurrency(order.total)}</span>
-                      <span className={cn(
-                        'px-2 py-1 rounded-full text-xs font-medium',
-                        order.status === 'delivered' ? 'bg-green-100 text-green-700' :
-                        order.status === 'processing' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'
-                      )}>
+                      <span className="font-medium">
+                        {formatCurrency(order.total)}
+                      </span>
+                      <span
+                        className={cn(
+                          "px-2 py-1 rounded-full text-xs font-medium",
+                          order.status === "delivered"
+                            ? "bg-green-100 text-green-700"
+                            : order.status === "processing"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-yellow-100 text-yellow-700",
+                        )}
+                      >
                         {order.status}
                       </span>
                     </div>
@@ -210,7 +241,9 @@ export default function AdminCustomerDetails() {
 
           {/* Activity Log */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Activity Log</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Activity Log
+            </h2>
             {selectedCustomer.activity.length === 0 ? (
               <p className="text-gray-500 text-center py-4">No activity yet</p>
             ) : (
@@ -221,9 +254,15 @@ export default function AdminCustomerDetails() {
                     <div key={index} className="relative flex gap-4 pl-10">
                       <div className="absolute left-2.5 w-3 h-3 rounded-full bg-orange-500 border-2 border-orange-500 -translate-x-1/2" />
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                        <p className="text-xs text-gray-500">{activity.description}</p>
-                        <p className="text-xs text-gray-400 mt-1">{activity.date}</p>
+                        <p className="text-sm font-medium text-gray-900">
+                          {activity.action}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {activity.description}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          {activity.date}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -237,7 +276,9 @@ export default function AdminCustomerDetails() {
         <div className="space-y-6">
           {/* Contact Info */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Info</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Contact Info
+            </h2>
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="h-4 w-4 text-gray-400 flex-shrink-0" />
@@ -249,16 +290,22 @@ export default function AdminCustomerDetails() {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                <span className="text-gray-600">Last active: {selectedCustomer.lastActive}</span>
+                <span className="text-gray-600">
+                  Last active: {selectedCustomer.lastActive}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Addresses */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Addresses</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Addresses
+            </h2>
             {selectedCustomer.addresses.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">No addresses saved</p>
+              <p className="text-gray-500 text-center py-4">
+                No addresses saved
+              </p>
             ) : (
               <div className="space-y-3">
                 {selectedCustomer.addresses.map((address) => (
@@ -266,7 +313,9 @@ export default function AdminCustomerDetails() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-gray-400" />
-                        <span className="font-medium text-gray-900">{address.type}</span>
+                        <span className="font-medium text-gray-900">
+                          {address.type}
+                        </span>
                       </div>
                       {address.isDefault && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full">
@@ -277,7 +326,9 @@ export default function AdminCustomerDetails() {
                     <div className="text-sm text-gray-600 pl-6">
                       <p>{address.street}</p>
                       {address.apartment && <p>{address.apartment}</p>}
-                      <p>{address.city}, {address.state} {address.zipCode}</p>
+                      <p>
+                        {address.city}, {address.state} {address.zipCode}
+                      </p>
                       <p>{address.country}</p>
                     </div>
                   </div>
@@ -288,7 +339,9 @@ export default function AdminCustomerDetails() {
 
           {/* Admin Notes */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Admin Notes</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Admin Notes
+            </h2>
 
             {/* Add Note */}
             <div className="mb-4">
@@ -318,7 +371,9 @@ export default function AdminCustomerDetails() {
                   <div key={note.id} className="p-3 bg-yellow-50 rounded-lg">
                     <p className="text-sm text-gray-700">{note.content}</p>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-gray-500">{note.author}</span>
+                      <span className="text-xs text-gray-500">
+                        {note.author}
+                      </span>
                       <span className="text-xs text-gray-400">{note.date}</span>
                     </div>
                   </div>
@@ -333,26 +388,47 @@ export default function AdminCustomerDetails() {
       {showStatusModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Manage Customer Status</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Manage Customer Status
+            </h3>
             <div className="space-y-3">
               {[
-                { status: 'active', label: 'Active', description: 'Customer can place orders', color: 'green' },
-                { status: 'inactive', label: 'Inactive', description: 'Customer cannot place orders', color: 'gray' },
-                { status: 'banned', label: 'Banned', description: 'Customer is permanently banned', color: 'red' },
+                {
+                  status: "active",
+                  label: "Active",
+                  description: "Customer can place orders",
+                  color: "green",
+                },
+                {
+                  status: "inactive",
+                  label: "Inactive",
+                  description: "Customer cannot place orders",
+                  color: "gray",
+                },
+                {
+                  status: "banned",
+                  label: "Banned",
+                  description: "Customer is permanently banned",
+                  color: "red",
+                },
               ].map((option) => (
                 <button
                   key={option.status}
-                  onClick={() => handleStatusChange(selectedCustomer.id, option.status)}
+                  onClick={() =>
+                    handleStatusChange(selectedCustomer.id, option.status)
+                  }
                   disabled={isSubmitting}
                   className={cn(
-                    'w-full p-4 rounded-lg border-2 text-left transition-all',
+                    "w-full p-4 rounded-lg border-2 text-left transition-all",
                     selectedCustomer.status === option.status
                       ? `border-${option.color}-500 bg-${option.color}-50`
-                      : 'border-gray-200 hover:border-gray-300'
+                      : "border-gray-200 hover:border-gray-300",
                   )}
                 >
                   <p className="font-medium">{option.label}</p>
-                  <p className="text-sm text-gray-500 mt-1">{option.description}</p>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {option.description}
+                  </p>
                 </button>
               ))}
             </div>

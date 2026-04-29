@@ -1,25 +1,27 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function proxy(request: NextRequest) {
-  const token = request.cookies.get('auth-storage')?.value;
+  const token = request.cookies.get("auth-storage")?.value;
   const { pathname } = request.nextUrl;
 
   // Protected routes
   // Note: checkout is handled client-side (cart flow); avoid protecting it here
-  const protectedPaths = ['/dashboard', '/profile'];
-  const authPaths = ['/login', '/register', '/forgot-password'];
+  const protectedPaths = ["/dashboard", "/profile"];
+  const authPaths = ["/login", "/register", "/forgot-password"];
 
   // Check if path requires authentication
-  const isProtectedPath = protectedPaths.some((path) => pathname.startsWith(path));
+  const isProtectedPath = protectedPaths.some((path) =>
+    pathname.startsWith(path),
+  );
 
   // Check if path is auth page
   const isAuthPath = authPaths.some((path) => pathname.startsWith(path));
 
   // Redirect to login if accessing protected route without auth
   if (isProtectedPath && !token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
@@ -30,7 +32,7 @@ export function proxy(request: NextRequest) {
       const user = authData?.state?.user;
 
       if (user) {
-        const dashboardUrl = user.role === 'admin' ? '/admin' : '/user';
+        const dashboardUrl = user.role === "admin" ? "/admin" : "/user";
         return NextResponse.redirect(new URL(dashboardUrl, request.url));
       }
     } catch (error) {
@@ -42,5 +44,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/:path*', '/profile/:path*', '/login', '/register', '/forgot-password'],
+  matcher: [
+    "/:path*",
+    "/profile/:path*",
+    "/login",
+    "/register",
+    "/forgot-password",
+  ],
 };

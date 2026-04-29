@@ -1,5 +1,9 @@
-import { create } from 'zustand';
-import { adminCategoryAPI, type Category, type CategoryFormData } from '@/lib/mock/adminCategoryApi';
+import { create } from "zustand";
+import {
+  adminCategoryAPI,
+  type Category,
+  type CategoryFormData,
+} from "@/lib/mock/adminCategoryApi";
 
 interface CategoryState {
   // Data
@@ -61,13 +65,13 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
   showEditModal: false,
   showDeleteModal: false,
   formData: {
-    name: '',
-    description: '',
-    status: 'active',
+    name: "",
+    description: "",
+    status: "active",
   },
   selectedImage: null,
   imageFile: null,
-  searchTerm: '',
+  searchTerm: "",
 
   // Data Actions
   fetchCategories: async () => {
@@ -90,7 +94,7 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
       // Validate
       const validation = await adminCategoryAPI.validateData(formData);
       if (!validation.success) {
-        throw new Error(Object.values(validation.errors || {}).join(', '));
+        throw new Error(Object.values(validation.errors || {}).join(", "));
       }
 
       // Upload image if exists
@@ -103,7 +107,7 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
       // Create category
       const response = await adminCategoryAPI.create(formData, imageUrl);
 
-      set(state => ({
+      set((state) => ({
         categories: [...state.categories, response.category],
         isSubmitting: false,
         showAddModal: false,
@@ -126,7 +130,7 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
     try {
       const validation = await adminCategoryAPI.validateData(formData);
       if (!validation.success) {
-        throw new Error(Object.values(validation.errors || {}).join(', '));
+        throw new Error(Object.values(validation.errors || {}).join(", "));
       }
 
       let imageUrl: string | undefined;
@@ -135,11 +139,15 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
         imageUrl = uploadResponse.url;
       }
 
-      const response = await adminCategoryAPI.update(selectedCategory.id, formData, imageUrl);
+      const response = await adminCategoryAPI.update(
+        selectedCategory.id,
+        formData,
+        imageUrl,
+      );
 
-      set(state => ({
-        categories: state.categories.map(c =>
-          c.id === selectedCategory.id ? response.category : c
+      set((state) => ({
+        categories: state.categories.map((c) =>
+          c.id === selectedCategory.id ? response.category : c,
         ),
         isSubmitting: false,
         showEditModal: false,
@@ -161,8 +169,10 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
     try {
       await adminCategoryAPI.delete(selectedCategory.id);
 
-      set(state => ({
-        categories: state.categories.filter(c => c.id !== selectedCategory.id),
+      set((state) => ({
+        categories: state.categories.filter(
+          (c) => c.id !== selectedCategory.id,
+        ),
         isSubmitting: false,
         showDeleteModal: false,
         selectedCategory: null,
@@ -215,7 +225,7 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
 
   // Form Actions
   setFormData: (data) => {
-    set(state => ({
+    set((state) => ({
       formData: { ...state.formData, ...data },
     }));
   },
@@ -240,9 +250,9 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
   resetForm: () => {
     set({
       formData: {
-        name: '',
-        description: '',
-        status: 'active',
+        name: "",
+        description: "",
+        status: "active",
       },
       selectedImage: null,
       imageFile: null,
@@ -261,9 +271,9 @@ export const useAdminCategoryStore = create<CategoryState>((set, get) => ({
 
     const term = searchTerm.toLowerCase();
     return categories.filter(
-      cat =>
+      (cat) =>
         cat.name.toLowerCase().includes(term) ||
-        cat.description.toLowerCase().includes(term)
+        cat.description.toLowerCase().includes(term),
     );
   },
 }));

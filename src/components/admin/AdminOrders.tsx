@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState } from "react";
+import Link from "next/link";
 import {
   Search,
   Filter,
@@ -14,79 +14,79 @@ import {
   Truck,
   MoreVertical,
   AlertCircle,
-} from 'lucide-react';
-import { formatCurrency, formatDate } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+} from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
 const mockOrders = [
   {
-    id: 'ORD-001',
-    customer: { name: 'John Doe', email: 'john@example.com' },
-    items: [{ name: 'Italian Leather Bag', quantity: 1 }],
+    id: "ORD-001",
+    customer: { name: "John Doe", email: "john@example.com" },
+    items: [{ name: "Italian Leather Bag", quantity: 1 }],
     total: 299.99,
-    status: 'pending',
-    payment: 'paid',
-    date: '2024-03-25',
-    shipping: 'Standard',
+    status: "pending",
+    payment: "paid",
+    date: "2024-03-25",
+    shipping: "Standard",
   },
   {
-    id: 'ORD-002',
-    customer: { name: 'Jane Smith', email: 'jane@example.com' },
-    items: [{ name: 'Oxford Shoes', quantity: 1 }],
+    id: "ORD-002",
+    customer: { name: "Jane Smith", email: "jane@example.com" },
+    items: [{ name: "Oxford Shoes", quantity: 1 }],
     total: 189.99,
-    status: 'shipped',
-    payment: 'paid',
-    date: '2024-03-24',
-    shipping: 'Express',
+    status: "shipped",
+    payment: "paid",
+    date: "2024-03-24",
+    shipping: "Express",
   },
   {
-    id: 'ORD-003',
-    customer: { name: 'Mike Johnson', email: 'mike@example.com' },
-    items: [{ name: 'Leather Wallet', quantity: 2 }],
+    id: "ORD-003",
+    customer: { name: "Mike Johnson", email: "mike@example.com" },
+    items: [{ name: "Leather Wallet", quantity: 2 }],
     total: 159.98,
-    status: 'delivered',
-    payment: 'paid',
-    date: '2024-03-23',
-    shipping: 'Standard',
+    status: "delivered",
+    payment: "paid",
+    date: "2024-03-23",
+    shipping: "Standard",
   },
   {
-    id: 'ORD-004',
-    customer: { name: 'Sarah Wilson', email: 'sarah@example.com' },
+    id: "ORD-004",
+    customer: { name: "Sarah Wilson", email: "sarah@example.com" },
     items: [
-      { name: 'Leather Belt', quantity: 1 },
-      { name: 'Leather T-Shirt', quantity: 1 },
+      { name: "Leather Belt", quantity: 1 },
+      { name: "Leather T-Shirt", quantity: 1 },
     ],
     total: 209.98,
-    status: 'processing',
-    payment: 'paid',
-    date: '2024-03-22',
-    shipping: 'Express',
+    status: "processing",
+    payment: "paid",
+    date: "2024-03-22",
+    shipping: "Express",
   },
   {
-    id: 'ORD-005',
-    customer: { name: 'Tom Brown', email: 'tom@example.com' },
-    items: [{ name: 'Weekend Bag', quantity: 1 }],
+    id: "ORD-005",
+    customer: { name: "Tom Brown", email: "tom@example.com" },
+    items: [{ name: "Weekend Bag", quantity: 1 }],
     total: 299.99,
-    status: 'cancelled',
-    payment: 'refunded',
-    date: '2024-03-21',
-    shipping: 'Standard',
+    status: "cancelled",
+    payment: "refunded",
+    date: "2024-03-21",
+    shipping: "Standard",
   },
 ];
 
 const statusConfig = {
-  pending: { color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-  processing: { color: 'bg-blue-100 text-blue-700', icon: Package },
-  shipped: { color: 'bg-purple-100 text-purple-700', icon: Truck },
-  delivered: { color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
-  cancelled: { color: 'bg-red-100 text-red-700', icon: XCircle },
+  pending: { color: "bg-yellow-100 text-yellow-700", icon: Clock },
+  processing: { color: "bg-blue-100 text-blue-700", icon: Package },
+  shipped: { color: "bg-purple-100 text-purple-700", icon: Truck },
+  delivered: { color: "bg-green-100 text-green-700", icon: CheckCircle2 },
+  cancelled: { color: "bg-red-100 text-red-700", icon: XCircle },
 };
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState(mockOrders);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
 
@@ -94,15 +94,22 @@ export default function AdminOrders() {
     const matchesSearch =
       order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.customer.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+    const matchesStatus =
+      statusFilter === "all" || order.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const getStatusBadge = (status: string) => {
-    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
+    const config =
+      statusConfig[status as keyof typeof statusConfig] || statusConfig.pending;
     const Icon = config.icon;
     return (
-      <span className={cn('inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium capitalize', config.color)}>
+      <span
+        className={cn(
+          "inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium capitalize",
+          config.color,
+        )}
+      >
         <Icon className="h-3 w-3" />
         {status}
       </span>
@@ -112,8 +119,8 @@ export default function AdminOrders() {
   const updateOrderStatus = (orderId: string, newStatus: string) => {
     setOrders(
       orders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
+        order.id === orderId ? { ...order, status: newStatus } : order,
+      ),
     );
     toast.success(`Order ${orderId} updated to ${newStatus}`);
   };
@@ -187,14 +194,18 @@ export default function AdminOrders() {
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
-                    <span className="font-medium text-gray-900">{order.id}</span>
+                    <span className="font-medium text-gray-900">
+                      {order.id}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <div>
                       <p className="text-sm font-medium text-gray-900">
                         {order.customer.name}
                       </p>
-                      <p className="text-xs text-gray-500">{order.customer.email}</p>
+                      <p className="text-xs text-gray-500">
+                        {order.customer.email}
+                      </p>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -211,16 +222,20 @@ export default function AdminOrders() {
                   </td>
                   <td className="px-6 py-4">{getStatusBadge(order.status)}</td>
                   <td className="px-6 py-4">
-                    <span className={cn(
-                      'px-2 py-1 rounded-full text-xs font-medium',
-                      order.payment === 'paid'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-red-100 text-red-700'
-                    )}>
+                    <span
+                      className={cn(
+                        "px-2 py-1 rounded-full text-xs font-medium",
+                        order.payment === "paid"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700",
+                      )}
+                    >
                       {order.payment}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{order.date}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {order.date}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <button
@@ -232,7 +247,9 @@ export default function AdminOrders() {
                       </button>
                       <select
                         value={order.status}
-                        onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                        onChange={(e) =>
+                          updateOrderStatus(order.id, e.target.value)
+                        }
                         className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-orange-500"
                       >
                         <option value="pending">Pending</option>

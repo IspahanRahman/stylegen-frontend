@@ -1,4 +1,4 @@
-import CartDrawer from '@/components/cart/CartDrawer';
+import CartDrawer from "@/components/cart/CartDrawer";
 
 export default function ShopLayout({
   children,

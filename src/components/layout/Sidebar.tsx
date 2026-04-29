@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils/cn';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils/cn";
 
 type NavItem = {
   label: string;
@@ -25,10 +25,10 @@ export default function Sidebar({
   return (
     <aside
       className={cn(
-        'fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:fixed lg:top-16 lg:bottom-0 lg:inset-auto',
-        'pt-16 lg:pt-0',
-        'overflow-y-auto',
-        isOpen ? 'translate-x-0' : '-translate-x-full'
+        "fixed inset-y-0 left-0 z-30 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:fixed lg:top-16 lg:bottom-0 lg:inset-auto",
+        "pt-16 lg:pt-0",
+        "overflow-y-auto",
+        isOpen ? "translate-x-0" : "-translate-x-full",
       )}
     >
       <nav className="h-screen px-3 py-6 space-y-6">
@@ -49,15 +49,17 @@ export default function Sidebar({
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
                       isActive
-                        ? 'bg-orange-50 text-orange-600'
-                        : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                        ? "bg-orange-50 text-orange-600"
+                        : "text-gray-700 hover:bg-gray-50 hover:text-gray-900",
                     )}
                   >
                     <Icon className="h-5 w-5" />
                     {item.label}
-                    {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500" />}
+                    {isActive && (
+                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-orange-500" />
+                    )}
                   </Link>
                 );
               })}
@@ -78,8 +80,13 @@ export default function Sidebar({
               </svg>
               Need Help?
             </div>
-            <p className="text-xs text-gray-500 mb-3">Check the documentation or contact support</p>
-            <a href="#" className="text-xs font-medium text-orange-500 hover:text-orange-600">
+            <p className="text-xs text-gray-500 mb-3">
+              Check the documentation or contact support
+            </p>
+            <a
+              href="#"
+              className="text-xs font-medium text-orange-500 hover:text-orange-600"
+            >
               View Documentation →
             </a>
           </div>

@@ -1,5 +1,9 @@
-import { create } from 'zustand';
-import { userOrderAPI, type UserOrder, type TrackingEvent } from '@/lib/mock/userOrderApi';
+import { create } from "zustand";
+import {
+  userOrderAPI,
+  type UserOrder,
+  type TrackingEvent,
+} from "@/lib/mock/userOrderApi";
 
 interface UserOrderState {
   // Data
@@ -40,8 +44,8 @@ export const useUserOrderStore = create<UserOrderState>((set, get) => ({
   currentTrackingStep: 1,
   isLoading: false,
   error: null,
-  searchTerm: '',
-  statusFilter: 'all',
+  searchTerm: "",
+  statusFilter: "all",
 
   // Actions
   fetchOrders: async () => {
@@ -49,7 +53,7 @@ export const useUserOrderStore = create<UserOrderState>((set, get) => ({
 
     try {
       // Get current user from auth store
-      const authStore = (await import('@/lib/store/authStore')).useAuthStore;
+      const authStore = (await import("@/lib/store/authStore")).useAuthStore;
       const user = authStore.getState().user;
 
       if (!user) {
@@ -97,7 +101,7 @@ export const useUserOrderStore = create<UserOrderState>((set, get) => ({
       const response = await userOrderAPI.createOrder(orderData);
       const newOrder = response.order;
 
-      set(state => ({
+      set((state) => ({
         orders: [newOrder, ...state.orders],
         isLoading: false,
       }));
@@ -129,12 +133,16 @@ export const useUserOrderStore = create<UserOrderState>((set, get) => ({
   getFilteredOrders: () => {
     const { orders, searchTerm, statusFilter } = get();
 
-    return orders.filter(order => {
-      const matchesSearch = !searchTerm ||
+    return orders.filter((order) => {
+      const matchesSearch =
+        !searchTerm ||
         order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        order.items.some((item) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
 
-      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || order.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ArrowLeft,
   Printer,
@@ -18,73 +18,100 @@ import {
   User,
   Phone,
   AlertCircle,
-} from 'lucide-react';
-import { formatCurrency, formatDate } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+} from "lucide-react";
+import { formatCurrency, formatDate } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
 const mockOrderDetails = {
-  id: 'ORD-001',
-  status: 'processing',
-  payment: 'paid',
-  paymentMethod: 'Credit Card (Visa ****4242)',
+  id: "ORD-001",
+  status: "processing",
+  payment: "paid",
+  paymentMethod: "Credit Card (Visa ****4242)",
   subtotal: 329.98,
   shipping: 0,
   tax: 24.99,
   discount: 54.98,
   total: 299.99,
-  createdAt: '2024-03-25 14:30',
-  updatedAt: '2024-03-25 16:45',
+  createdAt: "2024-03-25 14:30",
+  updatedAt: "2024-03-25 16:45",
   customer: {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
+    name: "John Doe",
+    email: "john.doe@example.com",
+    phone: "+1 (555) 123-4567",
     totalOrders: 12,
   },
   shippingAddress: {
-    street: '123 Main Street',
-    apartment: 'Apt 4B',
-    city: 'New York',
-    state: 'NY',
-    zipCode: '10001',
-    country: 'United States',
+    street: "123 Main Street",
+    apartment: "Apt 4B",
+    city: "New York",
+    state: "NY",
+    zipCode: "10001",
+    country: "United States",
   },
   items: [
     {
-      id: '1',
-      name: 'Italian Leather Weekend Bag',
+      id: "1",
+      name: "Italian Leather Weekend Bag",
       price: 299.99,
       quantity: 1,
-      size: 'One Size',
-      image: '/images/products/bag-1.jpg',
+      size: "One Size",
+      image: "/images/products/bag-1.jpg",
       discount: 15,
     },
     {
-      id: '2',
-      name: 'Leather Care Kit',
+      id: "2",
+      name: "Leather Care Kit",
       price: 29.99,
       quantity: 1,
       size: null,
-      image: '/images/products/care-kit.jpg',
+      image: "/images/products/care-kit.jpg",
       discount: 0,
     },
   ],
   timeline: [
-    { status: 'Order Placed', date: '2024-03-25 14:30', icon: Clock, completed: true },
-    { status: 'Payment Confirmed', date: '2024-03-25 14:31', icon: CreditCard, completed: true },
-    { status: 'Processing', date: '2024-03-25 15:00', icon: Package, completed: true },
-    { status: 'Ready to Ship', date: null, icon: Truck, completed: false },
-    { status: 'Shipped', date: null, icon: Truck, completed: false },
-    { status: 'Delivered', date: null, icon: CheckCircle2, completed: false },
+    {
+      status: "Order Placed",
+      date: "2024-03-25 14:30",
+      icon: Clock,
+      completed: true,
+    },
+    {
+      status: "Payment Confirmed",
+      date: "2024-03-25 14:31",
+      icon: CreditCard,
+      completed: true,
+    },
+    {
+      status: "Processing",
+      date: "2024-03-25 15:00",
+      icon: Package,
+      completed: true,
+    },
+    { status: "Ready to Ship", date: null, icon: Truck, completed: false },
+    { status: "Shipped", date: null, icon: Truck, completed: false },
+    { status: "Delivered", date: null, icon: CheckCircle2, completed: false },
   ],
 };
 
 const statusConfig = {
-  pending: { color: 'bg-yellow-100 text-yellow-700 border-yellow-200', icon: Clock },
-  processing: { color: 'bg-blue-100 text-blue-700 border-blue-200', icon: Package },
-  shipped: { color: 'bg-purple-100 text-purple-700 border-purple-200', icon: Truck },
-  delivered: { color: 'bg-green-100 text-green-700 border-green-200', icon: CheckCircle2 },
-  cancelled: { color: 'bg-red-100 text-red-700 border-red-200', icon: XCircle },
+  pending: {
+    color: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    icon: Clock,
+  },
+  processing: {
+    color: "bg-blue-100 text-blue-700 border-blue-200",
+    icon: Package,
+  },
+  shipped: {
+    color: "bg-purple-100 text-purple-700 border-purple-200",
+    icon: Truck,
+  },
+  delivered: {
+    color: "bg-green-100 text-green-700 border-green-200",
+    icon: CheckCircle2,
+  },
+  cancelled: { color: "bg-red-100 text-red-700 border-red-200", icon: XCircle },
 };
 
 export default function AdminOrderDetails() {
@@ -101,11 +128,11 @@ export default function AdminOrderDetails() {
   };
 
   const handlePrintInvoice = () => {
-    toast.success('Invoice sent to printer');
+    toast.success("Invoice sent to printer");
   };
 
   const handleEmailCustomer = () => {
-    toast.success('Email client opened');
+    toast.success("Email client opened");
   };
 
   return (
@@ -121,20 +148,27 @@ export default function AdminOrderDetails() {
           </button>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-gray-900">Order {order.id}</h1>
-              <span className={cn(
-                'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border',
-                statusConfig[order.status as keyof typeof statusConfig].color
-              )}>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Order {order.id}
+              </h1>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium border",
+                  statusConfig[order.status as keyof typeof statusConfig].color,
+                )}
+              >
                 {(() => {
-                  const StatusIcon = statusConfig[order.status as keyof typeof statusConfig].icon;
+                  const StatusIcon =
+                    statusConfig[order.status as keyof typeof statusConfig]
+                      .icon;
                   return <StatusIcon className="h-4 w-4" />;
                 })()}
                 {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
               </span>
             </div>
             <p className="text-sm text-gray-500 mt-1">
-              Placed on {formatDate(order.createdAt.split(' ')[0])} at {order.createdAt.split(' ')[1]}
+              Placed on {formatDate(order.createdAt.split(" ")[0])} at{" "}
+              {order.createdAt.split(" ")[1]}
             </p>
           </div>
         </div>
@@ -160,7 +194,9 @@ export default function AdminOrderDetails() {
         <div className="lg:col-span-2 space-y-6">
           {/* Order Timeline */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-6">Order Timeline</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">
+              Order Timeline
+            </h2>
             <div className="relative">
               <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200" />
               <div className="space-y-6">
@@ -168,17 +204,21 @@ export default function AdminOrderDetails() {
                   const EventIcon = event.icon;
                   return (
                     <div key={index} className="relative flex gap-4 pl-10">
-                      <div className={cn(
-                        'absolute left-2.5 w-3 h-3 rounded-full border-2 -translate-x-1/2',
-                        event.completed
-                          ? 'bg-orange-500 border-orange-500'
-                          : 'bg-white border-gray-300'
-                      )} />
+                      <div
+                        className={cn(
+                          "absolute left-2.5 w-3 h-3 rounded-full border-2 -translate-x-1/2",
+                          event.completed
+                            ? "bg-orange-500 border-orange-500"
+                            : "bg-white border-gray-300",
+                        )}
+                      />
                       <div className="flex-1">
-                        <p className={cn(
-                          'font-medium',
-                          event.completed ? 'text-gray-900' : 'text-gray-400'
-                        )}>
+                        <p
+                          className={cn(
+                            "font-medium",
+                            event.completed ? "text-gray-900" : "text-gray-400",
+                          )}
+                        >
                           {event.status}
                         </p>
                         {event.date && (
@@ -194,10 +234,15 @@ export default function AdminOrderDetails() {
 
           {/* Order Items */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Items</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Order Items
+            </h2>
             <div className="space-y-4">
               {order.items.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                <div
+                  key={item.id}
+                  className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
+                >
                   <div className="h-20 w-20 bg-gray-200 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Package className="h-8 w-8 text-gray-400" />
                   </div>
@@ -212,7 +257,9 @@ export default function AdminOrderDetails() {
                       <span>Qty: {item.quantity}</span>
                       {item.size && <span>Size: {item.size}</span>}
                       {item.discount > 0 && (
-                        <span className="text-green-600">{item.discount}% off</span>
+                        <span className="text-green-600">
+                          {item.discount}% off
+                        </span>
                       )}
                     </div>
                   </div>
@@ -222,7 +269,10 @@ export default function AdminOrderDetails() {
                     </p>
                     {item.discount > 0 && (
                       <p className="text-xs text-gray-400 line-through">
-                        {formatCurrency((item.price / (1 - item.discount / 100)) * item.quantity)}
+                        {formatCurrency(
+                          (item.price / (1 - item.discount / 100)) *
+                            item.quantity,
+                        )}
                       </p>
                     )}
                   </div>
@@ -236,19 +286,29 @@ export default function AdminOrderDetails() {
         <div className="space-y-6">
           {/* Order Summary */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Order Summary
+            </h2>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="font-medium">{formatCurrency(order.subtotal)}</span>
+                <span className="font-medium">
+                  {formatCurrency(order.subtotal)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Discount</span>
-                <span className="font-medium text-green-600">-{formatCurrency(order.discount)}</span>
+                <span className="font-medium text-green-600">
+                  -{formatCurrency(order.discount)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
-                <span className="font-medium">{order.shipping === 0 ? 'Free' : formatCurrency(order.shipping)}</span>
+                <span className="font-medium">
+                  {order.shipping === 0
+                    ? "Free"
+                    : formatCurrency(order.shipping)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax</span>
@@ -285,8 +345,12 @@ export default function AdminOrderDetails() {
                   <User className="h-5 w-5 text-orange-600" />
                 </div>
                 <div>
-                  <p className="font-medium text-gray-900">{order.customer.name}</p>
-                  <p className="text-sm text-gray-500">{order.customer.totalOrders} orders</p>
+                  <p className="font-medium text-gray-900">
+                    {order.customer.name}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {order.customer.totalOrders} orders
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -309,17 +373,21 @@ export default function AdminOrderDetails() {
 
           {/* Shipping Address */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Shipping Address</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Shipping Address
+            </h2>
             <div className="flex items-start gap-3">
               <MapPin className="h-5 w-5 text-gray-400 mt-0.5" />
               <div className="text-sm text-gray-600">
-                <p className="font-medium text-gray-900">{order.customer.name}</p>
+                <p className="font-medium text-gray-900">
+                  {order.customer.name}
+                </p>
                 <p>{order.shippingAddress.street}</p>
                 {order.shippingAddress.apartment && (
                   <p>{order.shippingAddress.apartment}</p>
                 )}
                 <p>
-                  {order.shippingAddress.city}, {order.shippingAddress.state}{' '}
+                  {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
                   {order.shippingAddress.zipCode}
                 </p>
                 <p>{order.shippingAddress.country}</p>
@@ -337,17 +405,24 @@ export default function AdminOrderDetails() {
               Update Order Status
             </h3>
             <div className="space-y-3">
-              {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((status) => {
-                const config = statusConfig[status as keyof typeof statusConfig];
+              {[
+                "pending",
+                "processing",
+                "shipped",
+                "delivered",
+                "cancelled",
+              ].map((status) => {
+                const config =
+                  statusConfig[status as keyof typeof statusConfig];
                 const StatusIcon = config.icon;
                 return (
                   <label
                     key={status}
                     className={cn(
-                      'flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all',
+                      "flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all",
                       newStatus === status
-                        ? 'border-orange-500 bg-orange-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? "border-orange-500 bg-orange-50"
+                        : "border-gray-200 hover:border-gray-300",
                     )}
                   >
                     <input
@@ -358,14 +433,22 @@ export default function AdminOrderDetails() {
                       onChange={(e) => setNewStatus(e.target.value)}
                       className="text-orange-500 focus:ring-orange-500"
                     />
-                    <StatusIcon className={cn(
-                      'h-5 w-5',
-                      newStatus === status ? 'text-orange-500' : 'text-gray-400'
-                    )} />
-                    <span className={cn(
-                      'font-medium capitalize',
-                      newStatus === status ? 'text-orange-700' : 'text-gray-700'
-                    )}>
+                    <StatusIcon
+                      className={cn(
+                        "h-5 w-5",
+                        newStatus === status
+                          ? "text-orange-500"
+                          : "text-gray-400",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "font-medium capitalize",
+                        newStatus === status
+                          ? "text-orange-700"
+                          : "text-gray-700",
+                      )}
+                    >
                       {status}
                     </span>
                   </label>

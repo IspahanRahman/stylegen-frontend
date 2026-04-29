@@ -1,16 +1,16 @@
-import { create } from 'zustand';
-import { adminAnalyticsAPI, type AnalyticsData } from '@/lib/mock/adminApi';
+import { create } from "zustand";
+import { adminAnalyticsAPI, type AnalyticsData } from "@/lib/mock/adminApi";
 
 interface AnalyticsState {
   data: AnalyticsData | null;
-  timeRange: 'weekly' | 'monthly' | 'yearly';
+  timeRange: "weekly" | "monthly" | "yearly";
   isLoading: boolean;
   error: string | null;
   lastUpdated: string | null;
 
   // Actions
   fetchAnalytics: () => Promise<void>;
-  setTimeRange: (range: 'weekly' | 'monthly' | 'yearly') => void;
+  setTimeRange: (range: "weekly" | "monthly" | "yearly") => void;
   exportReport: () => Promise<string>;
   clearError: () => void;
   getStatsCards: () => Array<{
@@ -24,7 +24,7 @@ interface AnalyticsState {
 
 export const useAdminAnalyticsStore = create<AnalyticsState>((set, get) => ({
   data: null,
-  timeRange: 'monthly',
+  timeRange: "monthly",
   isLoading: false,
   error: null,
   lastUpdated: null,
@@ -41,7 +41,7 @@ export const useAdminAnalyticsStore = create<AnalyticsState>((set, get) => ({
       });
     } catch (error: any) {
       set({
-        error: error.message || 'Failed to fetch analytics',
+        error: error.message || "Failed to fetch analytics",
         isLoading: false,
       });
     }
@@ -58,7 +58,7 @@ export const useAdminAnalyticsStore = create<AnalyticsState>((set, get) => ({
       const response = await adminAnalyticsAPI.exportReport(get().timeRange);
       return response.downloadUrl;
     } catch (error: any) {
-      throw new Error(error.message || 'Failed to export report');
+      throw new Error(error.message || "Failed to export report");
     }
   },
 
@@ -70,32 +70,32 @@ export const useAdminAnalyticsStore = create<AnalyticsState>((set, get) => ({
 
     return [
       {
-        label: 'Total Revenue',
+        label: "Total Revenue",
         value: `$${data.revenue.total.toLocaleString()}`,
         growth: data.revenue.growth,
-        icon: 'DollarSign',
-        color: 'blue',
+        icon: "DollarSign",
+        color: "blue",
       },
       {
-        label: 'Total Orders',
+        label: "Total Orders",
         value: data.orders.total.toString(),
         growth: data.orders.growth,
-        icon: 'ShoppingBag',
-        color: 'green',
+        icon: "ShoppingBag",
+        color: "green",
       },
       {
-        label: 'Total Customers',
+        label: "Total Customers",
         value: data.customers.total.toString(),
         growth: data.customers.growth,
-        icon: 'Users',
-        color: 'purple',
+        icon: "Users",
+        color: "purple",
       },
       {
-        label: 'Products Sold',
+        label: "Products Sold",
         value: data.orders.total.toString(),
         growth: data.orders.growth,
-        icon: 'Package',
-        color: 'orange',
+        icon: "Package",
+        color: "orange",
       },
     ];
   },

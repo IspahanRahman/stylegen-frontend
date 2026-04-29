@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCart } from '@/hooks/useCart';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
+import { useCart } from "@/hooks/useCart";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
 import {
   X,
   Minus,
@@ -12,9 +12,9 @@ import {
   ArrowRight,
   Shield,
   Truck,
-} from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function CartDrawer() {
   const {
@@ -44,9 +44,9 @@ export default function CartDrawer() {
       {/* Drawer */}
       <div
         className={cn(
-          'fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out',
-          'flex flex-col',
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+          "fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out",
+          "flex flex-col",
+          isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
         {/* Header */}
@@ -71,8 +71,12 @@ export default function CartDrawer() {
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
-              <p className="text-gray-500 font-medium mb-2">Your cart is empty</p>
-              <p className="text-gray-400 text-sm mb-4">Add some products to get started</p>
+              <p className="text-gray-500 font-medium mb-2">
+                Your cart is empty
+              </p>
+              <p className="text-gray-400 text-sm mb-4">
+                Add some products to get started
+              </p>
               <button
                 onClick={closeCart}
                 className="px-4 py-2 bg-orange-500 text-white rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
@@ -84,7 +88,7 @@ export default function CartDrawer() {
             <div className="space-y-4">
               {items.map((item) => (
                 <div
-                  key={`${item.productId}-${item.size || 'nosize'}`}
+                  key={`${item.productId}-${item.size || "nosize"}`}
                   className="flex gap-3 p-3 bg-gray-50 rounded-lg"
                 >
                   {/* Product Image */}
@@ -105,7 +109,9 @@ export default function CartDrawer() {
                         {item.name}
                       </h4>
                       <button
-                        onClick={() => removeFromCart(item.productId, item.size)}
+                        onClick={() =>
+                          removeFromCart(item.productId, item.size)
+                        }
                         className="text-gray-400 hover:text-red-500 transition-colors flex-shrink-0 ml-2"
                         aria-label={`Remove ${item.name}`}
                       >
@@ -114,7 +120,9 @@ export default function CartDrawer() {
                     </div>
 
                     {item.size && (
-                      <p className="text-xs text-gray-500 mt-0.5">Size: {item.size}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Size: {item.size}
+                      </p>
                     )}
 
                     <div className="flex items-center justify-between mt-2">
@@ -126,7 +134,7 @@ export default function CartDrawer() {
                               item.productId,
                               item.quantity - 1,
                               item.stock,
-                              item.size
+                              item.size,
                             )
                           }
                           disabled={item.quantity <= 1}
@@ -143,7 +151,7 @@ export default function CartDrawer() {
                               item.productId,
                               item.quantity + 1,
                               item.stock,
-                              item.size
+                              item.size,
                             )
                           }
                           disabled={item.quantity >= item.stock}
@@ -158,9 +166,12 @@ export default function CartDrawer() {
                         <p className="text-sm font-semibold text-gray-900">
                           {formatCurrency(item.price * item.quantity)}
                         </p>
-                        {item.discount > 0 && (
+                        {(item.discount ?? 0) > 0 && (
                           <p className="text-xs text-gray-400 line-through">
-                            {formatCurrency(item.originalPrice * item.quantity)}
+                            {formatCurrency(
+                              (item.originalPrice ?? item.price) *
+                                item.quantity,
+                            )}
                           </p>
                         )}
                       </div>

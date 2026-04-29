@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
-import { useAuthStore } from '@/lib/store/authStore';
-import { registerSchema, type RegisterFormData } from '@/lib/utils/validators';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
+import { useAuthStore } from "@/lib/store/authStore";
+import { registerSchema, type RegisterFormData } from "@/lib/utils/validators";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -22,17 +22,21 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await doRegister({ name: data.name, email: data.email, password: data.password });
-      toast.success('Account created — welcome!');
-      router.push('/user');
+      await doRegister({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Account created — welcome!");
+      router.push("/user");
       router.refresh();
     } catch (err: any) {
-      toast.error(err?.message || 'Registration failed');
+      toast.error(err?.message || "Registration failed");
     }
   };
 
@@ -50,7 +54,9 @@ export default function RegisterPage() {
           </div>
 
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Create an account</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Create an account
+            </h2>
             <p className="text-gray-500">
               Create your artisan account to manage orders and profile.
             </p>
@@ -58,30 +64,40 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="name"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 FULL NAME
               </label>
               <input
                 id="name"
-                {...register('name')}
+                {...register("name")}
                 className={cn(
-                  'block w-full pr-3 py-3 border rounded-lg',
-                  'placeholder:text-gray-400',
-                  'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  "block w-full pr-3 py-3 border rounded-lg",
+                  "placeholder:text-gray-400",
+                  "focus:outline-none focus:ring-2 focus:ring-offset-0",
                   errors.name
-                    ? 'border-red-300 focus:ring-red-500'
-                    : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                    ? "border-red-300 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                 )}
                 placeholder="Your full name"
                 onChange={() => {
                   if (error) clearError();
                 }}
               />
-              {errors.name && <p className="mt-2 text-sm text-red-600">{errors.name.message}</p>}
+              {errors.name && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.name.message}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 EMAIL ADDRESS
               </label>
               <div className="relative">
@@ -91,26 +107,33 @@ export default function RegisterPage() {
                 <input
                   id="email"
                   type="email"
-                  {...register('email')}
+                  {...register("email")}
                   placeholder="name@company.com"
                   className={cn(
-                    'block w-full pl-10 pr-3 py-3 border rounded-lg',
-                    'placeholder:text-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    "block w-full pl-10 pr-3 py-3 border rounded-lg",
+                    "placeholder:text-gray-400",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-0",
                     errors.email
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                   )}
                   onChange={() => {
                     if (error) clearError();
                   }}
                 />
               </div>
-              {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-gray-700 mb-2"
+              >
                 PASSWORD
               </label>
               <div className="relative">
@@ -119,16 +142,16 @@ export default function RegisterPage() {
                 </div>
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  {...register('password')}
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
                   placeholder="••••••••"
                   className={cn(
-                    'block w-full pl-10 pr-12 py-3 border rounded-lg',
-                    'placeholder:text-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    "block w-full pl-10 pr-12 py-3 border rounded-lg",
+                    "placeholder:text-gray-400",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-0",
                     errors.password
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                   )}
                   onChange={() => {
                     if (error) clearError();
@@ -147,7 +170,9 @@ export default function RegisterPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
@@ -161,22 +186,24 @@ export default function RegisterPage() {
               <input
                 id="confirmPassword"
                 type="password"
-                {...register('confirmPassword')}
+                {...register("confirmPassword")}
                 placeholder="••••••••"
                 className={cn(
-                  'block w-full pr-3 py-3 border rounded-lg',
-                  'placeholder:text-gray-400',
-                  'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                  "block w-full pr-3 py-3 border rounded-lg",
+                  "placeholder:text-gray-400",
+                  "focus:outline-none focus:ring-2 focus:ring-offset-0",
                   errors.confirmPassword
-                    ? 'border-red-300 focus:ring-red-500'
-                    : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                    ? "border-red-300 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                 )}
                 onChange={() => {
                   if (error) clearError();
                 }}
               />
               {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>
+                <p className="mt-2 text-sm text-red-600">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
 
@@ -184,14 +211,14 @@ export default function RegisterPage() {
               type="submit"
               disabled={isLoading}
               className={cn(
-                'w-full flex items-center justify-center px-6 py-3',
-                'text-base font-semibold text-white',
-                'bg-orange-500 hover:bg-orange-600',
-                'rounded-lg shadow-sm',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500',
-                'transition-all duration-200',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
-                'group'
+                "w-full flex items-center justify-center px-6 py-3",
+                "text-base font-semibold text-white",
+                "bg-orange-500 hover:bg-orange-600",
+                "rounded-lg shadow-sm",
+                "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500",
+                "transition-all duration-200",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
+                "group",
               )}
             >
               {isLoading ? (
@@ -227,7 +254,7 @@ export default function RegisterPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-600">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link
               href="/login"
               className="font-semibold text-orange-500 hover:text-orange-600 transition-colors"
@@ -245,8 +272,8 @@ export default function RegisterPage() {
               Premium Leather Goods
             </h2>
             <p className="text-orange-100 text-lg leading-relaxed">
-              Access your artisan portal to manage orders, track shipments, and discover our latest
-              handcrafted collections.
+              Access your artisan portal to manage orders, track shipments, and
+              discover our latest handcrafted collections.
             </p>
           </div>
         </div>

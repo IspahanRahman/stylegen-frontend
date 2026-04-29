@@ -1,7 +1,14 @@
-'use client';
+"use client";
 
-import UserTrackOrder from '@/components/user/UserTrackOrder';
+import dynamic from "next/dynamic";
+
+const UserTrackOrderClient = dynamic(
+  () => import("@/components/user/UserTrackOrder"),
+  {
+    ssr: false,
+  },
+);
 
 export default function TrackOrderPage() {
-  return <UserTrackOrder />;
+  return <UserTrackOrderClient />;
 }

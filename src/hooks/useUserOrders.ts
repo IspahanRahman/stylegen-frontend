@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { useUserOrderStore } from '@/lib/store/userOrderStore';
-import { useAuthStore } from '@/lib/store/authStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useUserOrderStore } from "@/lib/store/userOrderStore";
+import { useAuthStore } from "@/lib/store/authStore";
+import toast from "react-hot-toast";
 
 export function useUserOrders() {
   const store = useUserOrderStore();
@@ -14,28 +14,40 @@ export function useUserOrders() {
     }
   }, [isAuthenticated]);
 
-  const handleViewDetails = useCallback(async (orderId: string) => {
-    await store.fetchOrderDetails(orderId);
-    return store.selectedOrder;
-  }, [store]);
+  const handleViewDetails = useCallback(
+    async (orderId: string) => {
+      await store.fetchOrderDetails(orderId);
+      return store.selectedOrder;
+    },
+    [store],
+  );
 
-  const handleDownloadInvoice = useCallback(async (orderId: string) => {
-    try {
-      const downloadUrl = await store.downloadInvoice(orderId);
-      window.open(downloadUrl, '_blank');
-      toast.success('Invoice downloaded');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to download invoice');
-    }
-  }, [store]);
+  const handleDownloadInvoice = useCallback(
+    async (orderId: string) => {
+      try {
+        const downloadUrl = await store.downloadInvoice(orderId);
+        window.open(downloadUrl, "_blank");
+        toast.success("Invoice downloaded");
+      } catch (error: any) {
+        toast.error(error.message || "Failed to download invoice");
+      }
+    },
+    [store],
+  );
 
-  const handleSearch = useCallback((term: string) => {
-    store.setSearchTerm(term);
-  }, [store]);
+  const handleSearch = useCallback(
+    (term: string) => {
+      store.setSearchTerm(term);
+    },
+    [store],
+  );
 
-  const handleStatusFilter = useCallback((status: string) => {
-    store.setStatusFilter(status);
-  }, [store]);
+  const handleStatusFilter = useCallback(
+    (status: string) => {
+      store.setStatusFilter(status);
+    },
+    [store],
+  );
 
   return {
     // State

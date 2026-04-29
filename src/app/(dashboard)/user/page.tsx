@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Skeleton from '@/components/ui/Skeleton';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Skeleton from "@/components/ui/Skeleton";
 import {
   ShoppingBag,
   Package,
@@ -12,9 +12,9 @@ import {
   Star,
   AlertCircle,
   User,
-} from 'lucide-react';
-import { mockProductAPI, mockOrderAPI } from '@/lib/mock/api';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+} from "lucide-react";
+import { mockProductAPI, mockOrderAPI } from "@/lib/mock/api";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 export default function UserDashboard() {
   const [stats, setStats] = useState({
@@ -33,7 +33,7 @@ export default function UserDashboard() {
   const loadDashboardData = async () => {
     try {
       const [ordersResponse, productsResponse] = await Promise.all([
-        mockOrderAPI.getUserOrders('user-1'),
+        mockOrderAPI.getUserOrders("user-1"),
         mockProductAPI.getAll({ featured: true }),
       ]);
 
@@ -41,15 +41,18 @@ export default function UserDashboard() {
       setStats({
         totalOrders: orders.length,
         activeOrders: orders.filter((o: any) =>
-          ['pending', 'processing', 'shipped'].includes(o.status)
+          ["pending", "processing", "shipped"].includes(o.status),
         ).length,
         wishlistItems: 5, // Mock data
-        totalSpent: orders.reduce((sum: number, o: any) => sum + o.totalPrice, 0),
+        totalSpent: orders.reduce(
+          (sum: number, o: any) => sum + o.totalPrice,
+          0,
+        ),
       });
 
       setRecentOrders(orders.slice(0, 3));
     } catch (error) {
-      console.error('Failed to load dashboard data:', error);
+      console.error("Failed to load dashboard data:", error);
     } finally {
       setIsLoading(false);
     }
@@ -57,13 +60,13 @@ export default function UserDashboard() {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      delivered: 'bg-green-100 text-green-700',
-      pending: 'bg-yellow-100 text-yellow-700',
-      processing: 'bg-blue-100 text-blue-700',
-      shipped: 'bg-purple-100 text-purple-700',
-      cancelled: 'bg-red-100 text-red-700',
+      delivered: "bg-green-100 text-green-700",
+      pending: "bg-yellow-100 text-yellow-700",
+      processing: "bg-blue-100 text-blue-700",
+      shipped: "bg-purple-100 text-purple-700",
+      cancelled: "bg-red-100 text-red-700",
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[status as keyof typeof colors] || "bg-gray-100 text-gray-700";
   };
 
   if (isLoading) {
@@ -101,8 +104,12 @@ export default function UserDashboard() {
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 sm:p-8 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Welcome back! 👋</h1>
-            <p className="text-orange-100">Here's what's happening with your orders today.</p>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+              Welcome back! 👋
+            </h1>
+            <p className="text-orange-100">
+              Here's what's happening with your orders today.
+            </p>
           </div>
           <Link
             href="/products"
@@ -123,7 +130,9 @@ export default function UserDashboard() {
             </div>
             <TrendingUp className="h-4 w-4 text-green-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {stats.totalOrders}
+          </p>
           <p className="text-sm text-gray-500">Total Orders</p>
         </div>
 
@@ -134,7 +143,9 @@ export default function UserDashboard() {
             </div>
             <Clock className="h-4 w-4 text-yellow-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900">{stats.activeOrders}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {stats.activeOrders}
+          </p>
           <p className="text-sm text-gray-500">Active Orders</p>
         </div>
 
@@ -144,7 +155,9 @@ export default function UserDashboard() {
               <Star className="h-5 w-5 text-pink-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{stats.wishlistItems}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {stats.wishlistItems}
+          </p>
           <p className="text-sm text-gray-500">Wishlist Items</p>
         </div>
 
@@ -154,7 +167,9 @@ export default function UserDashboard() {
               <TrendingUp className="h-5 w-5 text-green-600" />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900">{formatCurrency(stats.totalSpent)}</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {formatCurrency(stats.totalSpent)}
+          </p>
           <p className="text-sm text-gray-500">Total Spent</p>
         </div>
       </div>
@@ -165,7 +180,9 @@ export default function UserDashboard() {
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100">
           <div className="p-6 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Orders</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent Orders
+              </h2>
               <Link
                 href="/user/orders"
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium"
@@ -189,12 +206,18 @@ export default function UserDashboard() {
               </div>
             ) : (
               recentOrders.map((order) => (
-                <div key={order.id} className="p-6 hover:bg-gray-50 transition-colors">
+                <div
+                  key={order.id}
+                  className="p-6 hover:bg-gray-50 transition-colors"
+                >
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <p className="font-medium text-gray-900">Order #{order.id}</p>
+                      <p className="font-medium text-gray-900">
+                        Order #{order.id}
+                      </p>
                       <p className="text-sm text-gray-500">
-                        {order.items.length} item(s) • {formatCurrency(order.totalPrice)}
+                        {order.items.length} item(s) •{" "}
+                        {formatCurrency(order.totalPrice)}
                       </p>
                     </div>
                     <span
@@ -205,7 +228,10 @@ export default function UserDashboard() {
                   </div>
                   <div className="flex items-center gap-4">
                     {order.items.slice(0, 2).map((item: any) => (
-                      <div key={item.productId} className="flex items-center gap-2">
+                      <div
+                        key={item.productId}
+                        className="flex items-center gap-2"
+                      >
                         <div className="h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center text-xs">
                           {item.name.charAt(0)}
                         </div>
@@ -224,7 +250,9 @@ export default function UserDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Quick Actions
+          </h2>
           <div className="space-y-3">
             <Link
               href="/products"
@@ -277,7 +305,9 @@ export default function UserDashboard() {
 
           {/* Need Help */}
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Need Help?</h3>
+            <h3 className="text-sm font-semibold text-gray-900 mb-2">
+              Need Help?
+            </h3>
             <p className="text-xs text-gray-600 mb-3">
               Our support team is here to help you with any questions.
             </p>

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useAdminAnalytics } from '@/hooks/useAdminAnalytics';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
+import { useAdminAnalytics } from "@/hooks/useAdminAnalytics";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
 import {
   TrendingUp,
   TrendingDown,
@@ -14,8 +14,8 @@ import {
   Calendar,
   RefreshCcw,
   BarChart3,
-} from 'lucide-react';
-import Skeleton from '@/components/ui/Skeleton';
+} from "lucide-react";
+import Skeleton from "@/components/ui/Skeleton";
 
 const iconMap: Record<string, any> = {
   DollarSign,
@@ -69,7 +69,9 @@ export default function AdminAnalytics() {
     return (
       <div className="text-center py-12">
         <BarChart3 className="h-16 w-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Failed to Load Analytics</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Failed to Load Analytics
+        </h2>
         <p className="text-red-600 mb-4">{error}</p>
         <button
           onClick={clearError}
@@ -128,29 +130,29 @@ export default function AdminAnalytics() {
               <div className="flex items-center justify-between mb-4">
                 <div
                   className={cn(
-                    'p-2 rounded-lg',
-                    stat.color === 'blue' && 'bg-blue-50',
-                    stat.color === 'green' && 'bg-green-50',
-                    stat.color === 'purple' && 'bg-purple-50',
-                    stat.color === 'orange' && 'bg-orange-50'
+                    "p-2 rounded-lg",
+                    stat.color === "blue" && "bg-blue-50",
+                    stat.color === "green" && "bg-green-50",
+                    stat.color === "purple" && "bg-purple-50",
+                    stat.color === "orange" && "bg-orange-50",
                   )}
                 >
                   {IconComponent && (
                     <IconComponent
                       className={cn(
-                        'h-5 w-5',
-                        stat.color === 'blue' && 'text-blue-600',
-                        stat.color === 'green' && 'text-green-600',
-                        stat.color === 'purple' && 'text-purple-600',
-                        stat.color === 'orange' && 'text-orange-600'
+                        "h-5 w-5",
+                        stat.color === "blue" && "text-blue-600",
+                        stat.color === "green" && "text-green-600",
+                        stat.color === "purple" && "text-purple-600",
+                        stat.color === "orange" && "text-orange-600",
                       )}
                     />
                   )}
                 </div>
                 <div
                   className={cn(
-                    'flex items-center gap-1 text-sm font-medium',
-                    stat.growth > 0 ? 'text-green-600' : 'text-red-600'
+                    "flex items-center gap-1 text-sm font-medium",
+                    stat.growth > 0 ? "text-green-600" : "text-red-600",
                   )}
                 >
                   {stat.growth > 0 ? (
@@ -172,18 +174,20 @@ export default function AdminAnalytics() {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Revenue Overview</h2>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Revenue Overview
+            </h2>
             <p className="text-sm text-gray-500 mt-1">
-              {timeRange === 'monthly' && 'Monthly revenue breakdown'}
-              {timeRange === 'weekly' && 'Weekly revenue breakdown'}
-              {timeRange === 'yearly' && 'Yearly revenue breakdown'}
+              {timeRange === "monthly" && "Monthly revenue breakdown"}
+              {timeRange === "weekly" && "Weekly revenue breakdown"}
+              {timeRange === "yearly" && "Yearly revenue breakdown"}
             </p>
           </div>
           <div className="flex items-center gap-2 text-xs text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg">
             <Calendar className="h-4 w-4" />
-            {timeRange === 'monthly' && 'Monthly'}
-            {timeRange === 'weekly' && 'Weekly'}
-            {timeRange === 'yearly' && 'Yearly'}
+            {timeRange === "monthly" && "Monthly"}
+            {timeRange === "weekly" && "Weekly"}
+            {timeRange === "yearly" && "Yearly"}
           </div>
         </div>
 
@@ -230,7 +234,10 @@ export default function AdminAnalytics() {
                 </div>
               </div>
               <div className="text-xs text-gray-400">
-                Total: {formatCurrency(data.revenue.monthly.reduce((a, b) => a + b, 0))}
+                Total:{" "}
+                {formatCurrency(
+                  data.revenue.monthly.reduce((a, b) => a + b, 0),
+                )}
               </div>
             </div>
           </div>
@@ -247,7 +254,9 @@ export default function AdminAnalytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Products */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Products</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Top Products
+          </h2>
           {topProducts.length > 0 ? (
             <div className="space-y-4">
               {topProducts.map((product, index) => (
@@ -258,18 +267,22 @@ export default function AdminAnalytics() {
                   <div className="flex items-center gap-3">
                     <span
                       className={cn(
-                        'text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center',
-                        index === 0 && 'bg-yellow-100 text-yellow-700',
-                        index === 1 && 'bg-gray-100 text-gray-700',
-                        index === 2 && 'bg-orange-100 text-orange-700',
-                        index > 2 && 'text-gray-400'
+                        "text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center",
+                        index === 0 && "bg-yellow-100 text-yellow-700",
+                        index === 1 && "bg-gray-100 text-gray-700",
+                        index === 2 && "bg-orange-100 text-orange-700",
+                        index > 2 && "text-gray-400",
                       )}
                     >
                       #{index + 1}
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{product.name}</p>
-                      <p className="text-xs text-gray-500">{product.sales} sales</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {product.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {product.sales} sales
+                      </p>
                     </div>
                   </div>
                   <p className="text-sm font-medium text-gray-900">
@@ -288,7 +301,9 @@ export default function AdminAnalytics() {
 
         {/* Top Categories */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Categories</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Top Categories
+          </h2>
           {topCategories.length > 0 ? (
             <div className="space-y-4">
               {topCategories.map((category, index) => (
@@ -299,18 +314,22 @@ export default function AdminAnalytics() {
                   <div className="flex items-center gap-3">
                     <span
                       className={cn(
-                        'text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center',
-                        index === 0 && 'bg-yellow-100 text-yellow-700',
-                        index === 1 && 'bg-gray-100 text-gray-700',
-                        index === 2 && 'bg-orange-100 text-orange-700',
-                        index > 2 && 'text-gray-400'
+                        "text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center",
+                        index === 0 && "bg-yellow-100 text-yellow-700",
+                        index === 1 && "bg-gray-100 text-gray-700",
+                        index === 2 && "bg-orange-100 text-orange-700",
+                        index > 2 && "text-gray-400",
                       )}
                     >
                       #{index + 1}
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{category.name}</p>
-                      <p className="text-xs text-gray-500">{category.sales} items</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {category.name}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {category.sales} items
+                      </p>
                     </div>
                   </div>
                   <p className="text-sm font-medium text-gray-900">

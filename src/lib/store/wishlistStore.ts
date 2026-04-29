@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { toast } from 'react-hot-toast';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { toast } from "react-hot-toast";
 
 interface WishlistItem {
   productId: string;
@@ -23,19 +23,23 @@ export const useWishlistStore = create<WishlistState>()(
       items: [],
       add: (item) =>
         set((state) => {
-          const exists = state.items.find((i) => i.productId === item.productId);
+          const exists = state.items.find(
+            (i) => i.productId === item.productId,
+          );
           if (exists) {
-            toast('Already in wishlist');
+            toast("Already in wishlist");
             return state;
           }
-          toast.success('Added to wishlist');
+          toast.success("Added to wishlist");
           return { items: [...state.items, item] };
         }),
       remove: (productId) =>
-        set((state) => ({ items: state.items.filter((i) => i.productId !== productId) })),
+        set((state) => ({
+          items: state.items.filter((i) => i.productId !== productId),
+        })),
       clear: () => set({ items: [] }),
       getCount: () => get().items.length,
     }),
-    { name: 'wishlist-storage' }
-  )
+    { name: "wishlist-storage" },
+  ),
 );

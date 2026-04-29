@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { toast } from 'react-hot-toast';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { toast } from "react-hot-toast";
 
 export interface CartItem {
   productId: string;
@@ -45,8 +45,9 @@ export const useCartStore = create<CartState>()(
       addItem: (item) => {
         set((state) => {
           const existingItem = state.items.find(
-            (i) => i.productId === item.productId &&
-                (item.size ? i.size === item.size : !i.size)
+            (i) =>
+              i.productId === item.productId &&
+              (item.size ? i.size === item.size : !i.size),
           );
 
           if (existingItem) {
@@ -61,7 +62,7 @@ export const useCartStore = create<CartState>()(
                 i.productId === item.productId &&
                 (item.size ? i.size === item.size : !i.size)
                   ? { ...i, quantity: newQuantity }
-                  : i
+                  : i,
               ),
             };
           }
@@ -80,7 +81,7 @@ export const useCartStore = create<CartState>()(
       removeItem: (productId, size) => {
         set((state) => ({
           items: state.items.filter(
-            (i) => !(i.productId === productId && (!size || i.size === size))
+            (i) => !(i.productId === productId && (!size || i.size === size)),
           ),
         }));
       },
@@ -95,7 +96,7 @@ export const useCartStore = create<CartState>()(
           items: state.items.map((i) =>
             i.productId === productId && (!size || i.size === size)
               ? { ...i, quantity }
-              : i
+              : i,
           ),
         }));
       },
@@ -123,20 +124,20 @@ export const useCartStore = create<CartState>()(
       getTotal: () => {
         return get().items.reduce(
           (sum, item) => sum + item.price * item.quantity,
-          0
+          0,
         );
       },
 
       getItemById: (productId, size) => {
         return get().items.find(
-          (i) => i.productId === productId && (!size || i.size === size)
+          (i) => i.productId === productId && (!size || i.size === size),
         );
       },
     }),
     {
-      name: 'stylegen-cart',
+      name: "stylegen-cart",
       // Only persist items, not the open state
       partialize: (state) => ({ items: state.items }),
-    }
-  )
+    },
+  ),
 );

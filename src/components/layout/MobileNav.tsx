@@ -1,9 +1,18 @@
-import { Menu, X } from 'lucide-react';
-import React from 'react';
+import { Menu, X } from "lucide-react";
+import React from "react";
 
-export default function MobileNav({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
+export default function MobileNav({
+  isOpen,
+  onToggle,
+}: {
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <button onClick={onToggle} className="p-2 rounded-lg hover:bg-gray-100 lg:hidden">
+    <button
+      onClick={onToggle}
+      className="p-2 rounded-lg hover:bg-gray-100 lg:hidden"
+    >
       {isOpen ? (
         <X className="h-5 w-5 text-gray-600" />
       ) : (

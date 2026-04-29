@@ -1,1 +1,1 @@
-export const site = { name: 'Stylegen' };
+export const site = { name: "Stylegen" };

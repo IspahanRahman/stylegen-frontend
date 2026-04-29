@@ -1,5 +1,10 @@
-import { create } from 'zustand';
-import { adminCustomerAPI, type Customer, type CustomerDetails, type Note } from '@/lib/mock/adminCustomerApi';
+import { create } from "zustand";
+import {
+  adminCustomerAPI,
+  type Customer,
+  type CustomerDetails,
+  type Note,
+} from "@/lib/mock/adminCustomerApi";
 
 interface CustomerState {
   // Data
@@ -53,9 +58,9 @@ export const useAdminCustomerStore = create<CustomerState>((set, get) => ({
   isLoading: false,
   isSubmitting: false,
   error: null,
-  searchTerm: '',
-  statusFilter: 'all',
-  newNote: '',
+  searchTerm: "",
+  statusFilter: "all",
+  newNote: "",
   showStatusModal: false,
   showDetailsModal: false,
 
@@ -88,12 +93,17 @@ export const useAdminCustomerStore = create<CustomerState>((set, get) => ({
     try {
       await adminCustomerAPI.updateStatus(customerId, newStatus);
 
-      set(state => ({
-        customers: state.customers.map(c =>
-          c.id === customerId ? { ...c, status: newStatus as Customer['status'] } : c
+      set((state) => ({
+        customers: state.customers.map((c) =>
+          c.id === customerId
+            ? { ...c, status: newStatus as Customer["status"] }
+            : c,
         ),
         selectedCustomer: state.selectedCustomer
-          ? { ...state.selectedCustomer, status: newStatus as Customer['status'] }
+          ? {
+              ...state.selectedCustomer,
+              status: newStatus as Customer["status"],
+            }
           : null,
         isSubmitting: false,
         showStatusModal: false,
@@ -111,16 +121,19 @@ export const useAdminCustomerStore = create<CustomerState>((set, get) => ({
     set({ isSubmitting: true });
 
     try {
-      const response = await adminCustomerAPI.addNote(selectedCustomer.id, content);
+      const response = await adminCustomerAPI.addNote(
+        selectedCustomer.id,
+        content,
+      );
 
-      set(state => ({
+      set((state) => ({
         selectedCustomer: state.selectedCustomer
           ? {
               ...state.selectedCustomer,
               notes: [response.note, ...state.selectedCustomer.notes],
             }
           : null,
-        newNote: '',
+        newNote: "",
         isSubmitting: false,
       }));
     } catch (error: any) {
@@ -155,14 +168,15 @@ export const useAdminCustomerStore = create<CustomerState>((set, get) => ({
   getFilteredCustomers: () => {
     const { customers, searchTerm, statusFilter } = get();
 
-    return customers.filter(customer => {
+    return customers.filter((customer) => {
       const matchesSearch =
         !searchTerm ||
         customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         customer.id.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = statusFilter === 'all' || customer.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "all" || customer.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
@@ -173,9 +187,9 @@ export const useAdminCustomerStore = create<CustomerState>((set, get) => ({
 
     return {
       total: customers.length,
-      active: customers.filter(c => c.status === 'active').length,
-      inactive: customers.filter(c => c.status === 'inactive').length,
-      banned: customers.filter(c => c.status === 'banned').length,
+      active: customers.filter((c) => c.status === "active").length,
+      inactive: customers.filter((c) => c.status === "inactive").length,
+      banned: customers.filter((c) => c.status === "banned").length,
     };
   },
 }));

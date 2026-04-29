@@ -1,10 +1,10 @@
-import { useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAdminProductFormStore } from '@/lib/store/adminProductStore';
-import type { ProductFormData } from '@/lib/mock/adminProductApi';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useAdminProductFormStore } from "@/lib/store/adminProductStore";
+import type { ProductFormData } from "@/lib/mock/adminProductApi";
+import toast from "react-hot-toast";
 
-type ProductMode = 'create' | 'edit';
+type ProductMode = "create" | "edit";
 
 interface UseAdminProductOptions {
   mode: ProductMode;
@@ -31,7 +31,7 @@ export function useAdminProduct({ mode, productId }: UseAdminProductOptions) {
     store.setMode(mode, productId);
     store.loadCategories();
 
-    if (mode === 'edit' && productId) {
+    if (mode === "edit" && productId) {
       store.fetchProduct(productId);
     }
   }, [mode, productId]);
@@ -56,9 +56,9 @@ export function useAdminProduct({ mode, productId }: UseAdminProductOptions) {
       }
 
       // Reset input so same file can be re-uploaded
-      e.target.value = '';
+      e.target.value = "";
     },
-    [store]
+    [store],
   );
 
   // Remove image handler
@@ -66,7 +66,7 @@ export function useAdminProduct({ mode, productId }: UseAdminProductOptions) {
     (index: number) => {
       store.removeImage(index);
     },
-    [store]
+    [store],
   );
 
   // Submit handler
@@ -75,30 +75,30 @@ export function useAdminProduct({ mode, productId }: UseAdminProductOptions) {
       // Validate before submit
       const isValid = await store.validateBeforeSubmit(data);
       if (!isValid) {
-        toast.error(store.error || 'Validation failed');
+        toast.error(store.error || "Validation failed");
         return;
       }
 
       try {
-        if (mode === 'create') {
+        if (mode === "create") {
           const newProductId = await store.saveProduct(data);
-          toast.success('Product created successfully!');
+          toast.success("Product created successfully!");
           router.push(`/admin/products/${newProductId}`);
         } else {
           await store.saveProduct(data);
-          toast.success('Product updated successfully!');
+          toast.success("Product updated successfully!");
           router.push(`/admin/products/${productId}`);
         }
       } catch (error: any) {
-        toast.error(error.message || 'Failed to save product');
+        toast.error(error.message || "Failed to save product");
       }
     },
-    [mode, productId, store, router]
+    [mode, productId, store, router],
   );
 
   // Toggle preview (create mode only)
   const handleTogglePreview = useCallback(() => {
-    if (mode === 'create') {
+    if (mode === "create") {
       store.setPreviewMode(!store.previewMode);
     }
   }, [mode, store]);
@@ -116,13 +116,13 @@ export function useAdminProduct({ mode, productId }: UseAdminProductOptions) {
     error: store.error,
 
     // Create mode specific
-    ...(mode === 'create' && {
+    ...(mode === "create" && {
       previewMode: store.previewMode,
       handleTogglePreview,
     }),
 
     // Edit mode specific
-    ...(mode === 'edit' && {
+    ...(mode === "edit" && {
       product: store.productDetails,
       isLoading: store.isLoading,
       activeTab: store.activeTab,

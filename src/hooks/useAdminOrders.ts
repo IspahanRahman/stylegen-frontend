@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAdminOrderStore } from '@/lib/store/adminOrderStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useAdminOrderStore } from "@/lib/store/adminOrderStore";
+import toast from "react-hot-toast";
 
 export function useAdminOrders() {
   const store = useAdminOrderStore();
@@ -18,26 +18,26 @@ export function useAdminOrders() {
         await store.updateStatus(orderId, newStatus);
         toast.success(`Order ${orderId} updated to ${newStatus}`);
       } catch (error: any) {
-        toast.error(error.message || 'Failed to update status');
+        toast.error(error.message || "Failed to update status");
       }
     },
-    [store]
+    [store],
   );
 
   const handleViewDetails = useCallback(
     (orderId: string) => {
       router.push(`/admin/orders/${orderId}`);
     },
-    [router]
+    [router],
   );
 
   const handleExport = useCallback(async () => {
     try {
       const downloadUrl = await store.exportOrders();
-      window.open(downloadUrl, '_blank');
-      toast.success('Orders exported successfully');
+      window.open(downloadUrl, "_blank");
+      toast.success("Orders exported successfully");
     } catch (error: any) {
-      toast.error(error.message || 'Export failed');
+      toast.error(error.message || "Export failed");
     }
   }, [store]);
 
@@ -45,12 +45,12 @@ export function useAdminOrders() {
     async (orderId: string) => {
       try {
         await store.printInvoice(orderId);
-        toast.success('Invoice sent to printer');
+        toast.success("Invoice sent to printer");
       } catch (error: any) {
-        toast.error(error.message || 'Print failed');
+        toast.error(error.message || "Print failed");
       }
     },
-    [store]
+    [store],
   );
 
   return {
@@ -94,9 +94,9 @@ export function useAdminOrderDetails(orderId: string) {
   const handleUpdateStatus = useCallback(async () => {
     try {
       await store.updateStatus(orderId, store.newStatus);
-      toast.success('Order status updated successfully');
+      toast.success("Order status updated successfully");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to update status');
+      toast.error(error.message || "Failed to update status");
     }
   }, [orderId, store]);
 

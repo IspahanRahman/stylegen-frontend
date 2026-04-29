@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 export default function useLocalStorage(key: string, initial: any) {
   const [state, setState] = useState(() => {
     try {

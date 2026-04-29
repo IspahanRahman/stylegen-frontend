@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Star, Heart } from 'lucide-react';
-import { useWishlistStore } from '@/lib/store/wishlistStore';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import AddToCartButton from './AddToCartButton';
+import Image from "next/image";
+import Link from "next/link";
+import { Star, Heart } from "lucide-react";
+import { useWishlistStore } from "@/lib/store/wishlistStore";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import AddToCartButton from "./AddToCartButton";
 
 interface ProductCardProps {
   product: {
@@ -36,7 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.images?.[0] ?? '/images/placeholder.png',
+        image: product.images?.[0] ?? "/images/placeholder.png",
       });
     }
   };
@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Product Image */}
         <div className="aspect-square rounded-t-xl overflow-hidden bg-gray-100 relative">
           <Image
-            src={product.images?.[0] ?? '/images/placeholder.png'}
+            src={product.images?.[0] ?? "/images/placeholder.png"}
             alt={product.name}
             width={400}
             height={400}
@@ -72,7 +72,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Product Info */}
         <div className="p-4">
-          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">{product.category}</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+            {product.category}
+          </p>
           <h3 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 transition-colors">
             {product.name}
           </h3>
@@ -81,7 +83,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-center gap-1 mb-3">
             <Star className="h-4 w-4 text-yellow-400 fill-current" />
             <span className="text-sm text-gray-600">{product.rating}</span>
-            <span className="text-xs text-gray-400">({product.sales} sold)</span>
+            <span className="text-xs text-gray-400">
+              ({product.sales} sold)
+            </span>
           </div>
 
           {/* Price */}
@@ -90,7 +94,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               {product.discount > 0 ? (
                 <div>
                   <span className="text-lg font-bold text-gray-900">
-                    {formatCurrency(product.price - (product.price * product.discount) / 100)}
+                    {formatCurrency(
+                      product.price - (product.price * product.discount) / 100,
+                    )}
                   </span>
                   <span className="text-xs text-gray-400 line-through ml-2">
                     {formatCurrency(product.price)}
@@ -109,15 +115,21 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Add to Cart - Outside Link to prevent navigation */}
       <div className="px-4 pb-4 flex items-center gap-3">
         <div className="flex-1">
-          <AddToCartButton product={product} className="w-full" variant="outline" />
+          <AddToCartButton
+            product={product}
+            className="w-full"
+            variant="outline"
+          />
         </div>
 
         <button
           onClick={toggleWishlist}
-          aria-label={isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+          aria-label={isInWishlist ? "Remove from wishlist" : "Add to wishlist"}
           className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
         >
-          <Heart className={`h-5 w-5 ${isInWishlist ? 'text-red-500' : 'text-gray-600'}`} />
+          <Heart
+            className={`h-5 w-5 ${isInWishlist ? "text-red-500" : "text-gray-600"}`}
+          />
         </button>
       </div>
     </div>

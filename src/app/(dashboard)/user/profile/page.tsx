@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import UserProfile from '@/components/user/UserProfile';
+import UserProfile from "@/components/user/UserProfile";
 
 export default function ProfilePage() {
   return <UserProfile />;
 }
-

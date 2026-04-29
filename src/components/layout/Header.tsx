@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { ShoppingCart, User, Menu, X, Search } from 'lucide-react';
-import { useAuthStore } from '@/lib/store/authStore';
-import { useCartStore } from '@/lib/store/cartStore';
-import { cn } from '@/lib/utils/cn';
+import Link from "next/link";
+import { useState } from "react";
+import { ShoppingCart, User, Menu, X, Search } from "lucide-react";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useCartStore } from "@/lib/store/cartStore";
+import { cn } from "@/lib/utils/cn";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,10 +26,16 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/products" className="text-gray-600 hover:text-gray-900">
+            <Link
+              href="/products"
+              className="text-gray-600 hover:text-gray-900"
+            >
               Products
             </Link>
-            <Link href="/categories" className="text-gray-600 hover:text-gray-900">
+            <Link
+              href="/categories"
+              className="text-gray-600 hover:text-gray-900"
+            >
               Categories
             </Link>
             <Link href="/about" className="text-gray-600 hover:text-gray-900">
@@ -45,7 +51,10 @@ export default function Header() {
             </button>
 
             {/* Cart */}
-            <button onClick={toggleCart} className="p-2 text-gray-600 hover:text-gray-900 relative">
+            <button
+              onClick={toggleCart}
+              className="p-2 text-gray-600 hover:text-gray-900 relative"
+            >
               <ShoppingCart className="h-5 w-5" />
               {getItemCount() > 0 && (
                 <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -76,7 +85,7 @@ export default function Header() {
                   >
                     Profile
                   </Link>
-                  {user?.role === 'admin' && (
+                  {user?.role === "admin" && (
                     <Link
                       href="/admin"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

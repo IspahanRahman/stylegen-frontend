@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAdminProductListStore } from '@/lib/store/adminProductStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useAdminProductListStore } from "@/lib/store/adminProductStore";
+import toast from "react-hot-toast";
 
 export function useAdminProductList() {
   const store = useAdminProductListStore();
@@ -13,52 +13,67 @@ export function useAdminProductList() {
     store.loadCategories();
   }, []);
 
-  const handleDelete = useCallback(async (id: string) => {
-    try {
-      await store.deleteProduct(id);
-      toast.success('Product deleted successfully');
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to delete product');
-    }
-  }, [store]);
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await store.deleteProduct(id);
+        toast.success("Product deleted successfully");
+      } catch (error: any) {
+        toast.error(error.message || "Failed to delete product");
+      }
+    },
+    [store],
+  );
 
   const handleBulkDelete = useCallback(async () => {
     try {
       await store.bulkDelete();
-      toast.success('Selected products deleted successfully');
+      toast.success("Selected products deleted successfully");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete products');
+      toast.error(error.message || "Failed to delete products");
     }
   }, [store]);
 
-  const handleBulkStatusUpdate = useCallback(async (status: string) => {
-    try {
-      await store.bulkUpdateStatus(status);
-      toast.success(`Products marked as ${status}`);
-    } catch (error: any) {
-      toast.error(error.message || 'Failed to update products');
-    }
-  }, [store]);
+  const handleBulkStatusUpdate = useCallback(
+    async (status: string) => {
+      try {
+        await store.bulkUpdateStatus(status);
+        toast.success(`Products marked as ${status}`);
+      } catch (error: any) {
+        toast.error(error.message || "Failed to update products");
+      }
+    },
+    [store],
+  );
 
   const handleNavigateToCreate = useCallback(() => {
-    router.push('/admin/products/new');
+    router.push("/admin/products/new");
   }, [router]);
 
-  const handleNavigateToEdit = useCallback((id: string) => {
-    router.push(`/admin/products/${id}/edit`);
-  }, [router]);
+  const handleNavigateToEdit = useCallback(
+    (id: string) => {
+      router.push(`/admin/products/${id}/edit`);
+    },
+    [router],
+  );
 
-  const handleNavigateToDetails = useCallback((id: string) => {
-    router.push(`/admin/products/${id}`);
-  }, [router]);
+  const handleNavigateToDetails = useCallback(
+    (id: string) => {
+      router.push(`/admin/products/${id}`);
+    },
+    [router],
+  );
 
-  const handleSelectAll = useCallback((checked: boolean) => {
-    if (checked) {
-      store.selectAll();
-    } else {
-      store.clearSelection();
-    }
-  }, [store]);
+  const handleSelectAll = useCallback(
+    (checked: boolean) => {
+      if (checked) {
+        store.selectAll();
+      } else {
+        store.clearSelection();
+      }
+    },
+    [store],
+  );
 
   return {
     // State

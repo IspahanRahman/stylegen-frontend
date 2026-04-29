@@ -1,8 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Login - StyleGen',
-  description: 'Sign in to your StyleGen account',
+  title: "Login - StyleGen",
+  description: "Sign in to your StyleGen account",
 };
 
 export default function AuthLayout({
@@ -20,7 +20,13 @@ export default function AuthLayout({
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors flex items-center gap-1">
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg
+                  className="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
                   <circle cx="12" cy="12" r="10" />
                   <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" />
                 </svg>
@@ -28,10 +34,16 @@ export default function AuthLayout({
               </button>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+              <a
+                href="#"
+                className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              >
                 Support
               </a>
-              <a href="#" className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
+              <a
+                href="#"
+                className="text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              >
                 Privacy
               </a>
               <p className="text-sm text-gray-400">

@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { mockProductAPI } from '@/lib/mock/api';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+import Image from "next/image";
+import Link from "next/link";
+import { mockProductAPI } from "@/lib/mock/api";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 type Props = {
   params: {
@@ -10,8 +10,8 @@ type Props = {
 };
 
 export default async function CategoryPage({ params }: Props) {
-  const slug = params?.slug ?? '';
-  const displayName = slug ? slug.replace(/-/g, ' ') : 'Category';
+  const slug = params?.slug ?? "";
+  const displayName = slug ? slug.replace(/-/g, " ") : "Category";
   const resp = await mockProductAPI.getAll({ category: slug });
   const products = resp.products || [];
 
@@ -20,8 +20,12 @@ export default async function CategoryPage({ params }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 capitalize">{displayName}</h1>
-            <p className="text-gray-600 mt-1">Browse products in the {displayName} category.</p>
+            <h1 className="text-3xl font-bold text-gray-900 capitalize">
+              {displayName}
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Browse products in the {displayName} category.
+            </p>
           </div>
           <Link href="/products" className="text-sm text-orange-500">
             View all products
@@ -42,14 +46,16 @@ export default async function CategoryPage({ params }: Props) {
               >
                 <div className="aspect-square rounded-md overflow-hidden mb-3 bg-gray-100">
                   <Image
-                    src={p.images?.[0] ?? '/images/placeholder.png'}
+                    src={p.images?.[0] ?? "/images/placeholder.png"}
                     alt={p.name}
                     width={400}
                     height={400}
                     className="object-cover w-full h-full"
                   />
                 </div>
-                <h3 className="text-sm font-medium text-gray-900 mb-1">{p.name}</h3>
+                <h3 className="text-sm font-medium text-gray-900 mb-1">
+                  {p.name}
+                </h3>
                 <p className="text-sm text-gray-500 mb-3">{p.category}</p>
                 <div className="flex items-center justify-between">
                   <div className="text-lg font-semibold text-gray-900">

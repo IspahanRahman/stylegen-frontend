@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { useWishlistStore } from '@/lib/store/wishlistStore';
-import { useCartStore } from '@/lib/store/cartStore';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import { Heart, ShoppingCart } from 'lucide-react';
-import { useAuthStore } from '@/lib/store/authStore';
-import Skeleton from '@/components/ui/Skeleton';
+import React from "react";
+import Link from "next/link";
+import { useWishlistStore } from "@/lib/store/wishlistStore";
+import { useCart } from "@/hooks/useCart";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { Heart, ShoppingCart } from "lucide-react";
+import { useAuthStore } from "@/lib/store/authStore";
+import Skeleton from "@/components/ui/Skeleton";
 
 export default function UserWishList() {
   const { user } = useAuthStore();
   const items = useWishlistStore((s) => s.items);
   const remove = useWishlistStore((s) => s.remove);
-  const addToCart = useCartStore((s) => s.addItem);
+  const { addToCart } = useCart();
 
   if (!user) {
     return (
@@ -56,7 +56,11 @@ export default function UserWishList() {
           >
             <div className="aspect-square bg-gray-100 rounded-lg mb-4 overflow-hidden flex items-center justify-center">
               {p.image ? (
-                <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <span className="text-gray-500">No image</span>
               )}
@@ -70,7 +74,7 @@ export default function UserWishList() {
                     productId: p.productId,
                     name: p.name,
                     price: p.price,
-                    image: p.image || '',
+                    image: p.image || "",
                     stock: 10,
                   })
                 }

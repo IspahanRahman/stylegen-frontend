@@ -1,7 +1,7 @@
-import { useEffect, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAdminProductDetailsStore } from '@/lib/store/adminProductStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useAdminProductDetailsStore } from "@/lib/store/adminProductStore";
+import toast from "react-hot-toast";
 
 export function useAdminProductDetails(productId: string) {
   const store = useAdminProductDetailsStore();
@@ -22,27 +22,34 @@ export function useAdminProductDetails(productId: string) {
   const handleDelete = useCallback(async () => {
     try {
       await store.deleteProduct();
-      toast.success('Product deleted successfully');
-      router.push('/admin/products');
+      toast.success("Product deleted successfully");
+      router.push("/admin/products");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete product');
+      toast.error(error.message || "Failed to delete product");
     }
   }, [store, router]);
 
-  const handleImageNavigation = useCallback((direction: 'prev' | 'next') => {
-    const { product, selectedImageIndex } = store;
-    if (!product) return;
+  const handleImageNavigation = useCallback(
+    (direction: "prev" | "next") => {
+      const { product, selectedImageIndex } = store;
+      if (!product) return;
 
-    if (direction === 'prev') {
-      store.setSelectedImage(
-        selectedImageIndex === 0 ? product.images.length - 1 : selectedImageIndex - 1
-      );
-    } else {
-      store.setSelectedImage(
-        selectedImageIndex === product.images.length - 1 ? 0 : selectedImageIndex + 1
-      );
-    }
-  }, [store]);
+      if (direction === "prev") {
+        store.setSelectedImage(
+          selectedImageIndex === 0
+            ? product.images.length - 1
+            : selectedImageIndex - 1,
+        );
+      } else {
+        store.setSelectedImage(
+          selectedImageIndex === product.images.length - 1
+            ? 0
+            : selectedImageIndex + 1,
+        );
+      }
+    },
+    [store],
+  );
 
   const handleNavigateToEdit = useCallback(() => {
     router.push(`/admin/products/${productId}/edit`);
@@ -53,7 +60,7 @@ export function useAdminProductDetails(productId: string) {
     if (!product) return 0;
 
     const price = parseFloat(product.price);
-    const discount = parseFloat(product.discount || '0');
+    const discount = parseFloat(product.discount || "0");
 
     return price - (price * discount) / 100;
   }, [store.product]);

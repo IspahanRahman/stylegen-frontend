@@ -1,5 +1,5 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
-import { cn } from '@/lib/utils/cn';
+import { forwardRef, InputHTMLAttributes } from "react";
+import { cn } from "@/lib/utils/cn";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -23,26 +23,24 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={id}
           className={cn(
-            'block w-full rounded-lg border-gray-300 shadow-sm',
-            'focus:border-orange-500 focus:ring-orange-500',
-            'placeholder:text-gray-400',
-            error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
-            'disabled:bg-gray-50 disabled:text-gray-500',
-            className
+            "block w-full rounded-lg border-gray-300 shadow-sm",
+            "focus:border-orange-500 focus:ring-orange-500",
+            "placeholder:text-gray-400",
+            error && "border-red-500 focus:border-red-500 focus:ring-red-500",
+            "disabled:bg-gray-50 disabled:text-gray-500",
+            className,
           )}
           {...props}
         />
-        {error && (
-          <p className="mt-1 text-sm text-red-600">{error}</p>
-        )}
+        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
         {helperText && !error && (
           <p className="mt-1 text-sm text-gray-500">{helperText}</p>
         )}
       </div>
     );
-  }
+  },
 );
 
-Input.displayName = 'Input';
+Input.displayName = "Input";
 
 export default Input;

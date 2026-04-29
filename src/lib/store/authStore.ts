@@ -1,12 +1,12 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { mockAuthAPI } from '@/lib/mock/api';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { mockAuthAPI } from "@/lib/mock/api";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
 }
 
 interface AuthState {
@@ -35,7 +35,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await mockAuthAPI.login(email, password);
           set({
-            user: response.user,
+            user: response.user as User,
             token: response.token,
             isAuthenticated: true,
             isLoading: false,
@@ -54,7 +54,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const response = await mockAuthAPI.register(userData);
           set({
-            user: response.user,
+            user: response.user as User,
             token: response.token,
             isAuthenticated: true,
             isLoading: false,
@@ -79,7 +79,7 @@ export const useAuthStore = create<AuthState>()(
       clearError: () => set({ error: null }),
     }),
     {
-      name: 'auth-storage',
-    }
-  )
+      name: "auth-storage",
+    },
+  ),
 );

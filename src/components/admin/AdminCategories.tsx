@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useAdminCategories } from '@/hooks/useAdminCategories';
+import { useAdminCategories } from "@/hooks/useAdminCategories";
 import {
   Plus,
   Search,
@@ -12,8 +12,8 @@ import {
   Loader2,
   Edit,
   Trash2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
 
 export default function AdminCategories() {
   const {
@@ -54,7 +54,10 @@ export default function AdminCategories() {
         <div className="h-12 bg-gray-200 rounded animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-80 bg-gray-200 rounded-xl animate-pulse" />
+            <div
+              key={i}
+              className="h-80 bg-gray-200 rounded-xl animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -87,7 +90,10 @@ export default function AdminCategories() {
             <AlertCircle className="h-5 w-5" />
             <p className="text-sm">{error}</p>
           </div>
-          <button onClick={clearError} className="text-red-500 hover:text-red-700">
+          <button
+            onClick={clearError}
+            className="text-red-500 hover:text-red-700"
+          >
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -111,9 +117,13 @@ export default function AdminCategories() {
       {filteredCategories.length === 0 ? (
         <div className="text-center py-12">
           <Package className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No categories found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            No categories found
+          </h3>
           <p className="text-gray-600">
-            {searchTerm ? 'Try adjusting your search' : 'Create your first category'}
+            {searchTerm
+              ? "Try adjusting your search"
+              : "Create your first category"}
           </p>
         </div>
       ) : (
@@ -162,15 +172,19 @@ export default function AdminCategories() {
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900 truncate">{category.name}</h3>
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">{category.description}</p>
+                    <h3 className="font-semibold text-gray-900 truncate">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                      {category.description}
+                    </p>
                   </div>
                   <span
                     className={cn(
-                      'px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0',
-                      category.status === 'active'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-gray-100 text-gray-700'
+                      "px-2 py-1 rounded-full text-xs font-medium ml-2 flex-shrink-0",
+                      category.status === "active"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-gray-100 text-gray-700",
                     )}
                   >
                     {category.status}
@@ -210,9 +224,12 @@ export default function AdminCategories() {
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold text-gray-900">
-                  {showAddModal ? 'Add New Category' : 'Edit Category'}
+                  {showAddModal ? "Add New Category" : "Edit Category"}
                 </h2>
-                <button onClick={closeModals} className="p-2 hover:bg-gray-100 rounded-lg">
+                <button
+                  onClick={closeModals}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
                   <X className="h-5 w-5 text-gray-500" />
                 </button>
               </div>
@@ -273,7 +290,7 @@ export default function AdminCategories() {
                       <label className="flex flex-col items-center px-4 py-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-orange-500 transition-colors">
                         <Upload className="h-5 w-5 text-gray-400 mb-1" />
                         <span className="text-sm text-gray-500">
-                          {isUploading ? 'Uploading...' : 'Click to upload'}
+                          {isUploading ? "Uploading..." : "Click to upload"}
                         </span>
                         <input
                           type="file"
@@ -289,10 +306,16 @@ export default function AdminCategories() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={formData.status}
-                  onChange={(e) => setFormData({ status: e.target.value as 'active' | 'inactive' })}
+                  onChange={(e) =>
+                    setFormData({
+                      status: e.target.value as "active" | "inactive",
+                    })
+                  }
                   className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="active">Active</option>
@@ -309,12 +332,14 @@ export default function AdminCategories() {
                 Cancel
               </button>
               <button
-                onClick={showAddModal ? handleCreateCategory : handleUpdateCategory}
+                onClick={
+                  showAddModal ? handleCreateCategory : handleUpdateCategory
+                }
                 disabled={isSubmitting}
                 className="px-4 py-2 text-sm font-medium text-white bg-orange-500 rounded-lg hover:bg-orange-600 disabled:opacity-50 flex items-center gap-2"
               >
                 {isSubmitting && <Loader2 className="h-4 w-4 animate-spin" />}
-                {showAddModal ? 'Create Category' : 'Save Changes'}
+                {showAddModal ? "Create Category" : "Save Changes"}
               </button>
             </div>
           </div>
@@ -327,13 +352,16 @@ export default function AdminCategories() {
           <div className="bg-white rounded-xl max-w-md w-full p-6">
             <div className="text-center">
               <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Delete Category</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Delete Category
+              </h3>
               <p className="text-gray-600 mb-2">
                 Are you sure you want to delete "{selectedCategory.name}"?
               </p>
               {selectedCategory.productCount > 0 && (
                 <p className="text-sm text-red-600 mb-4">
-                  This category has {selectedCategory.productCount} products. Remove or reassign them first.
+                  This category has {selectedCategory.productCount} products.
+                  Remove or reassign them first.
                 </p>
               )}
               <div className="flex gap-3 justify-center mt-6">

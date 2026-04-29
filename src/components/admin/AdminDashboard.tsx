@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useAdminDashboard } from '@/hooks/useAdminDashboard';
-import Link from 'next/link';
+import { useAdminDashboard } from "@/hooks/useAdminDashboard";
+import Link from "next/link";
 import {
   ShoppingBag,
   Package,
@@ -16,10 +16,10 @@ import {
   Loader2,
   ChevronRight,
   ArrowUpRight,
-  CheckCircle2
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+  CheckCircle2,
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 // Icon mapping
 const iconMap: Record<string, any> = {
@@ -90,7 +90,9 @@ export default function AdminDashboard() {
     return (
       <div className="text-center py-12">
         <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Failed to Load Dashboard</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Failed to Load Dashboard
+        </h2>
         <p className="text-gray-600 mb-6">{error}</p>
         <div className="flex gap-3 justify-center">
           <button
@@ -116,7 +118,9 @@ export default function AdminDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Dashboard Overview
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
             Welcome back! Here's what's happening with your store.
             {lastUpdated && (
@@ -194,29 +198,33 @@ export default function AdminDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <div
                   className={cn(
-                    'p-2 rounded-lg transition-colors',
-                    stat.color === 'blue' && 'bg-blue-50 group-hover:bg-blue-100',
-                    stat.color === 'green' && 'bg-green-50 group-hover:bg-green-100',
-                    stat.color === 'purple' && 'bg-purple-50 group-hover:bg-purple-100',
-                    stat.color === 'orange' && 'bg-orange-50 group-hover:bg-orange-100'
+                    "p-2 rounded-lg transition-colors",
+                    stat.color === "blue" &&
+                      "bg-blue-50 group-hover:bg-blue-100",
+                    stat.color === "green" &&
+                      "bg-green-50 group-hover:bg-green-100",
+                    stat.color === "purple" &&
+                      "bg-purple-50 group-hover:bg-purple-100",
+                    stat.color === "orange" &&
+                      "bg-orange-50 group-hover:bg-orange-100",
                   )}
                 >
                   {IconComponent && (
                     <IconComponent
                       className={cn(
-                        'h-5 w-5',
-                        stat.color === 'blue' && 'text-blue-600',
-                        stat.color === 'green' && 'text-green-600',
-                        stat.color === 'purple' && 'text-purple-600',
-                        stat.color === 'orange' && 'text-orange-600'
+                        "h-5 w-5",
+                        stat.color === "blue" && "text-blue-600",
+                        stat.color === "green" && "text-green-600",
+                        stat.color === "purple" && "text-purple-600",
+                        stat.color === "orange" && "text-orange-600",
                       )}
                     />
                   )}
                 </div>
                 <div
                   className={cn(
-                    'flex items-center gap-1 text-sm font-medium',
-                    isNegative ? 'text-red-600' : 'text-green-600'
+                    "flex items-center gap-1 text-sm font-medium",
+                    isNegative ? "text-red-600" : "text-green-600",
                   )}
                 >
                   {isNegative ? (
@@ -240,7 +248,9 @@ export default function AdminDashboard() {
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="p-6 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Recent Orders</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Recent Orders
+              </h2>
               <Link
                 href="/admin/orders"
                 className="text-sm text-orange-500 hover:text-orange-600 font-medium inline-flex items-center gap-1 group"
@@ -271,23 +281,32 @@ export default function AdminDashboard() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {recentOrders.map((order) => (
-                    <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={order.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4 text-sm font-medium text-gray-900">
                         {order.id}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">{order.customer}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">
+                        {order.customer}
+                      </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-900">
                         {formatCurrency(order.amount)}
                       </td>
                       <td className="px-6 py-4">
-                        <span className={cn(
-                          'inline-flex px-2.5 py-1 rounded-full text-xs font-medium capitalize',
-                          getStatusColor(order.status)
-                        )}>
+                        <span
+                          className={cn(
+                            "inline-flex px-2.5 py-1 rounded-full text-xs font-medium capitalize",
+                            getStatusColor(order.status),
+                          )}
+                        >
                           {order.status}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">{order.date}</td>
+                      <td className="px-6 py-4 text-sm text-gray-500">
+                        {order.date}
+                      </td>
                       <td className="px-6 py-4">
                         <Link
                           href={`/admin/orders/${order.id}`}
@@ -309,7 +328,9 @@ export default function AdminDashboard() {
           {/* Low Stock Alert */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Low Stock Alert</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Low Stock Alert
+              </h3>
               {lowStockProducts.length > 0 && (
                 <span className="px-2.5 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
                   {lowStockProducts.length} items
@@ -320,7 +341,9 @@ export default function AdminDashboard() {
             {lowStockProducts.length === 0 ? (
               <div className="text-center py-6">
                 <CheckCircle2 className="h-8 w-8 text-green-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">All products are well stocked!</p>
+                <p className="text-sm text-gray-500">
+                  All products are well stocked!
+                </p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -334,7 +357,9 @@ export default function AdminDashboard() {
                         {product.name}
                       </p>
                       <p className="text-xs text-red-600 mt-0.5">
-                        Stock: <span className="font-medium">{product.stock}</span> / {product.threshold}
+                        Stock:{" "}
+                        <span className="font-medium">{product.stock}</span> /{" "}
+                        {product.threshold}
                       </p>
                     </div>
                     <Link
@@ -351,7 +376,9 @@ export default function AdminDashboard() {
 
           {/* Recent Activities */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activities</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Recent Activities
+            </h3>
 
             {recentActivities.length === 0 ? (
               <div className="text-center py-6">
@@ -363,18 +390,26 @@ export default function AdminDashboard() {
                 {recentActivities.map((activity) => (
                   <div key={activity.id} className="flex gap-3 group">
                     <div className="mt-1 flex-shrink-0">
-                      <div className={cn(
-                        'w-2 h-2 rounded-full',
-                        activity.type === 'order' && 'bg-blue-500',
-                        activity.type === 'product' && 'bg-green-500',
-                        activity.type === 'customer' && 'bg-purple-500',
-                        activity.type === 'system' && 'bg-orange-500'
-                      )} />
+                      <div
+                        className={cn(
+                          "w-2 h-2 rounded-full",
+                          activity.type === "order" && "bg-blue-500",
+                          activity.type === "product" && "bg-green-500",
+                          activity.type === "customer" && "bg-purple-500",
+                          activity.type === "system" && "bg-orange-500",
+                        )}
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                      <p className="text-xs text-gray-500 truncate">{activity.description}</p>
-                      <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+                      <p className="text-sm font-medium text-gray-900">
+                        {activity.action}
+                      </p>
+                      <p className="text-xs text-gray-500 truncate">
+                        {activity.description}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        {activity.time}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -387,10 +422,30 @@ export default function AdminDashboard() {
       {/* Quick Links */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Manage Products', href: '/admin/products', icon: Package, color: 'blue' },
-          { label: 'View Orders', href: '/admin/orders', icon: ShoppingBag, color: 'green' },
-          { label: 'Customers', href: '/admin/customers', icon: Users, color: 'purple' },
-          { label: 'Analytics', href: '/admin/analytics', icon: TrendingUp, color: 'orange' },
+          {
+            label: "Manage Products",
+            href: "/admin/products",
+            icon: Package,
+            color: "blue",
+          },
+          {
+            label: "View Orders",
+            href: "/admin/orders",
+            icon: ShoppingBag,
+            color: "green",
+          },
+          {
+            label: "Customers",
+            href: "/admin/customers",
+            icon: Users,
+            color: "purple",
+          },
+          {
+            label: "Analytics",
+            href: "/admin/analytics",
+            icon: TrendingUp,
+            color: "orange",
+          },
         ].map((link) => {
           const IconComponent = link.icon;
           return (
@@ -398,28 +453,37 @@ export default function AdminDashboard() {
               key={link.label}
               href={link.href}
               className={cn(
-                'bg-white rounded-xl p-4 shadow-sm border border-gray-200',
-                'hover:shadow-md transition-all group',
-                'flex items-center gap-3'
+                "bg-white rounded-xl p-4 shadow-sm border border-gray-200",
+                "hover:shadow-md transition-all group",
+                "flex items-center gap-3",
               )}
             >
-              <div className={cn(
-                'p-2 rounded-lg',
-                link.color === 'blue' && 'bg-blue-50 group-hover:bg-blue-100',
-                link.color === 'green' && 'bg-green-50 group-hover:bg-green-100',
-                link.color === 'purple' && 'bg-purple-50 group-hover:bg-purple-100',
-                link.color === 'orange' && 'bg-orange-50 group-hover:bg-orange-100',
-              )}>
-                <IconComponent className={cn(
-                  'h-5 w-5',
-                  link.color === 'blue' && 'text-blue-600',
-                  link.color === 'green' && 'text-green-600',
-                  link.color === 'purple' && 'text-purple-600',
-                  link.color === 'orange' && 'text-orange-600',
-                )} />
+              <div
+                className={cn(
+                  "p-2 rounded-lg",
+                  link.color === "blue" && "bg-blue-50 group-hover:bg-blue-100",
+                  link.color === "green" &&
+                    "bg-green-50 group-hover:bg-green-100",
+                  link.color === "purple" &&
+                    "bg-purple-50 group-hover:bg-purple-100",
+                  link.color === "orange" &&
+                    "bg-orange-50 group-hover:bg-orange-100",
+                )}
+              >
+                <IconComponent
+                  className={cn(
+                    "h-5 w-5",
+                    link.color === "blue" && "text-blue-600",
+                    link.color === "green" && "text-green-600",
+                    link.color === "purple" && "text-purple-600",
+                    link.color === "orange" && "text-orange-600",
+                  )}
+                />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900">{link.label}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {link.label}
+                </p>
               </div>
               <ChevronRight className="h-4 w-4 text-gray-400 group-hover:translate-x-1 transition-transform" />
             </Link>

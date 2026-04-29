@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export function useAuth(requireAuth: boolean = true) {
   const { isAuthenticated, user } = useAuthStore();
@@ -23,8 +23,8 @@ export function useAdminAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isAuthenticated || user?.role !== 'admin') {
-      router.push('/login');
+    if (!isAuthenticated || user?.role !== "admin") {
+      router.push("/login");
     }
   }, [isAuthenticated, user, router]);
 

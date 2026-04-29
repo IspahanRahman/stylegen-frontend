@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/store/authStore';
-import { useCartStore } from '@/lib/store/cartStore';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
+import { useCartStore } from "@/lib/store/cartStore";
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -18,22 +18,26 @@ import {
   ShoppingCart,
   Bell,
   Search,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
-import Sidebar from './Sidebar';
-import MobileNav from './MobileNav';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
+import Sidebar from "./Sidebar";
+import MobileNav from "./MobileNav";
 
 const navItems = [
-  { label: 'Dashboard', icon: LayoutDashboard, href: '/user' },
-  { label: 'My Orders', icon: ShoppingBag, href: '/user/orders' },
-  { label: 'Track Order', icon: Package, href: '/user/track-order' },
-  { label: 'Wishlist', icon: Heart, href: '/user/wishlist' },
-  { label: 'Profile', icon: User, href: '/user/profile' },
-  { label: 'Settings', icon: Settings, href: '/user/settings' },
+  { label: "Dashboard", icon: LayoutDashboard, href: "/user" },
+  { label: "My Orders", icon: ShoppingBag, href: "/user/orders" },
+  { label: "Track Order", icon: Package, href: "/user/track-order" },
+  { label: "Wishlist", icon: Heart, href: "/user/wishlist" },
+  { label: "Profile", icon: User, href: "/user/profile" },
+  { label: "Settings", icon: Settings, href: "/user/settings" },
 ];
 
-export default function UserLayout({ children }: { children: React.ReactNode }) {
+export default function UserLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
@@ -47,8 +51,8 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully');
-    router.push('/');
+    toast.success("Logged out successfully");
+    router.push("/");
   };
 
   return (
@@ -59,7 +63,10 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
           <div className="flex items-center justify-between h-16">
             {/* Left section */}
             <div className="flex items-center gap-4">
-              <MobileNav isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+              <MobileNav
+                isOpen={isSidebarOpen}
+                onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+              />
 
               <Link href="/" className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
@@ -83,7 +90,10 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
               </button>
 
               {/* Cart */}
-              <Link href="/cart" className="p-2 rounded-lg hover:bg-gray-100 relative">
+              <Link
+                href="/cart"
+                className="p-2 rounded-lg hover:bg-gray-100 relative"
+              >
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
                 {mounted && getItemCount() > 0 && (
                   <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -95,8 +105,12 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
               {/* User Menu */}
               <div className="flex items-center gap-3 ml-4 pl-4 border-l border-gray-200">
                 <div className="hidden sm:block text-right">
-                  <p className="text-sm font-medium text-gray-900">{user?.name}</p>
-                  <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {user?.name}
+                  </p>
+                  <p className="text-xs text-gray-500 capitalize">
+                    {user?.role}
+                  </p>
                 </div>
                 <div className="h-9 w-9 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold">
                   {user?.name?.charAt(0)?.toUpperCase()}
@@ -115,7 +129,10 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       </header>
 
       <div className="flex">
-        <Sidebar sections={[{ section: '', items: navItems }]} isOpen={isSidebarOpen} />
+        <Sidebar
+          sections={[{ section: "", items: navItems }]}
+          isOpen={isSidebarOpen}
+        />
 
         {/* Overlay for mobile */}
         {isSidebarOpen && (
@@ -126,7 +143,9 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">
+          {children}
+        </main>
       </div>
     </div>
   );

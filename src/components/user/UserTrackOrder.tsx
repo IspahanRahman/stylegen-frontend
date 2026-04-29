@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useSearchParams } from 'next/navigation';
-import { useUserTrackOrder } from '@/hooks/useUserOrders';
-import { formatDate } from '@/lib/utils/formatCurrency';
+import { useSearchParams } from "next/navigation";
+import { useUserTrackOrder } from "@/hooks/useUserOrders";
+import { formatDate } from "@/lib/utils/formatCurrency";
 import {
   Package,
   Truck,
@@ -11,37 +11,35 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
 
 const trackingSteps = [
-  { id: 1, label: 'Order Placed', icon: Package },
-  { id: 2, label: 'Processing', icon: Clock },
-  { id: 3, label: 'Shipped', icon: Truck },
-  { id: 4, label: 'Out for Delivery', icon: MapPin },
-  { id: 5, label: 'Delivered', icon: CheckCircle2 },
+  { id: 1, label: "Order Placed", icon: Package },
+  { id: 2, label: "Processing", icon: Clock },
+  { id: 3, label: "Shipped", icon: Truck },
+  { id: 4, label: "Out for Delivery", icon: MapPin },
+  { id: 5, label: "Delivered", icon: CheckCircle2 },
 ];
 
 export default function UserTrackOrder() {
   const searchParams = useSearchParams();
-  const orderId = searchParams.get('order') || undefined;
+  const orderId = searchParams.get("order") || undefined;
 
-  const {
-    order,
-    trackingHistory,
-    currentStep,
-    isLoading,
-    error,
-    clearError,
-  } = useUserTrackOrder(orderId);
+  const { order, trackingHistory, currentStep, isLoading, error, clearError } =
+    useUserTrackOrder(orderId);
 
   // No order ID provided
   if (!orderId) {
     return (
       <div className="text-center py-12">
         <Truck className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Track Your Order</h2>
-        <p className="text-gray-600 mb-6">Enter your tracking number or select an order to track</p>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Track Your Order
+        </h2>
+        <p className="text-gray-600 mb-6">
+          Enter your tracking number or select an order to track
+        </p>
         <div className="max-w-md mx-auto">
           <div className="flex gap-2">
             <input
@@ -77,7 +75,9 @@ export default function UserTrackOrder() {
     return (
       <div className="text-center py-12">
         <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Failed to Load Tracking</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Failed to Load Tracking
+        </h2>
         <p className="text-gray-600 mb-4">{error}</p>
         <button
           onClick={clearError}
@@ -96,7 +96,7 @@ export default function UserTrackOrder() {
         <h1 className="text-2xl font-bold text-gray-900">Track Order</h1>
         {order && (
           <p className="text-sm text-gray-500 mt-1">
-            Order #{order.id} • Tracking #{order.trackingNumber || 'Pending'}
+            Order #{order.id} • Tracking #{order.trackingNumber || "Pending"}
           </p>
         )}
       </div>
@@ -128,12 +128,12 @@ export default function UserTrackOrder() {
                 >
                   <div
                     className={cn(
-                      'relative z-10 flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300',
+                      "relative z-10 flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300",
                       isCompleted
-                        ? 'bg-orange-500 border-orange-500'
+                        ? "bg-orange-500 border-orange-500"
                         : isCurrent
-                        ? 'bg-orange-50 border-orange-500 ring-4 ring-orange-100'
-                        : 'bg-white border-gray-300'
+                          ? "bg-orange-50 border-orange-500 ring-4 ring-orange-100"
+                          : "bg-white border-gray-300",
                     )}
                   >
                     {isCompleted ? (
@@ -141,8 +141,8 @@ export default function UserTrackOrder() {
                     ) : (
                       <StepIcon
                         className={cn(
-                          'h-5 w-5',
-                          isCurrent ? 'text-orange-500' : 'text-gray-400'
+                          "h-5 w-5",
+                          isCurrent ? "text-orange-500" : "text-gray-400",
                         )}
                       />
                     )}
@@ -150,8 +150,10 @@ export default function UserTrackOrder() {
                   <div className="sm:text-center">
                     <p
                       className={cn(
-                        'text-sm font-medium',
-                        isCompleted || isCurrent ? 'text-gray-900' : 'text-gray-400'
+                        "text-sm font-medium",
+                        isCompleted || isCurrent
+                          ? "text-gray-900"
+                          : "text-gray-400",
                       )}
                     >
                       {step.label}
@@ -167,7 +169,9 @@ export default function UserTrackOrder() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Tracking History */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-6">Tracking History</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-6">
+            Tracking History
+          </h2>
 
           <div className="relative">
             <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-200" />
@@ -176,17 +180,21 @@ export default function UserTrackOrder() {
                 <div key={index} className="relative flex gap-4 pl-10">
                   <div
                     className={cn(
-                      'absolute left-2.5 w-3 h-3 rounded-full border-2 -translate-x-1/2',
+                      "absolute left-2.5 w-3 h-3 rounded-full border-2 -translate-x-1/2",
                       event.completed
-                        ? 'bg-orange-500 border-orange-500'
-                        : 'bg-white border-gray-300'
+                        ? "bg-orange-500 border-orange-500"
+                        : "bg-white border-gray-300",
                     )}
                   />
                   <div className="flex-1 bg-gray-50 rounded-lg p-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <p className="font-medium text-gray-900">{event.status}</p>
-                        <p className="text-sm text-gray-500 mt-1">{event.location}</p>
+                        <p className="font-medium text-gray-900">
+                          {event.status}
+                        </p>
+                        <p className="text-sm text-gray-500 mt-1">
+                          {event.location}
+                        </p>
                       </div>
                       <span className="text-xs text-gray-500 whitespace-nowrap ml-4">
                         {event.timestamp}
@@ -201,12 +209,16 @@ export default function UserTrackOrder() {
 
         {/* Shipment Details */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Shipment Details</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            Shipment Details
+          </h3>
 
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-500">Tracking Number</p>
-              <p className="font-medium text-gray-900">{order?.trackingNumber || 'Pending'}</p>
+              <p className="font-medium text-gray-900">
+                {order?.trackingNumber || "Pending"}
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Carrier</p>
@@ -219,7 +231,9 @@ export default function UserTrackOrder() {
             <div>
               <p className="text-sm text-gray-500">Estimated Delivery</p>
               <p className="font-medium text-gray-900">
-                {order?.estimatedDelivery ? formatDate(order.estimatedDelivery) : 'Pending'}
+                {order?.estimatedDelivery
+                  ? formatDate(order.estimatedDelivery)
+                  : "Pending"}
               </p>
             </div>
             <hr />
@@ -228,7 +242,10 @@ export default function UserTrackOrder() {
               {order?.shippingAddress && (
                 <div className="mt-1 text-sm text-gray-900">
                   <p className="font-medium">{order.shippingAddress.street}</p>
-                  <p>{order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}</p>
+                  <p>
+                    {order.shippingAddress.city}, {order.shippingAddress.state}{" "}
+                    {order.shippingAddress.zipCode}
+                  </p>
                 </div>
               )}
             </div>

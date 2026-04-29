@@ -1,6 +1,6 @@
-import { useEffect, useCallback } from 'react';
-import { useAdminAnalyticsStore } from '@/lib/store/adminAnalyticsStore';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+import { useEffect, useCallback } from "react";
+import { useAdminAnalyticsStore } from "@/lib/store/adminAnalyticsStore";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 export function useAdminAnalytics() {
   const store = useAdminAnalyticsStore();
@@ -12,19 +12,19 @@ export function useAdminAnalytics() {
   const handleExport = useCallback(async () => {
     try {
       const downloadUrl = await store.exportReport();
-      window.open(downloadUrl, '_blank');
+      window.open(downloadUrl, "_blank");
       return true;
     } catch (error: any) {
-      console.error('Export failed:', error);
+      console.error("Export failed:", error);
       return false;
     }
   }, [store]);
 
   const handleTimeRangeChange = useCallback(
-    (range: 'weekly' | 'monthly' | 'yearly') => {
+    (range: "weekly" | "monthly" | "yearly") => {
       store.setTimeRange(range);
     },
-    [store]
+    [store],
   );
 
   const getChartData = useCallback(() => {
@@ -35,25 +35,25 @@ export function useAdminAnalytics() {
     const maxRevenue = Math.max(...seriesData);
 
     const monthlyLabels = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
-    const weeklyLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weeklyLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
     let labels = monthlyLabels;
-    if (store.timeRange === 'weekly') {
+    if (store.timeRange === "weekly") {
       labels = weeklyLabels;
-    } else if (store.timeRange === 'monthly' || store.timeRange === 'yearly') {
+    } else if (store.timeRange === "monthly" || store.timeRange === "yearly") {
       labels = monthlyLabels;
     }
 
@@ -62,7 +62,10 @@ export function useAdminAnalytics() {
       labels = labels.slice(0, seriesData.length);
       // If data is longer than labels, pad numeric month indices
       if (labels.length < seriesData.length) {
-        labels = Array.from({ length: seriesData.length }, (_, i) => labels[i] ?? `#${i + 1}`);
+        labels = Array.from(
+          { length: seriesData.length },
+          (_, i) => labels[i] ?? `#${i + 1}`,
+        );
       }
     }
 
@@ -73,7 +76,7 @@ export function useAdminAnalytics() {
           data: seriesData,
           maxValue: maxRevenue,
           getBarHeight: (value: number) => {
-            if (maxRevenue === 0) return '0%';
+            if (maxRevenue === 0) return "0%";
             return `${(value / maxRevenue) * 100}%`;
           },
         },

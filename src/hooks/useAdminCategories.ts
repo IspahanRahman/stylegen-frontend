@@ -1,6 +1,6 @@
-import { useEffect, useCallback } from 'react';
-import { useAdminCategoryStore } from '@/lib/store/adminCategoryStore';
-import toast from 'react-hot-toast';
+import { useEffect, useCallback } from "react";
+import { useAdminCategoryStore } from "@/lib/store/adminCategoryStore";
+import toast from "react-hot-toast";
 
 export function useAdminCategories() {
   const store = useAdminCategoryStore();
@@ -13,46 +13,49 @@ export function useAdminCategories() {
   const handleCreateCategory = useCallback(async () => {
     try {
       await store.createCategory();
-      toast.success('Category created successfully!');
+      toast.success("Category created successfully!");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create category');
+      toast.error(error.message || "Failed to create category");
     }
   }, [store]);
 
   const handleUpdateCategory = useCallback(async () => {
     try {
       await store.updateCategory();
-      toast.success('Category updated successfully!');
+      toast.success("Category updated successfully!");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to update category');
+      toast.error(error.message || "Failed to update category");
     }
   }, [store]);
 
   const handleDeleteCategory = useCallback(async () => {
     try {
       await store.deleteCategory();
-      toast.success('Category deleted successfully!');
+      toast.success("Category deleted successfully!");
     } catch (error: any) {
-      toast.error(error.message || 'Failed to delete category');
+      toast.error(error.message || "Failed to delete category");
       store.closeModals();
     }
   }, [store]);
 
-  const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Validate file
-      if (!file.type.startsWith('image/')) {
-        toast.error('Please upload an image file');
-        return;
+  const handleImageUpload = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        // Validate file
+        if (!file.type.startsWith("image/")) {
+          toast.error("Please upload an image file");
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          toast.error("Image must be less than 5MB");
+          return;
+        }
+        store.handleImageUpload(file);
       }
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('Image must be less than 5MB');
-        return;
-      }
-      store.handleImageUpload(file);
-    }
-  }, [store]);
+    },
+    [store],
+  );
 
   return {
     // State

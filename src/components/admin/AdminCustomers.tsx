@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useAdminCustomers } from '@/hooks/useAdminCustomers';
+import { useAdminCustomers } from "@/hooks/useAdminCustomers";
 import {
   Search,
   Mail,
@@ -10,14 +10,22 @@ import {
   CheckCircle2,
   AlertCircle,
   Loader2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 const statusConfig = {
-  active: { color: 'bg-green-100 text-green-700', icon: CheckCircle2, label: 'Active' },
-  inactive: { color: 'bg-gray-100 text-gray-700', icon: AlertCircle, label: 'Inactive' },
-  banned: { color: 'bg-red-100 text-red-700', icon: Ban, label: 'Banned' },
+  active: {
+    color: "bg-green-100 text-green-700",
+    icon: CheckCircle2,
+    label: "Active",
+  },
+  inactive: {
+    color: "bg-gray-100 text-gray-700",
+    icon: AlertCircle,
+    label: "Inactive",
+  },
+  banned: { color: "bg-red-100 text-red-700", icon: Ban, label: "Banned" },
 };
 
 export default function AdminCustomers() {
@@ -43,7 +51,10 @@ export default function AdminCustomers() {
         <div className="h-12 bg-gray-200 rounded animate-pulse" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-80 bg-gray-200 rounded-xl animate-pulse" />
+            <div
+              key={i}
+              className="h-80 bg-gray-200 rounded-xl animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -57,7 +68,8 @@ export default function AdminCustomers() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
           <p className="text-sm text-gray-500 mt-1">
-            Manage your customer base ({stats.total} total • {stats.active} active • {stats.inactive} inactive • {stats.banned} banned)
+            Manage your customer base ({stats.total} total • {stats.active}{" "}
+            active • {stats.inactive} inactive • {stats.banned} banned)
           </p>
         </div>
       </div>
@@ -69,7 +81,10 @@ export default function AdminCustomers() {
             <AlertCircle className="h-5 w-5" />
             <p className="text-sm">{error}</p>
           </div>
-          <button onClick={clearError} className="text-red-500 hover:text-red-700">
+          <button
+            onClick={clearError}
+            className="text-red-500 hover:text-red-700"
+          >
             ×
           </button>
         </div>
@@ -105,17 +120,20 @@ export default function AdminCustomers() {
       {filteredCustomers.length === 0 ? (
         <div className="text-center py-12">
           <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No customers found</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            No customers found
+          </h3>
           <p className="text-gray-600">
-            {searchTerm || statusFilter !== 'all'
-              ? 'Try adjusting your filters'
-              : 'No customers yet'}
+            {searchTerm || statusFilter !== "all"
+              ? "Try adjusting your filters"
+              : "No customers yet"}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredCustomers.map((customer) => {
-            const status = statusConfig[customer.status as keyof typeof statusConfig];
+            const status =
+              statusConfig[customer.status as keyof typeof statusConfig];
             const StatusIcon = status.icon;
 
             return (
@@ -131,14 +149,16 @@ export default function AdminCustomers() {
                       </span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{customer.name}</h3>
+                      <h3 className="font-semibold text-gray-900">
+                        {customer.name}
+                      </h3>
                       <p className="text-xs text-gray-500">{customer.id}</p>
                     </div>
                   </div>
                   <span
                     className={cn(
-                      'inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium',
-                      status.color
+                      "inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
+                      status.color,
                     )}
                   >
                     <StatusIcon className="h-3 w-3" />
@@ -164,7 +184,9 @@ export default function AdminCustomers() {
                 <div className="grid grid-cols-2 gap-4 p-3 bg-gray-50 rounded-lg mb-4">
                   <div>
                     <p className="text-xs text-gray-500">Orders</p>
-                    <p className="font-semibold text-gray-900">{customer.orders}</p>
+                    <p className="font-semibold text-gray-900">
+                      {customer.orders}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Total Spent</p>
@@ -183,7 +205,9 @@ export default function AdminCustomers() {
                   </button>
                   <select
                     value={customer.status}
-                    onChange={(e) => handleStatusChange(customer.id, e.target.value)}
+                    onChange={(e) =>
+                      handleStatusChange(customer.id, e.target.value)
+                    }
                     className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   >
                     <option value="active">Active</option>

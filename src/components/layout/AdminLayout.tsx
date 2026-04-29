@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useAuthStore } from '@/lib/store/authStore';
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -17,34 +17,41 @@ import {
   Tags,
   ClipboardList,
   ChevronDown,
-} from 'lucide-react';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+} from "lucide-react";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
-import Sidebar from './Sidebar';
-import MobileNav from './MobileNav';
+import Sidebar from "./Sidebar";
+import MobileNav from "./MobileNav";
 
 const adminNavItems = [
   {
-    section: 'Main',
+    section: "Main",
     items: [
-      { label: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
-      { label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
+      { label: "Dashboard", icon: LayoutDashboard, href: "/admin" },
+      { label: "Analytics", icon: BarChart3, href: "/admin/analytics" },
     ],
   },
   {
-    section: 'Management',
+    section: "Management",
     items: [
-      { label: 'Products', icon: ShoppingBag, href: '/admin/products' },
-      { label: 'Categories', icon: Tags, href: '/admin/categories' },
-      { label: 'Orders', icon: ClipboardList, href: '/admin/orders' },
-      { label: 'Customers', icon: Users, href: '/admin/customers' },
+      { label: "Products", icon: ShoppingBag, href: "/admin/products" },
+      { label: "Categories", icon: Tags, href: "/admin/categories" },
+      { label: "Orders", icon: ClipboardList, href: "/admin/orders" },
+      { label: "Customers", icon: Users, href: "/admin/customers" },
     ],
   },
-  { section: 'Settings', items: [{ label: 'Settings', icon: Settings, href: '/admin/settings' }] },
+  {
+    section: "Settings",
+    items: [{ label: "Settings", icon: Settings, href: "/admin/settings" }],
+  },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -53,8 +60,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = () => {
     logout();
-    toast.success('Logged out successfully');
-    router.push('/');
+    toast.success("Logged out successfully");
+    router.push("/");
   };
 
   return (
@@ -63,7 +70,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <MobileNav isOpen={isSidebarOpen} onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
+              <MobileNav
+                isOpen={isSidebarOpen}
+                onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+              />
 
               <Link href="/admin" className="flex items-center gap-2">
                 <h1 className="text-xl font-bold">
@@ -82,7 +92,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="absolute top-1.5 right-1.5 h-2 w-2 bg-red-500 rounded-full"></span>
               </button>
 
-              <Link href="/" className="p-2 rounded-lg hover:bg-gray-100" title="View Store">
+              <Link
+                href="/"
+                className="p-2 rounded-lg hover:bg-gray-100"
+                title="View Store"
+              >
                 <Store className="h-5 w-5 text-gray-600" />
               </Link>
 
@@ -142,7 +156,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           />
         )}
 
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8 lg:ml-64">
+          {children}
+        </main>
       </div>
     </div>
   );

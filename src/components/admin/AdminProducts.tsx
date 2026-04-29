@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { useAdminProductList } from '@/hooks/useAdminProductList';
+import { useState } from "react";
+import { useAdminProductList } from "@/hooks/useAdminProductList";
 import {
   Plus,
   Search,
@@ -15,16 +15,32 @@ import {
   CheckCircle2,
   XCircle,
   Loader2,
-} from 'lucide-react';
-import Link from 'next/link';
-import { formatCurrency } from '@/lib/utils/formatCurrency';
-import { cn } from '@/lib/utils/cn';
+} from "lucide-react";
+import Link from "next/link";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
+import { cn } from "@/lib/utils/cn";
 
 const statusConfig = {
-  active: { color: 'bg-green-100 text-green-700', icon: CheckCircle2, label: 'Active' },
-  out_of_stock: { color: 'bg-red-100 text-red-700', icon: XCircle, label: 'Out of Stock' },
-  draft: { color: 'bg-gray-100 text-gray-700', icon: AlertCircle, label: 'Draft' },
-  inactive: { color: 'bg-yellow-100 text-yellow-700', icon: AlertCircle, label: 'Inactive' },
+  active: {
+    color: "bg-green-100 text-green-700",
+    icon: CheckCircle2,
+    label: "Active",
+  },
+  out_of_stock: {
+    color: "bg-red-100 text-red-700",
+    icon: XCircle,
+    label: "Out of Stock",
+  },
+  draft: {
+    color: "bg-gray-100 text-gray-700",
+    icon: AlertCircle,
+    label: "Draft",
+  },
+  inactive: {
+    color: "bg-yellow-100 text-yellow-700",
+    icon: AlertCircle,
+    label: "Inactive",
+  },
 };
 
 export default function AdminProducts() {
@@ -81,7 +97,9 @@ export default function AdminProducts() {
     return (
       <div className="text-center py-12">
         <AlertCircle className="h-16 w-16 text-red-400 mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Failed to Load Products</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-2">
+          Failed to Load Products
+        </h2>
         <p className="text-gray-600 mb-6">{error}</p>
         <button
           onClick={() => window.location.reload()}
@@ -149,7 +167,9 @@ export default function AdminProducts() {
           >
             <option value="all">All Categories</option>
             {categories.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
           <select
@@ -169,7 +189,8 @@ export default function AdminProducts() {
         {selectedProducts.length > 0 && (
           <div className="mt-4 pt-4 border-t border-gray-200 flex flex-wrap items-center gap-3 animate-in">
             <span className="text-sm font-medium text-gray-700">
-              {selectedProducts.length} product{selectedProducts.length > 1 ? 's' : ''} selected
+              {selectedProducts.length} product
+              {selectedProducts.length > 1 ? "s" : ""} selected
             </span>
             <button
               onClick={handleBulkDelete}
@@ -178,13 +199,13 @@ export default function AdminProducts() {
               Delete Selected
             </button>
             <button
-              onClick={() => handleBulkStatusUpdate('active')}
+              onClick={() => handleBulkStatusUpdate("active")}
               className="px-3 py-1.5 text-sm font-medium text-green-600 hover:bg-green-50 rounded-lg transition-colors"
             >
               Mark as Active
             </button>
             <button
-              onClick={() => handleBulkStatusUpdate('draft')}
+              onClick={() => handleBulkStatusUpdate("draft")}
               className="px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
             >
               Mark as Draft
@@ -203,11 +224,13 @@ export default function AdminProducts() {
       {products.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border">
           <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-bold text-gray-900 mb-2">No Products Found</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
+            No Products Found
+          </h2>
           <p className="text-gray-600 mb-6">
-            {searchTerm || categoryFilter !== 'all' || statusFilter !== 'all'
-              ? 'Try adjusting your search or filters'
-              : 'Get started by creating your first product'}
+            {searchTerm || categoryFilter !== "all" || statusFilter !== "all"
+              ? "Try adjusting your search or filters"
+              : "Get started by creating your first product"}
           </p>
           <button
             onClick={handleNavigateToCreate}
@@ -226,7 +249,10 @@ export default function AdminProducts() {
                   <th className="px-6 py-4 w-12">
                     <input
                       type="checkbox"
-                      checked={selectedProducts.length === products.length && products.length > 0}
+                      checked={
+                        selectedProducts.length === products.length &&
+                        products.length > 0
+                      }
                       onChange={(e) => handleSelectAll(e.target.checked)}
                       className="rounded border-gray-300 text-orange-500 focus:ring-orange-500"
                       aria-label="Select all products"
@@ -244,11 +270,16 @@ export default function AdminProducts() {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {products.map((product) => {
-                  const status = statusConfig[product.status as keyof typeof statusConfig] || statusConfig.draft;
+                  const status =
+                    statusConfig[product.status as keyof typeof statusConfig] ||
+                    statusConfig.draft;
                   const StatusIcon = status.icon;
 
                   return (
-                    <tr key={product.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={product.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <input
                           type="checkbox"
@@ -273,12 +304,16 @@ export default function AdminProducts() {
                           </div>
                           <div className="min-w-0">
                             <button
-                              onClick={() => handleNavigateToDetails(product.id)}
+                              onClick={() =>
+                                handleNavigateToDetails(product.id)
+                              }
                               className="font-medium text-gray-900 hover:text-orange-500 transition-colors truncate block text-left"
                             >
                               {product.name}
                             </button>
-                            <p className="text-xs text-gray-500">ID: {product.id}</p>
+                            <p className="text-xs text-gray-500">
+                              ID: {product.id}
+                            </p>
                           </div>
                         </div>
                       </td>
@@ -301,10 +336,14 @@ export default function AdminProducts() {
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <span className={cn(
-                            'font-medium',
-                            product.stock === 0 ? 'text-red-600' : 'text-gray-900'
-                          )}>
+                          <span
+                            className={cn(
+                              "font-medium",
+                              product.stock === 0
+                                ? "text-red-600"
+                                : "text-gray-900",
+                            )}
+                          >
                             {product.stock}
                           </span>
                           {product.stock > 0 && product.stock <= 5 && (
@@ -315,10 +354,12 @@ export default function AdminProducts() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={cn(
-                          'inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium',
-                          status.color
-                        )}>
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
+                            status.color,
+                          )}
+                        >
                           <StatusIcon className="h-3 w-3" />
                           {status.label}
                         </span>
@@ -329,7 +370,9 @@ export default function AdminProducts() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span className="text-sm font-medium text-gray-900">{product.rating}</span>
+                          <span className="text-sm font-medium text-gray-900">
+                            {product.rating}
+                          </span>
                         </div>
                       </td>
                       <td className="px-6 py-4">
@@ -370,7 +413,8 @@ export default function AdminProducts() {
           {/* Table Footer */}
           <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex items-center justify-between">
             <p className="text-sm text-gray-600">
-              Showing <span className="font-medium">{products.length}</span> product{products.length !== 1 ? 's' : ''}
+              Showing <span className="font-medium">{products.length}</span>{" "}
+              product{products.length !== 1 ? "s" : ""}
             </p>
             <div className="flex items-center gap-2">
               <button
@@ -400,9 +444,15 @@ export default function AdminProducts() {
               <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
                 <AlertCircle className="h-8 w-8 text-red-500" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Delete Product</h3>
-              <p className="text-gray-600 mb-2">Are you sure you want to delete this product?</p>
-              <p className="text-sm text-red-600 mb-6">This action cannot be undone.</p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Delete Product
+              </h3>
+              <p className="text-gray-600 mb-2">
+                Are you sure you want to delete this product?
+              </p>
+              <p className="text-sm text-red-600 mb-6">
+                This action cannot be undone.
+              </p>
               <div className="flex gap-3 justify-center">
                 <button
                   onClick={() => {

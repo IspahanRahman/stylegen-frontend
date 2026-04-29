@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield } from 'lucide-react';
-import { useAuthStore } from '@/lib/store/authStore';
-import { loginSchema, type LoginFormData } from '@/lib/utils/validators';
-import { cn } from '@/lib/utils/cn';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield } from "lucide-react";
+import { useAuthStore } from "@/lib/store/authStore";
+import { loginSchema, type LoginFormData } from "@/lib/utils/validators";
+import { cn } from "@/lib/utils/cn";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -24,45 +24,46 @@ export default function LoginPage() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
       await login(data.email, data.password);
-      toast.success('Welcome back!');
+      toast.success("Welcome back!");
 
       // Redirect based on role
       const user = useAuthStore.getState().user;
-      console.log('Logged in user:', user);
-      if (user?.role === 'admin') {
-        router.push('/admin');
+      console.log("Logged in user:", user);
+      if (user?.role === "admin") {
+        router.push("/admin");
       } else {
-        router.push('/user');
+        router.push("/user");
       }
 
       router.refresh();
     } catch (error: any) {
-      toast.error(error.message || 'Login failed');
+      toast.error(error.message || "Login failed");
     }
   };
 
   // Quick login for demo
-  const handleDemoLogin = async (role: 'admin' | 'user') => {
+  const handleDemoLogin = async (role: "admin" | "user") => {
     try {
-      const credentials = role === 'admin'
-        ? { email: 'admin@stylegen.com', password: 'admin123' }
-        : { email: 'jane@example.com', password: 'user123' };
+      const credentials =
+        role === "admin"
+          ? { email: "admin@stylegen.com", password: "admin123" }
+          : { email: "jane@example.com", password: "user123" };
 
       await login(credentials.email, credentials.password);
       toast.success(`Logged in as ${role}`);
 
-      if (role === 'admin') {
-        router.push('/admin');
+      if (role === "admin") {
+        router.push("/admin");
       } else {
-        router.push('/user');
+        router.push("/user");
       }
 
       router.refresh();
@@ -104,7 +105,7 @@ export default function LoginPage() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => handleDemoLogin('admin')}
+                onClick={() => handleDemoLogin("admin")}
                 className="px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
                 <span className="block font-semibold">Admin</span>
@@ -112,7 +113,7 @@ export default function LoginPage() {
               </button>
               <button
                 type="button"
-                onClick={() => handleDemoLogin('user')}
+                onClick={() => handleDemoLogin("user")}
                 className="px-3 py-2 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
                 <span className="block font-semibold">Customer</span>
@@ -140,14 +141,14 @@ export default function LoginPage() {
                   type="email"
                   autoComplete="email"
                   placeholder="name@company.com"
-                  {...register('email')}
+                  {...register("email")}
                   className={cn(
-                    'block w-full pl-10 pr-3 py-3 border rounded-lg',
-                    'placeholder:text-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    "block w-full pl-10 pr-3 py-3 border rounded-lg",
+                    "placeholder:text-gray-400",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-0",
                     errors.email
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                   )}
                   onChange={() => {
                     if (error) clearError();
@@ -175,17 +176,17 @@ export default function LoginPage() {
                 </div>
                 <input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  {...register('password')}
+                  {...register("password")}
                   className={cn(
-                    'block w-full pl-10 pr-12 py-3 border rounded-lg',
-                    'placeholder:text-gray-400',
-                    'focus:outline-none focus:ring-2 focus:ring-offset-0',
+                    "block w-full pl-10 pr-12 py-3 border rounded-lg",
+                    "placeholder:text-gray-400",
+                    "focus:outline-none focus:ring-2 focus:ring-offset-0",
                     errors.password
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-orange-500 focus:border-orange-500'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-orange-500 focus:border-orange-500",
                   )}
                   onChange={() => {
                     if (error) clearError();
@@ -244,14 +245,14 @@ export default function LoginPage() {
               type="submit"
               disabled={isLoading}
               className={cn(
-                'w-full flex items-center justify-center px-6 py-3',
-                'text-base font-semibold text-white',
-                'bg-orange-500 hover:bg-orange-600',
-                'rounded-lg shadow-sm',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500',
-                'transition-all duration-200',
-                'disabled:opacity-50 disabled:cursor-not-allowed',
-                'group'
+                "w-full flex items-center justify-center px-6 py-3",
+                "text-base font-semibold text-white",
+                "bg-orange-500 hover:bg-orange-600",
+                "rounded-lg shadow-sm",
+                "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500",
+                "transition-all duration-200",
+                "disabled:opacity-50 disabled:cursor-not-allowed",
+                "group",
               )}
             >
               {isLoading ? (
@@ -294,7 +295,7 @@ export default function LoginPage() {
 
           {/* Register Link */}
           <p className="mt-6 text-center text-sm text-gray-600">
-            New to StyleGen?{' '}
+            New to StyleGen?{" "}
             <Link
               href="/register"
               className="font-semibold text-orange-500 hover:text-orange-600 transition-colors"
@@ -330,8 +331,18 @@ export default function LoginPage() {
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-lg mb-3">
-                  <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <svg
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
                   </svg>
                 </div>
                 <h3 className="text-white font-semibold mb-1">Fast</h3>
@@ -339,8 +350,18 @@ export default function LoginPage() {
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-lg mb-3">
-                  <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <svg
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
                   </svg>
                 </div>
                 <h3 className="text-white font-semibold mb-1">Protected</h3>
@@ -348,8 +369,18 @@ export default function LoginPage() {
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-white/10 rounded-lg mb-3">
-                  <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  <svg
+                    className="h-6 w-6 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
                   </svg>
                 </div>
                 <h3 className="text-white font-semibold mb-1">Private</h3>
