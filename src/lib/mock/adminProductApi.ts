@@ -111,7 +111,7 @@ const mockProductList: ProductListItem[] = [
     status: "active",
     rating: 4.8,
     sales: 156,
-    images: ["/images/products/bag-1.jpg"],
+    images: ["/images/products/bag1.jpeg"],
     createdAt: "2024-01-15",
   },
   {
@@ -124,7 +124,7 @@ const mockProductList: ProductListItem[] = [
     status: "active",
     rating: 4.6,
     sales: 234,
-    images: ["/images/products/shoes-1.jpg"],
+    images: ["/images/products/shoes-1.jpeg"],
     createdAt: "2024-01-10",
   },
   {
@@ -137,7 +137,7 @@ const mockProductList: ProductListItem[] = [
     status: "out_of_stock",
     rating: 4.9,
     sales: 567,
-    images: ["/images/products/wallet-1.jpg"],
+    images: ["/images/products/wallet-1.jpeg"],
     createdAt: "2024-02-01",
   },
   {
@@ -150,7 +150,7 @@ const mockProductList: ProductListItem[] = [
     status: "active",
     rating: 4.7,
     sales: 189,
-    images: ["/images/products/belt-1.jpg"],
+    images: ["/images/products/belt-1.jpeg"],
     createdAt: "2024-01-20",
   },
   {
@@ -163,7 +163,7 @@ const mockProductList: ProductListItem[] = [
     status: "draft",
     rating: 0,
     sales: 0,
-    images: ["/images/products/tshirt-1.jpg"],
+    images: ["/images/products/tshirt-1.webp"],
     createdAt: "2024-02-10",
   },
 ];

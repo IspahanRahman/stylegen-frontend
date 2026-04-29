@@ -119,7 +119,7 @@ const mockLowStockProducts: LowStockProduct[] = [
     name: "Italian Leather Bag",
     stock: 3,
     threshold: 10,
-    image: "/images/products/bag-1.jpg",
+    image: "/images/products/bag.jpeg",
   },
   {
     id: "2",

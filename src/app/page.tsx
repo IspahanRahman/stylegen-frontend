@@ -90,7 +90,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-2xl overflow-hidden bg-white shadow-lg">
                 <Image
-                  src="/images/hero/hero-1.jpg"
+                  src="/images/hero/hero-1.avif"
                   alt="Premium Leather Bag"
                   width={560}
                   height={360}
@@ -99,7 +99,7 @@ export default function Home() {
               </div>
               <div className="rounded-2xl overflow-hidden bg-white shadow-lg mt-8">
                 <Image
-                  src="/images/hero/hero-2.jpg"
+                  src="/images/hero/hero-2.avif"
                   alt="Leather Accessories"
                   width={560}
                   height={360}
